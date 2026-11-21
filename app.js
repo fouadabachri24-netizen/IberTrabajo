@@ -1,34 +1,42 @@
 /**
  * IberTrabajo - Plataforma de Intermediación Laboral en España
- * State Management, i18n, Filtering, ATS, CV Builder & Mediation System
+ * Sistema de Autenticación, Control de Acceso por Roles (RBAC), i18n, ATS & Base de Talentos
  */
 
-// --- 1. DICCIONARIO MULTILINGÜE (ES / AR / EN) ---
+// --- 1. DICCIONARIO MULTILINGÜE COMPLETO (ES / AR / EN) ---
 const TRANSLATIONS = {
   es: {
     brand_title: "IberTrabajo",
     brand_subtitle: "Intermediación Laboral España",
     nav_explore: "Buscar Empleo",
     nav_post_job: "Publicar Oferta",
-    nav_ats: "Panel Empleador (ATS)",
-    nav_cv: "Creador de CV",
+    nav_ats: "Panel ATS (Candidaturas)",
+    nav_my_offers: "Mis Ofertas Publicadas",
+    nav_talents: "Base de Talentos",
+    nav_cv: "Mi Currículum",
     nav_guide: "Guía Legal & Arraigo",
     nav_my_apps: "Mis Solicitudes",
-    role_candidate: "Soy Candidato / Busco Trabajo",
-    role_employer: "Soy Empresa / Empleador",
-    role_agency: "Gestor / Mediador",
+    nav_login: "Iniciar Sesión",
+    nav_register: "Crear Cuenta",
+    nav_logout: "Cerrar Sesión",
+    
+    role_candidate: "Candidato / Demandante",
+    role_employer: "Empresa / Empleador",
+    
     hero_tag: "Portal de Empleo & Asesoría de Extranjería en España",
     hero_title: "Conectamos Trabajadores y Empresas en España",
-    hero_subtitle: "Ofertas verificadas en hostelería, agricultura, construcción, cuidados y más. Apoyo a candidatos con permiso de trabajo y ofertas para procesos de arraigo.",
+    hero_subtitle: "Plataforma con cuentas dedicadas para candidatos y empleadores. Gestión integral de permisos de trabajo, ofertas para procesos de arraigo y contratación legal.",
     stat_jobs: "Ofertas Activas",
     stat_contracts: "Contratos Gestionados",
     stat_provinces: "Provincias Españolas",
     stat_verified: "Empresas Verificadas",
+    
     search_keyword_placeholder: "Puesto, oficio o palabra clave (ej. camarero, peón, albañil)...",
     search_province_all: "Todas las provincias",
     search_sector_all: "Todos los sectores",
     btn_search: "Buscar Empleo",
     quick_tags_label: "Frecuentes:",
+    
     filter_title: "Filtros de Búsqueda",
     filter_permit_title: "Situación Legal / Extranjería",
     filter_permit_all: "Cualquier situación",
@@ -43,36 +51,51 @@ const TRANSLATIONS = {
     filter_contract_fijo: "Fijo Discontinuo",
     filter_clear: "Limpiar filtros",
     results_found: "ofertas encontradas",
+    
     badge_verified: "Verificada",
     badge_arraigo: "Acepta Arraigo / Precontrato",
     badge_nie_req: "Permiso de trabajo requerido",
     badge_housing: "Alojamiento incluido",
     btn_apply: "Inscribirme",
     btn_whatsapp: "WhatsApp RRHH",
-    btn_view_details: "Ver Detalles",
     btn_save: "Guardar",
     btn_saved: "Guardada",
     posted_on: "Publicado hace",
     salary_unit: "€/mes",
     
-    // Application modal
-    modal_apply_title: "Solicitud de Empleo",
-    form_fullname: "Nombre y Apellidos",
-    form_phone: "Teléfono / WhatsApp",
-    form_email: "Correo Electrónico",
-    form_province: "Provincia de residencia en España",
-    form_legal_status: "Situación administrativa / legal en España",
+    // Auth Modal
+    modal_auth_title: "Acceso a IberTrabajo",
+    tab_login: "Iniciar Sesión",
+    tab_register: "Crear Nueva Cuenta",
+    auth_email: "Correo Electrónico",
+    auth_password: "Contraseña",
+    auth_role_title: "¿Qué tipo de cuenta deseas abrir?",
+    role_candidate_desc: "Busco ofertas de trabajo, preparar mi CV y solicitar empleo con o sin permiso de trabajo.",
+    role_employer_desc: "Deseo publicar ofertas de empleo, gestionar candidatos en el panel ATS y buscar personal.",
+    auth_candidatename: "Nombre y Apellidos",
+    auth_companyname: "Nombre de la Empresa o Empleador",
+    auth_cif: "CIF / NIF de la Empresa",
+    auth_contactperson: "Persona o Responsable de Selección",
+    auth_phone: "Teléfono / WhatsApp",
+    auth_province: "Provincia en España",
+    auth_profession: "Profesión u Oficio Principal",
+    auth_legal_status: "Situación Legal / Extranjería en España",
     status_nie_valid: "NIE / Permiso de residencia y trabajo en vigor",
     status_nie_renewal: "En trámite de renovación / Prórroga",
     status_arraigo_needed: "Sin permiso vigente (Busco precontrato para Arraigo)",
     status_eu_citizen: "DNI español o Ciudadano de la Unión Europea",
     status_origin_visa: "En país de origen (Interesado en visado de trabajo)",
-    form_experience: "Breve resumen de tu experiencia",
-    form_experience_placeholder: "Indica en qué has trabajado, años de experiencia y disponibilidad horaria...",
-    form_cv_file: "Adjuntar CV (PDF / Word) o usar perfil de la plataforma",
+    btn_do_login: "Entrar a mi Cuenta",
+    btn_do_register: "Registrar mi Cuenta",
+    demo_box_title: "Acceso Rápido de Prueba (Sin contraseña)",
+    demo_as_candidate: "Entrar como Candidato (Ahmed)",
+    demo_as_employer: "Entrar como Empresa (Taberna Ibérica)",
+
+    // Application Modal
+    modal_apply_title: "Solicitud de Empleo",
     btn_submit_application: "Enviar Solicitud a la Empresa",
     
-    // Post job modal
+    // Post Job Modal
     modal_post_title: "Publicar Nueva Oferta de Trabajo",
     form_job_title: "Título del puesto de trabajo",
     form_company_name: "Nombre de la Empresa o Empleador",
@@ -88,50 +111,68 @@ const TRANSLATIONS = {
     form_job_desc: "Descripción del puesto, funciones y requisitos",
     form_whatsapp_contact: "Número de WhatsApp para contacto directo (ej. 34612345678)",
     btn_publish_job: "Publicar Oferta Ahora",
-    
-    // ATS Pipeline
+
+    // ATS
     ats_title: "Gestión de Candidatos (Pipeline ATS)",
-    ats_subtitle: "Organiza y gestiona las solicitudes de tus ofertas en tiempo real",
+    ats_subtitle: "Exclusivo para empresas: organiza y avanza las solicitudes en tiempo real",
     ats_col_applied: "Nuevas Solicitudes",
     ats_col_reviewing: "En Revisión",
     ats_col_interview: "Entrevista Agendada",
     ats_col_hired: "Contratados / Oferta Formal",
-    
+
+    // My Offers
+    my_offers_title: "Mis Ofertas de Trabajo Publicadas",
+    my_offers_subtitle: "Gestiona las vacantes de tu empresa, visualiza postulantes y el estado de la oferta",
+    btn_delete_offer: "Eliminar",
+    btn_view_applicants: "Ver Candidatos",
+
+    // Talents
+    talents_title: "Base de Talentos en España",
+    talents_subtitle: "Exclusivo para empresas: contacta directamente con profesionales disponibles",
+    btn_contact_talent: "Contactar por WhatsApp",
+
     // CV Builder
     cv_title: "Creador de Currículum para España",
     cv_subtitle: "Genera un CV adaptado a los estándares de selección de empresas españolas",
     cv_export_btn: "Imprimir / Guardar en PDF",
-    cv_preview_title: "Vista Previa de tu CV",
-    
+
     // Legal Guide
     guide_title: "Guía de Extranjería y Contratación Laboral",
     guide_subtitle: "Información clave sobre el Nuevo Reglamento de Extranjería, tipos de arraigo y derechos del trabajador en España"
   },
-  
+
   ar: {
     brand_title: "إيبير تراباخو",
     brand_subtitle: "منصة التوظيف والوساطة بإسبانيا",
     nav_explore: "تصفح الوظائف",
     nav_post_job: "إضافة عرض عمل",
     nav_ats: "لوحة المشغلين (ATS)",
-    nav_cv: "إنشاء السيرة الذاتية (CV)",
+    nav_my_offers: "عروضي المنشورة",
+    nav_talents: "قاعدة الكفاءات",
+    nav_cv: "سيرتي الذاتية (CV)",
     nav_guide: "الدليل القانوني وعقود العمل",
     nav_my_apps: "طلباتي المرسلة",
-    role_candidate: "أنا باحث عن عمل",
-    role_employer: "أنا مشغل / صاحب شركة",
-    role_agency: "مستشار ووسيط قانوني",
+    nav_login: "تسجيل الدخول",
+    nav_register: "إنشاء حساب",
+    nav_logout: "تسجيل الخروج",
+
+    role_candidate: "باحث عن عمل",
+    role_employer: "مشغل / شركة",
+
     hero_tag: "المنصة الأولى للتوظيف والاستشارات القانونية بإسبانيا",
     hero_title: "صلة الوصل الموثوقة بين الباحثين عن عمل والشركات في إسبانيا",
-    hero_subtitle: "عروض عمل يومية في الفندقة والمطاعم، الفلاحة، البناء، رعاية المسنين والخدمات. ندعم العمال الحاملين للبيرمي والباحثين عن عقد لتسوية الوضعية (Arraigo).",
+    hero_subtitle: "منصة بحسابات وصلاحيات مخصصة لكل من الباحث عن عمل والمشغل. عقود عمل قانونية، ودعم لملفات تسوية الوضعية (Arraigo).",
     stat_jobs: "عروض عمل نشطة",
     stat_contracts: "عقود موثقة هذا العام",
     stat_provinces: "محافظات إسبانية",
     stat_verified: "شركات معتمدة ومحققة",
+
     search_keyword_placeholder: "المهنة أو التخصص (مثال: نادل، بناء، فلاح، رعاية، سائق)...",
     search_province_all: "جميع محافظات إسبانيا",
     search_sector_all: "جميع القطاعات",
     btn_search: "بحث عن عمل",
     quick_tags_label: "أكثر بحثاً:",
+
     filter_title: "تصفية العروض",
     filter_permit_title: "الوضعية القانونية بإسبانيا",
     filter_permit_all: "كل الوضعيات",
@@ -146,36 +187,51 @@ const TRANSLATIONS = {
     filter_contract_fijo: "عقد دوري مستمر (Fijo Discontinuo)",
     filter_clear: "إعادة ضبط الفلاتر",
     results_found: "عرض عمل متوفر",
+
     badge_verified: "شركة موثقة",
     badge_arraigo: "يقبل عقد أرايغو / تسوية",
     badge_nie_req: "يتطلب تصريح عمل ساري",
     badge_housing: "سكن متوفر",
     btn_apply: "تقديم الطلب",
     btn_whatsapp: "واتساب الموارد البشرية",
-    btn_view_details: "تفاصيل العرض",
     btn_save: "حفظ",
     btn_saved: "تم الحفظ",
     posted_on: "نشر منذ",
     salary_unit: "يورو/شهرياً",
-    
-    // Application modal
-    modal_apply_title: "التقديم على عرض العمل",
-    form_fullname: "الاسم الكامل",
-    form_phone: "رقم الهاتف / الواتساب",
-    form_email: "البريد الإلكتروني",
-    form_province: "المحافظة التي تقيم بها في إسبانيا",
-    form_legal_status: "الوضعية القانونية والإدارية في إسبانيا",
+
+    // Auth Modal
+    modal_auth_title: "الدخول إلى منصة إيبير تراباخو",
+    tab_login: "تسجيل الدخول",
+    tab_register: "إنشاء حساب جديد",
+    auth_email: "البريد الإلكتروني",
+    auth_password: "كلمة المرور",
+    auth_role_title: "اختر نوع الحساب الذي ترغب بفتحه:",
+    role_candidate_desc: "أبحث عن وظائف بإسبانيا، إنشاء سيرة ذاتية إسبانية، والتقديم على عروض العمل بعقد عادي أو أرايغو.",
+    role_employer_desc: "أريد نشر وظائف لمؤسستي، فحص وفرز المترشحين بلوحة ATS، والبحث في قاعدة الكفاءات.",
+    auth_candidatename: "الاسم الكامل",
+    auth_companyname: "اسم الشركة أو المؤسسة المشغلة",
+    auth_cif: "الرقم الضريبي للمؤسسة (CIF / NIF)",
+    auth_contactperson: "اسم مسؤول التوظيف والموارد البشرية",
+    auth_phone: "رقم الهاتف / الواتساب",
+    auth_province: "المحافظة بإسبانيا",
+    auth_profession: "المهنة أو الحرفة الرئيسية",
+    auth_legal_status: "الوضعية الإدارية والقانونية في إسبانيا",
     status_nie_valid: "أملك بطاقة إقامة وعمل سارية المفعول (NIE / TIE)",
     status_nie_renewal: "في طور تجديد الإقامة / التمديد (En trámite)",
     status_arraigo_needed: "بدون أوراق حالياً (أبحث عن عقد لتسوية الوضعية - Arraigo)",
     status_eu_citizen: "حامل للجنسية الإسبانية أو جنسية أوروبية",
     status_origin_visa: "مقيم خارج إسبانيا (أرغب في عقد عمل من بلد الأصل)",
-    form_experience: "ملخص خبراتك السابقة ومهاراتك",
-    form_experience_placeholder: "وضح أين عملت سابقاً، سنوات الخبرة، واللغات التي تتحدثها...",
-    form_cv_file: "إرفاق ملف السيرة الذاتية أو الاعتماد على ملف المنصة",
+    btn_do_login: "دخول إلى حسابي",
+    btn_do_register: "تأكيد وإنشاء الحساب",
+    demo_box_title: "دخول سريع للتجربة (بدون كلمة مرور):",
+    demo_as_candidate: "دخول تجريبي كباحث عن عمل (أحمد)",
+    demo_as_employer: "دخول تجريبي كمشغل (طبرنة إيبيريكا)",
+
+    // Application Modal
+    modal_apply_title: "التقديم على عرض العمل",
     btn_submit_application: "إرسال طلب التوظيف للشركة",
-    
-    // Post job modal
+
+    // Post Job Modal
     modal_post_title: "نشر عرض عمل جديد",
     form_job_title: "المسمى الوظيفي",
     form_company_name: "اسم الشركة أو المشغل",
@@ -191,50 +247,68 @@ const TRANSLATIONS = {
     form_job_desc: "وصف المهام والمسؤوليات والشروط المطلوبة",
     form_whatsapp_contact: "رقم الواتساب للتواصل السريع (مثال: 34612345678)",
     btn_publish_job: "نشر العرض فوراً",
-    
-    // ATS Pipeline
+
+    // ATS
     ats_title: "نظام إدارة المترشحين (ATS المشغلين)",
-    ats_subtitle: "تتبع وقبول وفرز المترشحين لمؤسستك في منصة واحدة",
+    ats_subtitle: "خاص بالشركات: تتبع وفرز المترشحين لمؤسستك في منصة واحدة",
     ats_col_applied: "طلبات جديدة",
     ats_col_reviewing: "قيد المراجعة",
     ats_col_interview: "مقابلة مبرمجة",
     ats_col_hired: "تم القبول وتوقيع العقد",
-    
+
+    // My Offers
+    my_offers_title: "عروض العمل المنشورة لشركتك",
+    my_offers_subtitle: "متابعة وإدارة الوظائف التي نشرتها مؤسستك وعدد المتقدمين لكل وظيفة",
+    btn_delete_offer: "حذف العرض",
+    btn_view_applicants: "عرض المتقدمين",
+
+    // Talents
+    talents_title: "قاعدة بيانات الكفاءات بإسبانيا",
+    talents_subtitle: "خاص بالشركات: تصفح وتواصل مباشرة مع العمال والمهنيين المتاحين",
+    btn_contact_talent: "تواصل عبر واتساب",
+
     // CV Builder
     cv_title: "منشئ السيرة الذاتية المتوافقة مع معايير إسبانيا",
     cv_subtitle: "صمم سيرة ذاتية احترافية بالصيغة المقبولة لدى الشركات الإسبانية",
     cv_export_btn: "طباعة / تحميل بصيغة PDF",
-    cv_preview_title: "معاينة السيرة الذاتية",
-    
+
     // Legal Guide
     guide_title: "الدليل القانوني لعقود العمل وقانون الأجانب بإسبانيا",
     guide_subtitle: "معلومات شاملة حول قانون الهجرة الجديد، شروط عقد العمل للتسوية (Arraigo)، والحد الأدنى للأجور"
   },
-  
+
   en: {
     brand_title: "IberTrabajo",
     brand_subtitle: "Spain Employment & Mediation Platform",
     nav_explore: "Find Jobs",
     nav_post_job: "Post a Job",
     nav_ats: "Employer ATS Board",
-    nav_cv: "CV Builder",
+    nav_my_offers: "My Posted Jobs",
+    nav_talents: "Talent Pool",
+    nav_cv: "My Resume",
     nav_guide: "Legal Guide & Permits",
     nav_my_apps: "My Applications",
-    role_candidate: "I am a Candidate / Job Seeker",
-    role_employer: "I am an Employer / Company",
-    role_agency: "Labor Advisor / Mediator",
+    nav_login: "Sign In",
+    nav_register: "Create Account",
+    nav_logout: "Sign Out",
+
+    role_candidate: "Candidate / Job Seeker",
+    role_employer: "Employer / Company",
+
     hero_tag: "Verified Jobs & Immigration Mediation in Spain",
     hero_title: "Connecting Workers and Employers in Spain",
-    hero_subtitle: "Verified job offers in hospitality, agriculture, construction, caregiving, and tech. Support for permit holders and Arraigo legal residency sponsorship.",
+    hero_subtitle: "Platform with dedicated accounts and permissions for job seekers and employers. Work permit management, Arraigo regularization sponsorship, and legal contracting.",
     stat_jobs: "Active Openings",
     stat_contracts: "Contracts Facilitated",
     stat_provinces: "Spanish Provinces",
     stat_verified: "Verified Employers",
+
     search_keyword_placeholder: "Job title, trade, or keywords (e.g. chef, builder, farm worker)...",
     search_province_all: "All Spanish Provinces",
     search_sector_all: "All Sectors",
     btn_search: "Find Jobs",
     quick_tags_label: "Trending:",
+
     filter_title: "Search Filters",
     filter_permit_title: "Legal / Work Permit Status",
     filter_permit_all: "Any Status",
@@ -249,36 +323,51 @@ const TRANSLATIONS = {
     filter_contract_fijo: "Fixed-Discontinuous",
     filter_clear: "Reset filters",
     results_found: "jobs found",
+
     badge_verified: "Verified",
     badge_arraigo: "Accepts Arraigo Pre-contract",
     badge_nie_req: "Work permit required",
     badge_housing: "Housing included",
     btn_apply: "Apply Now",
     btn_whatsapp: "HR WhatsApp",
-    btn_view_details: "Details",
     btn_save: "Save",
     btn_saved: "Saved",
     posted_on: "Posted",
     salary_unit: "€/month",
-    
-    // Application modal
-    modal_apply_title: "Submit Job Application",
-    form_fullname: "Full Name",
-    form_phone: "Phone / WhatsApp",
-    form_email: "Email Address",
-    form_province: "Province in Spain",
-    form_legal_status: "Legal / Residency Status in Spain",
+
+    // Auth Modal
+    modal_auth_title: "Access IberTrabajo",
+    tab_login: "Sign In",
+    tab_register: "Create New Account",
+    auth_email: "Email Address",
+    auth_password: "Password",
+    auth_role_title: "Select account type:",
+    role_candidate_desc: "Look for jobs, build my Spanish resume, and apply to jobs with or without work permits.",
+    role_employer_desc: "Post job openings, manage applicants on the ATS pipeline, and search the talent database.",
+    auth_candidatename: "Full Name",
+    auth_companyname: "Company or Employer Name",
+    auth_cif: "Company Tax ID (CIF / NIF)",
+    auth_contactperson: "HR or Recruitment Contact Person",
+    auth_phone: "Phone / WhatsApp",
+    auth_province: "Province in Spain",
+    auth_profession: "Primary Occupation / Trade",
+    auth_legal_status: "Legal / Residency Status in Spain",
     status_nie_valid: "Valid Spanish Work & Residency Permit (NIE/TIE)",
     status_nie_renewal: "Renewal in progress (En trámite)",
     status_arraigo_needed: "Seeking pre-contract for Arraigo (Legalization)",
     status_eu_citizen: "Spanish Citizen or EU Passport Holder",
     status_origin_visa: "Abroad (Seeking Work Visa from origin country)",
-    form_experience: "Brief summary of experience",
-    form_experience_placeholder: "Describe past work, years of experience, languages...",
-    form_cv_file: "Attach CV file or use platform profile",
+    btn_do_login: "Sign In to My Account",
+    btn_do_register: "Register Account",
+    demo_box_title: "Quick 1-Click Demo Login (No password needed):",
+    demo_as_candidate: "Login as Candidate (Ahmed)",
+    demo_as_employer: "Login as Employer (Taberna Ibérica)",
+
+    // Application Modal
+    modal_apply_title: "Submit Job Application",
     btn_submit_application: "Send Application to Employer",
-    
-    // Post job modal
+
+    // Post Job Modal
     modal_post_title: "Post a New Job Opening",
     form_job_title: "Job Title",
     form_company_name: "Company or Employer Name",
@@ -294,37 +383,125 @@ const TRANSLATIONS = {
     form_job_desc: "Job description, responsibilities and requirements",
     form_whatsapp_contact: "HR WhatsApp phone number (e.g. 34612345678)",
     btn_publish_job: "Publish Job Offer",
-    
-    // ATS Pipeline
+
+    // ATS
     ats_title: "Applicant Tracking System (ATS)",
-    ats_subtitle: "Track, screen and hire candidates seamlessly in real time",
+    ats_subtitle: "Exclusive for Employers: organize and advance applicants in real time",
     ats_col_applied: "New Applicants",
     ats_col_reviewing: "Under Review",
     ats_col_interview: "Interview Scheduled",
     ats_col_hired: "Hired & Contracted",
-    
+
+    // My Offers
+    my_offers_title: "My Posted Job Vacancies",
+    my_offers_subtitle: "Manage your company job openings and view applicant counts",
+    btn_delete_offer: "Delete",
+    btn_view_applicants: "View Candidates",
+
+    // Talents
+    talents_title: "Candidate Talent Pool in Spain",
+    talents_subtitle: "Exclusive for Employers: contact available candidates directly on WhatsApp",
+    btn_contact_talent: "Contact via WhatsApp",
+
     // CV Builder
     cv_title: "Spanish Standard CV Builder",
     cv_subtitle: "Generate a professional Europass-styled Spanish resume in seconds",
     cv_export_btn: "Print / Export to PDF",
-    cv_preview_title: "Resume Live Preview",
-    
+
     // Legal Guide
     guide_title: "Spanish Labor & Immigration Legal Guide",
     guide_subtitle: "Clear insights on Spanish immigration regulations, Arraigo work contracts, and employee rights"
   }
 };
 
-// --- 2. BASE DE DATOS INICIAL DE OFERTAS REALISTAS EN ESPAÑA ---
+// --- 2. BASE DE DATOS INICIAL DE USUARIOS (CANDIDATOS Y EMPLEADORES) ---
+const INITIAL_USERS = [
+  {
+    id: "usr-cand-1",
+    role: "candidate",
+    name: "Ahmed Mansouri",
+    email: "ahmed@candidato.es",
+    password: "123",
+    phone: "+34 612 345 678",
+    province: "Madrid",
+    profession: "Cocinero & Ayudante de Hostelería",
+    legalStatus: "status_arraigo_needed",
+    skills: "Cocina tradicional española, manipulación de alimentos, corte, parrilla",
+    experience: "3 años en Restaurante El Olivo (Madrid) como ayudante de cocina.\n2 años de experiencia previa en sector hostelero.",
+    languages: "Árabe (Nativo), Español (Fluido / B2), Francés (Básico)",
+    education: "Certificado de Profesionalidad en Cocina - Madrid"
+  },
+  {
+    id: "usr-cand-2",
+    role: "candidate",
+    name: "Karim Hadad",
+    email: "karim@candidato.es",
+    password: "123",
+    phone: "+34 655 432 109",
+    province: "Almería",
+    profession: "Peón Agrícola Especializado & Carretillero",
+    legalStatus: "status_nie_valid",
+    skills: "Recolección invernadero, carnet de carretillero, riego por goteo, mantenimiento",
+    experience: "4 años de trabajo continuo en explotaciones agrícolas en Campo de Dalías (Almería).",
+    languages: "Árabe (Nativo), Español (Avanzado)",
+    education: "Carnet de Carretillero homologado (UNE 58451)"
+  },
+  {
+    id: "usr-cand-3",
+    role: "candidate",
+    name: "Fatima Ezzahra",
+    email: "fatima@candidato.es",
+    password: "123",
+    phone: "+34 677 889 900",
+    province: "Barcelona",
+    profession: "Cuidadora Sociosanitaria & Servicios del Hogar",
+    legalStatus: "status_nie_valid",
+    skills: "Atención a personas dependientes, geriatría, cocina dietética, primeros auxilios",
+    experience: "3 años atendiendo a personas mayores con movilidad reducida en Barcelona y Hospitalet.",
+    languages: "Árabe (Nativo), Español (Fluido), Catalán (Básico)",
+    education: "Certificado de Atención Sociosanitaria a Personas Dependientes en Instituciones Sociales"
+  },
+  {
+    id: "usr-emp-1",
+    role: "employer",
+    name: "Restaurante Taberna Ibérica S.L.",
+    email: "contacto@tabernaiberica.es",
+    password: "123",
+    cif: "B-84930211",
+    contactPerson: "María Gómez (Directora RRHH)",
+    phone: "+34 611 22 33 44",
+    province: "Madrid",
+    sector: "Hostelería",
+    verified: true,
+    bio: "Grupo hostelero tradicional en el centro de Madrid con más de 15 años de trayectoria."
+  },
+  {
+    id: "usr-emp-2",
+    role: "employer",
+    name: "AgroSur Levante S.L.",
+    email: "info@agrosurlevante.es",
+    password: "123",
+    cif: "B-04128934",
+    contactPerson: "Javier Navarro (Gerente)",
+    phone: "+34 655 44 33 22",
+    province: "Almería",
+    sector: "Agricultura",
+    verified: true,
+    bio: "Empresa líder en producción y exportación hortofrutícola en Almería."
+  }
+];
+
+// Base de datos de ofertas iniciales
 const INITIAL_JOBS = [
   {
     id: "job-1",
+    employerId: "usr-emp-1",
     title: {
       es: "Ayudante de Cocina y Planchista",
       ar: "مساعد طباخ ومسؤول الشواء",
       en: "Kitchen Assistant & Grill Cook"
     },
-    company: "Restaurante Taberna Ibérica",
+    company: "Restaurante Taberna Ibérica S.L.",
     cif: "B-84930211",
     province: "Madrid",
     city: "Madrid Centro (Lavapiés)",
@@ -347,6 +524,7 @@ const INITIAL_JOBS = [
   },
   {
     id: "job-2",
+    employerId: "usr-emp-2",
     title: {
       es: "Peón Agrícola / Recolección en Invernaderos",
       ar: "عامل فلاحي لجني المحاصيل في البيوت البلاستيكية",
@@ -375,6 +553,7 @@ const INITIAL_JOBS = [
   },
   {
     id: "job-3",
+    employerId: "usr-emp-ext",
     title: {
       es: "Oficial de 1ª de Albañilería y Reformas",
       ar: "معلم بناء وتجديدات (Oficial de 1ª)",
@@ -395,14 +574,15 @@ const INITIAL_JOBS = [
     whatsapp: "34699887766",
     postedDaysAgo: 3,
     description: {
-      es: "Empresa constructora precisa oficial de primera para reformas de viviendas y locales en Valencia. Imprescindible curso de 20 horas de prevención de riesgos laborales de la construcción (PRL) y permiso de trabajo en regla. Pagas extraordinarias prorrateadas.",
-      ar: "شركة بناء وتشطيبات تطلب معلم بناء من الدرجة الأولى لتجديد المنازل والمحلات في فالنسيا. يشترط التوفر على دورة السلامة المهنية (PRL 20h) وبطاقة عمل سارية المفعول (NIE). الراتب مجزي مع علاوات.",
+      es: "Empresa constructora precisa oficial de primera para reformas de viviendas y locales en Valencia. Imprescindible curso de 20 horas de prevención de riesgos laborales de la construcción (PRL) y permiso de trabajo en regla.",
+      ar: "شركة بناء وتشطيبات تطلب معلم بناء من الدرجة الأولى لتجديد المنازل والمحلات في فالنسيا. يشترط التوفر على دورة السلامة المهنية (PRL 20h) وبطاقة عمل سارية المفعول (NIE).",
       en: "Construction company requires an experienced bricklayer for apartment and shop renovations in Valencia. Must have the 20-hour construction occupational risk prevention certificate (PRL) and valid work authorization in Spain."
     },
     skills: ["Albañilería", "Alicatado", "Curso PRL 20h", "Yeso y Pladur"]
   },
   {
     id: "job-4",
+    employerId: "usr-emp-ext2",
     title: {
       es: "Cuidadora Interna para Persona Mayor",
       ar: "مرافقة ومقدمة رعاية مسنين (نظام الإقامة الكاملة Interna)",
@@ -424,154 +604,13 @@ const INITIAL_JOBS = [
     postedDaysAgo: 1,
     description: {
       es: "Atención a señora de 82 años con movilidad reducida. Labores de compañía, preparación de comidas y control de medicación. Habitación individual con baño propio, manutención completa y 36 horas libres de fin de semana según ley. Ofrecemos alta en Seguridad Social con contrato para arraigo.",
-      ar: "مطلوب سيدة لرعاية سيدة مسنة (82 سنة) محدودة الحركة بنظام المبيت (Interna). إعداد الوجبات، المرافقة وتنظيم الأدوية. غرفة خاصة مع حمام، التغذية متوفرة، وراحة أسبوعية 36 ساعة وفق القانون الإسباني. إمكانية تقديم عقد عمل لتسوية الإقامة.",
-      en: "Live-in caregiver for an 82-year-old lady with reduced mobility. Companionship, cooking, and medication management. Private room with bathroom, full board, and 36 consecutive hours weekend off per Spanish law. We offer official registration and contract for arraigo."
+      ar: "مطلوب سيدة لرعاية سيدة مسنة (82 سنة) بنظام المبيت (Interna). إعداد الوجبات، المرافقة وتنظيم الأدوية. غرفة خاصة مع حمام، التغذية متوفرة، وراحة أسبوعية 36 ساعة وفق القانون الإسباني. إمكانية تقديم عقد عمل لتسوية الإقامة.",
+      en: "Live-in caregiver for an 82-year-old lady with reduced mobility. Companionship, cooking, and medication management. Private room with bathroom, full board, and 36 consecutive hours weekend off per Spanish law."
     },
     skills: ["Cuidados", "Primeros Auxilios", "Cocina Española", "Paciencia"]
-  },
-  {
-    id: "job-5",
-    title: {
-      es: "Camarero/a de Sala y Barra",
-      ar: "نادل / نادلة صالة وبار",
-      en: "Restaurant Waiter / Waitress"
-    },
-    company: "Grupo Gastronómico Bulevar",
-    cif: "B-93452109",
-    province: "Málaga",
-    city: "Málaga Capital / Torremolinos",
-    sector: "Hostelería",
-    salary: 1420,
-    salaryType: "neto",
-    contractType: "indefinido",
-    arraigoOk: false,
-    nieRequired: true,
-    hasHousing: false,
-    verified: true,
-    whatsapp: "34677112233",
-    postedDaysAgo: 4,
-    description: {
-      es: "Restaurante de referencia en Costa del Sol busca personal de sala con buen trato al cliente y agilidad con bandeja. Valorable conocimiento de inglés o francés además de español. Turnos rotativos continuos y propinas semanales.",
-      ar: "مطعم مميز في كوستا ديل سول يبحث عن نادل لبق وسريع في الخدمة. يفضل إتقان الإنجليزية أو الفرنسية إلى جانب الإسبانية. نظام مناوبات مستمر وإكراميات أسبوعية ممتازة.",
-      en: "Renowned restaurant on Costa del Sol is looking for floor service staff with excellent customer care skills. English or French in addition to Spanish is a plus. Continuous rotating shifts and weekly tips."
-    },
-    skills: ["Hostelería", "Atención al cliente", "Bandeja", "Inglés básico"]
-  },
-  {
-    id: "job-6",
-    title: {
-      es: "Repartidor con Furgoneta de Empresa",
-      ar: "سائق وموزع طرود بشاحنة الشركة",
-      en: "Parcel Delivery Driver (Company Van Provided)"
-    },
-    company: "IberLogistics Express",
-    cif: "B-50129384",
-    province: "Zaragoza",
-    city: "Zaragoza (Plaza Logística)",
-    sector: "Logística y Almacén",
-    salary: 1560,
-    salaryType: "neto",
-    contractType: "indefinido",
-    arraigoOk: false,
-    nieRequired: true,
-    hasHousing: false,
-    verified: true,
-    whatsapp: "34644998877",
-    postedDaysAgo: 2,
-    description: {
-      es: "Reparto de paquetería de comercio electrónico en rutas asignadas de Zaragoza y alrededores. Empresa facilita furgoneta, combustible y móvil de empresa. Requisitos: Carnet B con al menos 2 años de antigüedad y permiso de trabajo en regla.",
-      ar: "توزيع الطرود والشحنات عبر مسارات محددة في سرقسطة والمناطق المحيطة بها. الشركة توفر شاحنة النقل، الوقود، وهاتف العمل. الشروط: رخصة سياقة B صالحة لمدة سنتين على الأقل وتصريح إقامة وعمل ساري المفعول.",
-      en: "E-commerce parcel delivery along assigned routes in Zaragoza. Company provides van, fuel, and smartphone. Requirements: Spanish/EU driving license B held for at least 2 years and valid work permit."
-    },
-    skills: ["Carnet B", "Reparto", "GPS", "Logística"]
-  },
-  {
-    id: "job-7",
-    title: {
-      es: "Instalador de Paneles Solares y Electricista",
-      ar: "فني تركيب الألواح الشمسية وكهربائي",
-      en: "Solar Panel Installer & Electrician"
-    },
-    company: "Sol Levante Energía Renovable",
-    cif: "B-30876541",
-    province: "Murcia",
-    city: "Murcia / Cartagena",
-    sector: "Electricidad y Energía",
-    salary: 1850,
-    salaryType: "neto",
-    contractType: "indefinido",
-    arraigoOk: true,
-    nieRequired: false,
-    hasHousing: false,
-    verified: true,
-    whatsapp: "34688223311",
-    postedDaysAgo: 5,
-    description: {
-      es: "Instalación de sistemas fotovoltaicos en cubiertas industriales y residenciales en la Región de Murcia. Formación continua a cargo de la empresa. Para técnicos cualificados sin documentación en vigor, facilitamos contrato para tramitar Arraigo Laboral o Sociolaboral.",
-      ar: "تركيب أنظمة الطاقة الشمسية على أسطح المباني والمصانع في منطقة مرسية. تدريب وتأهيل مستمر من الشركة. بالنسبة للفنيين ذوي الخبرة الراغبين في تسوية أوضاعهم، نوفر عقد عمل رسمي لمسطرة الأرايغو.",
-      en: "Photovoltaic system installations on industrial and residential roofs in Murcia. Continuous training provided. For skilled technicians without current residency papers, we provide pre-contracts for Arraigo regularization."
-    },
-    skills: ["Electricidad", "Trabajo en Altura", "Placas Solares", "PRL"]
-  },
-  {
-    id: "job-8",
-    title: {
-      es: "Personal de Limpieza y Mantenimiento Hotelero",
-      ar: "عامل / عاملة نظافة وصيانة فندقية",
-      en: "Hotel Cleaning & Maintenance Staff"
-    },
-    company: "Resort & Spa Playa Paraíso",
-    cif: "B-07119283",
-    province: "Illes Balears",
-    city: "Palma de Mallorca",
-    sector: "Limpieza",
-    salary: 1520,
-    salaryType: "neto",
-    contractType: "fijo",
-    arraigoOk: false,
-    nieRequired: true,
-    hasHousing: true,
-    verified: true,
-    whatsapp: "34633778899",
-    postedDaysAgo: 1,
-    description: {
-      es: "Limpieza de habitaciones y zonas comunes en complejo hotelero 4 estrellas. Incluye alojamiento para el personal en residencia de trabajadores durante la temporada. Contrato fijo-discontinuo con alta inmediata en Seguridad Social.",
-      ar: "تنظيف الغرف والمرافق العامة في منتجع فندقي 4 نجوم. يشمل العرض سكناً مخصصاً للعمال طيلة فترة الموسم السياحي. عقد دوري (Fijo-discontinuo) مع تسجيل فوري في الضمان الاجتماعي الإسباني.",
-      en: "Room and common area housekeeping in a 4-star resort in Mallorca. Includes employee accommodation in staff residence during the season. Official fixed-discontinuous contract with instant Social Security registration."
-    },
-    skills: ["Limpieza", "Hoteles", "Organización", "Atención al detalle"]
-  },
-  {
-    id: "job-9",
-    title: {
-      es: "Atención al Cliente y Mediación Bilingüe (Árabe / Español)",
-      ar: "خدمة العملاء والوساطة ثنائية اللغة (عربي / إسباني)",
-      en: "Bilingual Customer Support & Mediation (Arabic / Spanish)"
-    },
-    company: "Gestoría e Intermediación Al-Andalus",
-    cif: "B-03998877",
-    province: "Alicante",
-    city: "Alicante / Elche",
-    sector: "Administrativo y Asesoría",
-    salary: 1650,
-    salaryType: "neto",
-    contractType: "indefinido",
-    arraigoOk: false,
-    nieRequired: true,
-    hasHousing: false,
-    verified: true,
-    whatsapp: "34699001122",
-    postedDaysAgo: 3,
-    description: {
-      es: "Gestoría especializada en trámites de extranjería y contratos laborales precisa profesional con dominio fluido de árabe y español para atención a usuarios, traducción de documentos y apoyo en tramitaciones ante oficinas de extranjería.",
-      ar: "مكتب استشارات وإجراءات قانونية متخصص في شؤون الأجانب وعقود العمل يبحث عن موظف متقن للغتين العربية والإسبانية لمساعدة المتعاملين، ترجمة الوثائق، وتسهيل الإجراءات أمام مكاتب الهجرة.",
-      en: "Consultancy firm specialized in immigration and labor contracts seeks a professional fluent in Arabic and Spanish for client communication, document translation, and assistance with foreigners office filings."
-    },
-    skills: ["Árabe", "Español", "Extranjería", "Ofimática", "Atención"]
   }
 ];
 
-// Provincias españolas principales
 const SPANISH_PROVINCES = [
   "A Coruña", "Álava", "Albacete", "Alicante", "Almería", "Asturias", "Ávila", "Badajoz", 
   "Barcelona", "Burgos", "Cáceres", "Cádiz", "Cantabria", "Castellón", "Ciudad Real", 
@@ -588,82 +627,85 @@ const SECTORS = [
   "Administrativo y Asesoría", "Comercio", "Tecnología e Informática"
 ];
 
-// --- 3. GESTIÓN DEL ESTADO DE LA APLICACIÓN ---
+// --- 3. ESTADO GLOBAL DE LA APLICACIÓN (APP STATE) ---
 class AppState {
   constructor() {
     this.lang = localStorage.getItem("iber_lang") || "es";
-    this.role = localStorage.getItem("iber_role") || "candidate";
     this.activeTab = "jobs";
     
-    // Cargar ofertas de localStorage o iniciales
+    // Usuarios y Autenticación
+    const savedUsers = localStorage.getItem("iber_users");
+    this.users = savedUsers ? JSON.parse(savedUsers) : INITIAL_USERS;
+
+    const savedAuth = localStorage.getItem("iber_auth_user");
+    this.currentUser = savedAuth ? JSON.parse(savedAuth) : null;
+
+    // Ofertas
     const savedJobs = localStorage.getItem("iber_jobs");
     this.jobs = savedJobs ? JSON.parse(savedJobs) : INITIAL_JOBS;
-    
-    // Guardar ofertas favoritas
+
+    // Guardados
     const savedBookmarks = localStorage.getItem("iber_saved_jobs");
     this.savedJobIds = savedBookmarks ? JSON.parse(savedBookmarks) : [];
-    
-    // Solicitudes realizadas
+
+    // Solicitudes
     const savedApps = localStorage.getItem("iber_applications");
     this.applications = savedApps ? JSON.parse(savedApps) : [
       {
         id: "app-101",
         jobId: "job-1",
+        employerId: "usr-emp-1",
         jobTitle: "Ayudante de Cocina y Planchista",
-        company: "Restaurante Taberna Ibérica",
-        candidateName: "Youssef El Amrani",
-        candidatePhone: "+34 611 98 76 54",
+        company: "Restaurante Taberna Ibérica S.L.",
+        candidateId: "usr-cand-1",
+        candidateName: "Ahmed Mansouri",
+        candidatePhone: "+34 612 345 678",
         candidateLegal: "status_arraigo_needed",
         appliedDate: "2026-11-20",
-        stage: "reviewing" // applied, reviewing, interview, hired, rejected
+        stage: "reviewing"
       },
       {
         id: "app-102",
         jobId: "job-2",
+        employerId: "usr-emp-2",
         jobTitle: "Peón Agrícola / Recolección en Invernaderos",
         company: "AgroSur Levante S.L.",
-        candidateName: "Mohamed Benali",
-        candidatePhone: "+34 622 11 22 33",
+        candidateId: "usr-cand-2",
+        candidateName: "Karim Hadad",
+        candidatePhone: "+34 655 432 109",
         candidateLegal: "status_nie_valid",
         appliedDate: "2026-11-19",
         stage: "applied"
-      },
-      {
-        id: "app-103",
-        jobId: "job-4",
-        jobTitle: "Cuidadora Interna para Persona Mayor",
-        company: "Familia García / ServiHogar",
-        candidateName: "Fatima Zahra",
-        candidatePhone: "+34 677 88 99 00",
-        candidateLegal: "status_arraigo_needed",
-        appliedDate: "2026-11-18",
-        stage: "interview"
       }
     ];
 
-    // Filtros activos
+    // Filtros
     this.filters = {
       keyword: "",
       province: "",
       sector: "",
-      permit: "all", // all, arraigo, nie
+      permit: "all",
       contract: "all",
       housing: false
     };
 
-    // Perfil CV en memoria
+    // CV Data
     this.cvData = JSON.parse(localStorage.getItem("iber_cv")) || {
       fullName: "Ahmed Mansouri",
       profession: "Cocinero & Ayudante de Hostelería",
       phone: "+34 612 345 678",
       email: "ahmed.mansouri@ejemplo.es",
       province: "Madrid",
-      legalStatus: "Permiso de residencia y trabajo en vigor (NIE)",
-      languages: "Árabe (Nativo), Español (Fluido / B2), Inglés (Básico)",
-      skills: "Cocina mediterránea, manipulación de alimentos, corte, gestión de pedidos",
+      legalStatus: "Sin permiso vigente (Busco precontrato para Arraigo)",
+      languages: "Árabe (Nativo), Español (Fluido / B2), Francés (Básico)",
+      skills: "Cocina tradicional española, manipulación de alimentos, corte, parrilla",
       experience: "3 años en Restaurante El Olivo (Madrid) como ayudante de cocina.\n2 años de experiencia previa en sector hostelero.",
-      education: "Certificado de Profesionalidad en Operaciones Básicas de Cocina - Madrid"
+      education: "Certificado de Profesionalidad en Cocina - Madrid"
     };
+  }
+
+  saveUsers() {
+    localStorage.setItem("iber_users", JSON.stringify(this.users));
   }
 
   saveJobs() {
@@ -682,22 +724,97 @@ class AppState {
     localStorage.setItem("iber_cv", JSON.stringify(this.cvData));
   }
 
+  // --- MÉTODOS DE AUTENTICACIÓN ---
+  login(email, password) {
+    const user = this.users.find(u => u.email.toLowerCase() === email.toLowerCase() && u.password === password);
+    if (!user) {
+      showToast(this.lang === 'ar' ? 'البريد الإلكتروني أو كلمة المرور غير صحيحة' : 'Correo electrónico o contraseña incorrectos', "error");
+      return false;
+    }
+    this.currentUser = user;
+    localStorage.setItem("iber_auth_user", JSON.stringify(user));
+    
+    // Redirigir a vista según rol
+    if (user.role === "employer") {
+      this.activeTab = "ats";
+    } else {
+      this.activeTab = "jobs";
+      if (user.profession) this.cvData.profession = user.profession;
+      if (user.name) this.cvData.fullName = user.name;
+      if (user.phone) this.cvData.phone = user.phone;
+      if (user.province) this.cvData.province = user.province;
+      this.saveCV();
+    }
+
+    closeAuthModal();
+    showToast(
+      this.lang === 'ar' ? `مرحباً بك مجدداً، ${user.name}!` : `¡Bienvenido/a de nuevo, ${user.name}!`,
+      "success"
+    );
+    this.render();
+    return true;
+  }
+
+  register(userData) {
+    const exists = this.users.some(u => u.email.toLowerCase() === userData.email.toLowerCase());
+    if (exists) {
+      showToast(this.lang === 'ar' ? 'هذا البريد الإلكتروني مسجل بالفعل' : 'Este correo electrónico ya está registrado', "error");
+      return false;
+    }
+
+    const newUser = {
+      id: "usr-" + Date.now(),
+      ...userData
+    };
+
+    this.users.push(newUser);
+    this.saveUsers();
+
+    this.currentUser = newUser;
+    localStorage.setItem("iber_auth_user", JSON.stringify(newUser));
+
+    if (newUser.role === "employer") {
+      this.activeTab = "my-offers";
+    } else {
+      this.activeTab = "jobs";
+      this.cvData.fullName = newUser.name;
+      this.cvData.email = newUser.email;
+      this.cvData.phone = newUser.phone;
+      this.cvData.province = newUser.province;
+      if (newUser.profession) this.cvData.profession = newUser.profession;
+      this.saveCV();
+    }
+
+    closeAuthModal();
+    showToast(
+      this.lang === 'ar' ? `تم إنشاء حسابك بنجاح كـ ${newUser.role === 'employer' ? 'مشغل' : 'باحث عن عمل'}!` : `¡Cuenta creada con éxito como ${newUser.role === 'employer' ? 'Empresa' : 'Candidato'}!`,
+      "success"
+    );
+    this.render();
+    return true;
+  }
+
+  logout() {
+    this.currentUser = null;
+    localStorage.removeItem("iber_auth_user");
+    this.activeTab = "jobs";
+    showToast(this.lang === 'ar' ? 'تم تسجيل الخروج بنجاح' : 'Sesión cerrada correctamente', "info");
+    this.render();
+  }
+
+  quickDemoLogin(role) {
+    if (role === "candidate") {
+      this.login("ahmed@candidato.es", "123");
+    } else {
+      this.login("contacto@tabernaiberica.es", "123");
+    }
+  }
+
   setLanguage(newLang) {
     this.lang = newLang;
     localStorage.setItem("iber_lang", newLang);
     document.documentElement.lang = newLang;
     document.documentElement.dir = (newLang === "ar") ? "rtl" : "ltr";
-    this.render();
-  }
-
-  setRole(newRole) {
-    this.role = newRole;
-    localStorage.setItem("iber_role", newRole);
-    if (newRole === "employer") {
-      this.activeTab = "ats";
-    } else {
-      this.activeTab = "jobs";
-    }
     this.render();
   }
 
@@ -729,47 +846,131 @@ class AppState {
 
 const state = new AppState();
 
-// --- 4. MOTOR DE RENDERIZADO Y VISTAS ---
+// --- 4. MOTOR DE RENDERIZADO Y CONTROL DE NAVEGACIÓN ---
 
 function initApp() {
   document.documentElement.lang = state.lang;
   document.documentElement.dir = (state.lang === "ar") ? "rtl" : "ltr";
   
-  // Rellenar selectores de provincias en el HTML
   populateProvinces();
   populateSectors();
-  
-  // Event listeners globales
   setupEventListeners();
-  
-  // Renderizar la vista activa
   state.render();
 }
 
 AppState.prototype.render = function() {
   applyTranslations();
-  updateNavState();
-  
-  const jobsSection = document.getElementById("jobs-view");
-  const atsSection = document.getElementById("ats-view");
-  const cvSection = document.getElementById("cv-view");
-  const guideSection = document.getElementById("guide-view");
-  const myAppsSection = document.getElementById("my-apps-view");
-  
-  if (jobsSection) jobsSection.style.display = (this.activeTab === "jobs") ? "block" : "none";
-  if (atsSection) atsSection.style.display = (this.activeTab === "ats") ? "block" : "none";
-  if (cvSection) cvSection.style.display = (this.activeTab === "cv") ? "block" : "none";
-  if (guideSection) guideSection.style.display = (this.activeTab === "guide") ? "block" : "none";
-  if (myAppsSection) myAppsSection.style.display = (this.activeTab === "my-apps") ? "block" : "none";
-  
+  this.renderNavbar();
+
+  const views = {
+    jobs: document.getElementById("jobs-view"),
+    ats: document.getElementById("ats-view"),
+    "my-offers": document.getElementById("my-offers-view"),
+    talents: document.getElementById("talents-view"),
+    cv: document.getElementById("cv-view"),
+    "my-apps": document.getElementById("my-apps-view"),
+    guide: document.getElementById("guide-view")
+  };
+
+  Object.keys(views).forEach(k => {
+    if (views[k]) views[k].style.display = (this.activeTab === k) ? "block" : "none";
+  });
+
   if (this.activeTab === "jobs") {
     this.renderJobsList();
   } else if (this.activeTab === "ats") {
     this.renderAtsBoard();
+  } else if (this.activeTab === "my-offers") {
+    this.renderMyOffers();
+  } else if (this.activeTab === "talents") {
+    this.renderTalentsPool();
   } else if (this.activeTab === "cv") {
     this.renderCVPreview();
   } else if (this.activeTab === "my-apps") {
     this.renderMyApplications();
+  }
+};
+
+AppState.prototype.renderNavbar = function() {
+  const navContainer = document.getElementById("nav-links-list");
+  const authContainer = document.getElementById("nav-auth-container");
+  if (!navContainer || !authContainer) return;
+
+  let navItemsHtml = `
+    <li><a href="#" class="nav-link ${this.activeTab === 'jobs' ? 'active' : ''}" data-tab="jobs">${this.t("nav_explore")}</a></li>
+  `;
+
+  if (this.currentUser) {
+    if (this.currentUser.role === "candidate") {
+      const myCount = this.applications.filter(a => a.candidateId === this.currentUser.id || a.candidateName === this.currentUser.name).length;
+      navItemsHtml += `
+        <li><a href="#" class="nav-link ${this.activeTab === 'my-apps' ? 'active' : ''}" data-tab="my-apps">${this.t("nav_my_apps")} (${myCount})</a></li>
+        <li><a href="#" class="nav-link ${this.activeTab === 'cv' ? 'active' : ''}" data-tab="cv">${this.t("nav_cv")}</a></li>
+      `;
+    } else if (this.currentUser.role === "employer") {
+      navItemsHtml += `
+        <li><a href="#" class="nav-link ${this.activeTab === 'ats' ? 'active' : ''}" data-tab="ats">${this.t("nav_ats")}</a></li>
+        <li><a href="#" class="nav-link ${this.activeTab === 'my-offers' ? 'active' : ''}" data-tab="my-offers">${this.t("nav_my_offers")}</a></li>
+        <li><a href="#" class="nav-link ${this.activeTab === 'talents' ? 'active' : ''}" data-tab="talents">${this.t("nav_talents")}</a></li>
+      `;
+    }
+  }
+
+  navItemsHtml += `
+    <li><a href="#" class="nav-link ${this.activeTab === 'guide' ? 'active' : ''}" data-tab="guide">${this.t("nav_guide")}</a></li>
+  `;
+
+  navContainer.innerHTML = navItemsHtml;
+
+  navContainer.querySelectorAll(".nav-link").forEach(link => {
+    link.addEventListener("click", (e) => {
+      e.preventDefault();
+      const tab = link.getAttribute("data-tab");
+      if (tab) switchTab(tab);
+    });
+  });
+
+  if (this.currentUser) {
+    const isEmployer = this.currentUser.role === "employer";
+    authContainer.innerHTML = `
+      <div class="user-nav-profile" title="${this.currentUser.name}">
+        <div class="user-avatar ${isEmployer ? 'employer' : ''}">
+          ${isEmployer ? '🏢' : '👤'}
+        </div>
+        <div class="user-meta-header">
+          <span class="user-name-text">${this.currentUser.name}</span>
+          <span class="role-badge-pill ${this.currentUser.role}">
+            ${isEmployer ? '🏢 ' + this.t("role_employer") : '🧑‍🔧 ' + this.t("role_candidate")}
+          </span>
+        </div>
+      </div>
+      <button class="btn btn-outline btn-sm" onclick="state.logout()" title="${this.t('nav_logout')}">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+          <polyline points="16 17 21 12 16 7"></polyline>
+          <line x1="21" y1="12" x2="9" y2="12"></line>
+        </svg>
+        <span>${this.t("nav_logout")}</span>
+      </button>
+    `;
+  } else {
+    authContainer.innerHTML = `
+      <button class="btn btn-outline btn-sm" onclick="openAuthModal('login')">
+        ${this.t("nav_login")}
+      </button>
+      <button class="btn btn-primary btn-sm" onclick="openAuthModal('register')">
+        ${this.t("nav_register")}
+      </button>
+    `;
+  }
+
+  const postBtn = document.getElementById("header-post-job-btn");
+  if (postBtn) {
+    if (this.currentUser && this.currentUser.role === "candidate") {
+      postBtn.style.display = "none";
+    } else {
+      postBtn.style.display = "inline-flex";
+    }
   }
 };
 
@@ -786,24 +987,16 @@ function applyTranslations() {
 
   const langSelect = document.getElementById("lang-switcher");
   if (langSelect) langSelect.value = state.lang;
-
-  const roleSelect = document.getElementById("role-switcher");
-  if (roleSelect) roleSelect.value = state.role;
-}
-
-function updateNavState() {
-  document.querySelectorAll(".nav-link").forEach(link => {
-    const tab = link.getAttribute("data-tab");
-    if (tab === state.activeTab) {
-      link.classList.add("active");
-    } else {
-      link.classList.remove("active");
-    }
-  });
 }
 
 function populateProvinces() {
-  const selects = [document.getElementById("search-province"), document.getElementById("post-job-province"), document.getElementById("apply-province")];
+  const selects = [
+    document.getElementById("search-province"),
+    document.getElementById("post-job-province"),
+    document.getElementById("apply-province"),
+    document.getElementById("auth-province-candidate"),
+    document.getElementById("auth-province-employer")
+  ];
   selects.forEach(sel => {
     if (!sel) return;
     const firstOption = sel.firstElementChild;
@@ -819,7 +1012,7 @@ function populateProvinces() {
 }
 
 function populateSectors() {
-  const selects = [document.getElementById("search-sector"), document.getElementById("post-job-sector")];
+  const selects = [document.getElementById("search-sector"), document.getElementById("post-job-sector"), document.getElementById("auth-sector-employer")];
   selects.forEach(sel => {
     if (!sel) return;
     const firstOption = sel.firstElementChild;
@@ -839,10 +1032,8 @@ AppState.prototype.renderJobsList = function() {
   const container = document.getElementById("jobs-container");
   const countElem = document.getElementById("results-count-number");
   if (!container) return;
-  
-  // Filtrar ofertas
+
   const filtered = this.jobs.filter(job => {
-    // Filtro por palabra clave
     if (this.filters.keyword) {
       const kw = this.filters.keyword.toLowerCase();
       const titleEs = (job.title.es || "").toLowerCase();
@@ -854,50 +1045,22 @@ AppState.prototype.renderJobsList = function() {
         return false;
       }
     }
-    
-    // Filtro provincia
-    if (this.filters.province && job.province !== this.filters.province) {
-      return false;
-    }
-    
-    // Filtro sector
-    if (this.filters.sector && job.sector !== this.filters.sector) {
-      return false;
-    }
-    
-    // Filtro legal / extranjería
-    if (this.filters.permit === "arraigo" && !job.arraigoOk) {
-      return false;
-    }
-    if (this.filters.permit === "nie" && !job.nieRequired) {
-      return false;
-    }
-    
-    // Filtro alojamiento
-    if (this.filters.housing && !job.hasHousing) {
-      return false;
-    }
-    
-    // Filtro tipo contrato
-    if (this.filters.contract !== "all" && job.contractType !== this.filters.contract) {
-      return false;
-    }
-    
+    if (this.filters.province && job.province !== this.filters.province) return false;
+    if (this.filters.sector && job.sector !== this.filters.sector) return false;
+    if (this.filters.permit === "arraigo" && !job.arraigoOk) return false;
+    if (this.filters.permit === "nie" && !job.nieRequired) return false;
+    if (this.filters.housing && !job.hasHousing) return false;
+    if (this.filters.contract !== "all" && job.contractType !== this.filters.contract) return false;
     return true;
   });
 
-  if (countElem) {
-    countElem.textContent = filtered.length;
-  }
-  
+  if (countElem) countElem.textContent = filtered.length;
+
   if (filtered.length === 0) {
     container.innerHTML = `
       <div style="text-align: center; padding: 3rem 1rem; background: #fff; border-radius: var(--radius-lg); border: 1px dashed var(--border);">
         <p style="font-size: 1.25rem; font-weight: 700; color: var(--text-muted); margin-bottom: 0.5rem;">
           ${state.lang === 'ar' ? 'لم يتم العثور على عروض مطابقة' : 'No se encontraron ofertas con estos criterios'}
-        </p>
-        <p style="color: var(--text-light); margin-bottom: 1.5rem;">
-          ${state.lang === 'ar' ? 'جرب تغيير معايير البحث أو مسح الفلاتر' : 'Prueba a ajustar o borrar los filtros seleccionados'}
         </p>
         <button class="btn btn-primary btn-sm" onclick="clearAllFilters()">
           ${state.t("filter_clear")}
@@ -927,7 +1090,7 @@ AppState.prototype.renderJobsList = function() {
               </div>
             </div>
           </div>
-          <button class="btn btn-outline btn-sm" onclick="state.toggleSaveJob('${job.id}')" title="Guardar oferta">
+          <button class="btn btn-outline btn-sm" onclick="state.toggleSaveJob('${job.id}')" title="${state.t('btn_save')}">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="${isSaved ? '#d97706' : 'none'}" stroke="currentColor" stroke-width="2">
               <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/>
             </svg>
@@ -935,15 +1098,9 @@ AppState.prototype.renderJobsList = function() {
         </div>
 
         <div class="job-meta-badges">
-          <span class="meta-badge salary">
-            💶 ${job.salary.toLocaleString()} ${state.t("salary_unit")} (${job.salaryType})
-          </span>
-          <span class="meta-badge">
-            📍 ${job.city || job.province} (${job.province})
-          </span>
-          <span class="meta-badge">
-            📑 ${job.contractType.toUpperCase()}
-          </span>
+          <span class="meta-badge salary">💶 ${job.salary.toLocaleString()} ${state.t("salary_unit")} (${job.salaryType})</span>
+          <span class="meta-badge">📍 ${job.city || job.province} (${job.province})</span>
+          <span class="meta-badge">📑 ${job.contractType.toUpperCase()}</span>
           ${job.arraigoOk ? `<span class="meta-badge arraigo-badge">🤝 ${state.t("badge_arraigo")}</span>` : ''}
           ${job.nieRequired ? `<span class="meta-badge nie-badge">📋 ${state.t("badge_nie_req")}</span>` : ''}
           ${job.hasHousing ? `<span class="meta-badge housing-badge">🏠 ${state.t("badge_housing")}</span>` : ''}
@@ -962,13 +1119,10 @@ AppState.prototype.renderJobsList = function() {
           <div class="job-card-actions">
             ${job.whatsapp ? `
               <a href="https://wa.me/${job.whatsapp}?text=${encodeURIComponent('Hola, me pongo en contacto desde IberTrabajo por la oferta de ' + title)}" target="_blank" class="btn btn-whatsapp btn-sm">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981z"/>
-                </svg>
-                ${state.t("btn_whatsapp")}
+                💬 ${state.t("btn_whatsapp")}
               </a>
             ` : ''}
-            <button class="btn btn-primary btn-sm" onclick="openApplyModal('${job.id}')">
+            <button class="btn btn-primary btn-sm" onclick="handleJobApplyClick('${job.id}')">
               ${state.t("btn_apply")}
             </button>
           </div>
@@ -978,10 +1132,41 @@ AppState.prototype.renderJobsList = function() {
   }).join('');
 };
 
-// --- 6. GESTIÓN DE CANDIDATURAS (ATS KANBAN) ---
+function handleJobApplyClick(jobId) {
+  if (!state.currentUser) {
+    showToast(state.lang === 'ar' ? 'يرجى تسجيل الدخول أو إنشاء حساب كباحث عن عمل للتقديم' : 'Por favor inicia sesión o crea una cuenta como Candidato para inscribirte', "warning");
+    openAuthModal("login");
+    return;
+  }
+  if (state.currentUser.role === "employer") {
+    showToast(state.lang === 'ar' ? 'أنت مسجل بحساب مشغل (شركة). التقديم متاح فقط للباحثين عن عمل.' : 'Has iniciado sesión como Empresa. Las inscripciones son exclusivas para cuentas de Candidato.', "warning");
+    return;
+  }
+  openApplyModal(jobId);
+}
+
+// --- 6. GESTIÓN DE CANDIDATURAS (ATS KANBAN PARA EMPRESAS) ---
 AppState.prototype.renderAtsBoard = function() {
   const container = document.getElementById("ats-board-container");
   if (!container) return;
+
+  if (!this.currentUser || this.currentUser.role !== "employer") {
+    container.innerHTML = `
+      <div class="access-denied-box">
+        <div class="access-denied-icon">🔒</div>
+        <h3 class="access-denied-title">${state.lang === 'ar' ? 'هذه اللوحة خاصة بأصحاب العمل والشركات' : 'Acceso Exclusivo para Empresas y Empleadores'}</h3>
+        <p class="access-denied-desc">
+          ${state.lang === 'ar' ? 'سجل دخولك بحساب مشغل لمتابعة المترشحين وفرز طلبات التوظيف عبر لوحة كانبان.' : 'Inicia sesión con tu cuenta de Empresa para gestionar las candidaturas y filtrar candidatos en el pipeline ATS.'}
+        </p>
+        <button class="btn btn-primary" onclick="state.quickDemoLogin('employer')">
+          🏢 ${state.t("demo_as_employer")}
+        </button>
+      </div>
+    `;
+    return;
+  }
+
+  const myApplications = this.applications;
 
   const stages = [
     { key: "applied", titleKey: "ats_col_applied", cssClass: "status-applied" },
@@ -993,7 +1178,7 @@ AppState.prototype.renderAtsBoard = function() {
   container.innerHTML = `
     <div class="ats-board">
       ${stages.map(stage => {
-        const stageApps = state.applications.filter(app => app.stage === stage.key);
+        const stageApps = myApplications.filter(app => app.stage === stage.key);
         return `
           <div class="ats-column">
             <div class="ats-column-header">
@@ -1003,7 +1188,7 @@ AppState.prototype.renderAtsBoard = function() {
             <div class="ats-cards-list" ondragover="event.preventDefault()" ondrop="handleDropAts(event, '${stage.key}')">
               ${stageApps.map(app => `
                 <div class="ats-candidate-card" draggable="true" ondragstart="handleDragAts(event, '${app.id}')">
-                  <div class="ats-card-name">${app.candidateName}</div>
+                  <div class="ats-card-name">👤 ${app.candidateName}</div>
                   <div class="ats-card-job">💼 ${app.jobTitle}</div>
                   <div class="ats-card-status-badge ${stage.cssClass}">
                     ${state.t(app.candidateLegal || 'status_nie_valid')}
@@ -1012,17 +1197,17 @@ AppState.prototype.renderAtsBoard = function() {
                     📞 ${app.candidatePhone}
                   </div>
                   <div class="ats-actions">
-                    <button class="btn btn-outline btn-sm" style="flex: 1;" onclick="advanceCandidateStage('${app.id}')" title="Avanzar de etapa">
-                      ➡️ ${state.lang === 'ar' ? 'ترقية' : 'Avanzar'}
+                    <button class="btn btn-outline btn-sm" style="flex: 1;" onclick="advanceCandidateStage('${app.id}')" title="Avanzar">
+                      ➡️ ${state.lang === 'ar' ? 'المرحلة التالية' : 'Avanzar'}
                     </button>
-                    <a href="https://wa.me/${app.candidatePhone.replace(/[^0-9]/g, '')}" target="_blank" class="btn btn-whatsapp btn-sm" title="Contactar WhatsApp">
+                    <a href="https://wa.me/${app.candidatePhone.replace(/[^0-9]/g, '')}" target="_blank" class="btn btn-whatsapp btn-sm" title="WhatsApp">
                       💬
                     </a>
                   </div>
                 </div>
               `).join('')}
               ${stageApps.length === 0 ? `
-                <div style="text-align: center; padding: 2rem 0.5rem; color: var(--text-light); font-size: 0.85rem;">
+                <div style="text-align: center; padding: 2.5rem 0.5rem; color: var(--text-light); font-size: 0.85rem;">
                   ${state.lang === 'ar' ? 'لا توجد طلبات في هذه المرحلة' : 'Sin candidatos en esta fase'}
                 </div>
               ` : ''}
@@ -1066,11 +1251,138 @@ function handleDropAts(e, targetStage) {
   draggedAppId = null;
 }
 
-// --- 7. CREADOR DE CURRÍCULUM EN FORMATO ESPAÑOL (CV BUILDER) ---
+// --- 7. MIS OFERTAS PUBLICADAS (EMPRESAS) ---
+AppState.prototype.renderMyOffers = function() {
+  const container = document.getElementById("my-offers-container");
+  if (!container) return;
+
+  if (!this.currentUser || this.currentUser.role !== "employer") {
+    container.innerHTML = `
+      <div class="access-denied-box">
+        <div class="access-denied-icon">🏢</div>
+        <h3 class="access-denied-title">${state.lang === 'ar' ? 'هذا القسم مخصص للشركات والمشغلين' : 'Sección Exclusiva para Empresas'}</h3>
+        <p class="access-denied-desc">${state.lang === 'ar' ? 'سجل دخولك بحساب مشغل لإدارة عروضك الوظيفية.' : 'Inicia sesión con cuenta de Empresa para gestionar tus ofertas.'}</p>
+        <button class="btn btn-primary" onclick="state.quickDemoLogin('employer')">${state.t("demo_as_employer")}</button>
+      </div>
+    `;
+    return;
+  }
+
+  const myJobs = this.jobs.filter(j => j.employerId === this.currentUser.id || j.company.toLowerCase().includes(this.currentUser.name.toLowerCase().substring(0, 8)));
+
+  container.innerHTML = `
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
+      <div>
+        <h3 style="font-size: 1.35rem; font-weight: 700;">${this.currentUser.name} (${myJobs.length} ${state.lang === 'ar' ? 'عروض نشطة' : 'ofertas'})</h3>
+        <p style="color: var(--text-muted); font-size: 0.9rem;">CIF: ${this.currentUser.cif || 'B-84930211'} · ${this.currentUser.province || 'Madrid'}</p>
+      </div>
+      <button class="btn btn-primary" onclick="openPostJobModal()">
+        ➕ ${state.t("nav_post_job")}
+      </button>
+    </div>
+
+    <div class="employer-jobs-grid">
+      ${myJobs.map(job => {
+        const title = state.getJobLocalized(job, "title");
+        const applicantCount = state.applications.filter(a => a.jobId === job.id).length;
+        return `
+          <div class="employer-job-item">
+            <div>
+              <h4 style="font-size: 1.15rem; font-weight: 700; color: var(--text-main); margin-bottom: 0.25rem;">${title}</h4>
+              <div style="display: flex; gap: 0.75rem; flex-wrap: wrap; font-size: 0.85rem; color: var(--text-muted);">
+                <span>📍 ${job.province}</span>
+                <span>💶 ${job.salary} €/mes</span>
+                <span>📑 ${job.contractType}</span>
+                ${job.arraigoOk ? '<span style="color: #b45309; font-weight: 700;">🤝 Arraigo OK</span>' : ''}
+              </div>
+            </div>
+            <div style="display: flex; align-items: center; gap: 0.75rem;">
+              <button class="btn btn-outline btn-sm" onclick="switchTab('ats')">
+                👥 ${applicantCount} ${state.lang === 'ar' ? 'مترشحين' : 'candidatos'}
+              </button>
+              <button class="btn btn-outline btn-sm" style="color: var(--danger); border-color: #fecaca;" onclick="deleteJobOffer('${job.id}')">
+                🗑️ ${state.t("btn_delete_offer")}
+              </button>
+            </div>
+          </div>
+        `;
+      }).join('')}
+    </div>
+  `;
+};
+
+function deleteJobOffer(jobId) {
+  if (confirm(state.lang === 'ar' ? 'هل أنت متأكد من رغبتك في حذف هذا العرض؟' : '¿Estás seguro de que deseas eliminar esta oferta?')) {
+    state.jobs = state.jobs.filter(j => j.id !== jobId);
+    state.saveJobs();
+    state.renderMyOffers();
+    state.renderJobsList();
+    showToast(state.lang === 'ar' ? 'تم حذف عرض العمل' : 'Oferta eliminada correctamente', "info");
+  }
+}
+
+// --- 8. BASE DE TALENTOS (EMPRESAS) ---
+AppState.prototype.renderTalentsPool = function() {
+  const container = document.getElementById("talents-container");
+  if (!container) return;
+
+  if (!this.currentUser || this.currentUser.role !== "employer") {
+    container.innerHTML = `
+      <div class="access-denied-box">
+        <div class="access-denied-icon">👥</div>
+        <h3 class="access-denied-title">${state.lang === 'ar' ? 'قاعدة الكفاءات خاصة بالشركات المشغلة' : 'Base de Talentos Exclusiva para Empresas'}</h3>
+        <p class="access-denied-desc">${state.lang === 'ar' ? 'سجل دخولك بحساب مشغل للاطلاع على بروفايلات العمال والتواصل معهم مباشرة.' : 'Inicia sesión como Empresa para acceder a perfiles de candidatos y contactar por WhatsApp.'}</p>
+        <button class="btn btn-primary" onclick="state.quickDemoLogin('employer')">${state.t("demo_as_employer")}</button>
+      </div>
+    `;
+    return;
+  }
+
+  const candidates = this.users.filter(u => u.role === "candidate");
+
+  container.innerHTML = `
+    <div class="talent-grid">
+      ${candidates.map(cand => `
+        <div class="talent-card">
+          <div>
+            <div class="talent-card-header">
+              <div class="talent-avatar">${cand.name.substring(0, 2).toUpperCase()}</div>
+              <div>
+                <h4 class="talent-name">${cand.name}</h4>
+                <div class="talent-profession">${cand.profession || 'Profesional'}</div>
+                <div class="talent-location">📍 ${cand.province || 'España'}</div>
+              </div>
+            </div>
+            
+            <div style="font-size: 0.825rem; font-weight: 600; color: #1e40af; background: #eff6ff; padding: 0.25rem 0.5rem; border-radius: 4px; margin-bottom: 0.65rem;">
+              ⚖️ ${state.t(cand.legalStatus || 'status_nie_valid')}
+            </div>
+
+            <p style="font-size: 0.85rem; color: #475569; margin-bottom: 0.65rem; line-height: 1.4;">
+              ${cand.experience ? cand.experience.substring(0, 100) + '...' : 'Experiencia contrastada en el sector.'}
+            </p>
+
+            <div class="talent-skills-tags">
+              ${(cand.skills || 'Hostelería, Responsabilidad').split(',').map(s => `<span class="talent-tag">#${s.trim()}</span>`).join('')}
+            </div>
+          </div>
+
+          <div style="margin-top: 1rem; border-top: 1px solid var(--border); padding-top: 0.85rem;">
+            <a href="https://wa.me/${(cand.phone || '34612345678').replace(/[^0-9]/g, '')}?text=${encodeURIComponent('Hola ' + cand.name + ', hemos visto tu perfil en IberTrabajo y nos gustaría proponerte una oferta laboral.')}" target="_blank" class="btn btn-whatsapp btn-sm" style="width: 100%;">
+              💬 ${state.t("btn_contact_talent")}
+            </a>
+          </div>
+        </div>
+      `).join('')}
+    </div>
+  `;
+};
+
+// --- 9. CREADOR DE CV EN ESPAÑOL ---
 AppState.prototype.renderCVPreview = function() {
   const container = document.getElementById("cv-preview-sheet");
   if (!container) return;
-  
+
   const cv = this.cvData;
   container.innerHTML = `
     <div class="cv-header-print">
@@ -1126,25 +1438,39 @@ function saveCVForm(e) {
   };
   state.saveCV();
   state.renderCVPreview();
-  showToast(state.lang === 'ar' ? 'تم حفظ السيرة الذاتية بنجاح' : 'Currículum actualizado correctamente', "success");
+  showToast(state.lang === 'ar' ? 'تم حفظ وتحديث السيرة الذاتية بنجاح' : 'Currículum actualizado correctamente', "success");
 }
 
 function printCV() {
   window.print();
 }
 
-// --- 8. MIS SOLICITUDES (CANDIDATO) ---
+// --- 10. MIS SOLICITUDES (CANDIDATO) ---
 AppState.prototype.renderMyApplications = function() {
   const container = document.getElementById("my-apps-container");
   if (!container) return;
 
-  if (this.applications.length === 0) {
+  if (!this.currentUser || this.currentUser.role !== "candidate") {
     container.innerHTML = `
-      <div style="text-align: center; padding: 3rem; background: #fff; border-radius: var(--radius-lg); border: 1px dashed var(--border);">
-        <p style="font-size: 1.15rem; color: var(--text-muted);">
+      <div class="access-denied-box">
+        <div class="access-denied-icon">📑</div>
+        <h3 class="access-denied-title">${state.lang === 'ar' ? 'هذا القسم خاص بالباحثين عن عمل' : 'Sección para Candidatos'}</h3>
+        <p class="access-denied-desc">${state.lang === 'ar' ? 'سجل دخولك كباحث عن عمل لمتابعة حالة طلباتك المرسلة للشركات.' : 'Inicia sesión como Candidato para consultar el estado de tus solicitudes.'}</p>
+        <button class="btn btn-primary" onclick="state.quickDemoLogin('candidate')">${state.t("demo_as_candidate")}</button>
+      </div>
+    `;
+    return;
+  }
+
+  const myApps = this.applications.filter(a => a.candidateId === this.currentUser.id || a.candidateName === this.currentUser.name);
+
+  if (myApps.length === 0) {
+    container.innerHTML = `
+      <div style="text-align: center; padding: 3.5rem; background: #fff; border-radius: var(--radius-lg); border: 1px dashed var(--border);">
+        <p style="font-size: 1.15rem; color: var(--text-muted); margin-bottom: 1rem;">
           ${state.lang === 'ar' ? 'لم تقم بتقديم أي طلب توظيف حتى الآن' : 'Aún no te has inscrito en ninguna oferta de empleo'}
         </p>
-        <button class="btn btn-primary btn-sm" style="margin-top: 1rem;" onclick="switchTab('jobs')">
+        <button class="btn btn-primary btn-sm" onclick="switchTab('jobs')">
           ${state.t("nav_explore")}
         </button>
       </div>
@@ -1154,7 +1480,7 @@ AppState.prototype.renderMyApplications = function() {
 
   container.innerHTML = `
     <div class="jobs-list">
-      ${this.applications.map(app => `
+      ${myApps.map(app => `
         <div class="job-card">
           <div class="job-card-top">
             <div class="job-main-info">
@@ -1168,9 +1494,10 @@ AppState.prototype.renderMyApplications = function() {
               ${getStageLabel(app.stage)}
             </span>
           </div>
-          <div style="display: flex; gap: 1rem; font-size: 0.85rem; color: var(--text-muted);">
+          <div style="display: flex; gap: 1.5rem; font-size: 0.85rem; color: var(--text-muted); flex-wrap: wrap;">
             <span>📅 ${state.lang === 'ar' ? 'تاريخ التقديم:' : 'Fecha de solicitud:'} ${app.appliedDate}</span>
             <span>⚖️ ${state.t(app.candidateLegal)}</span>
+            <span>📞 ${app.candidatePhone}</span>
           </div>
         </div>
       `).join('')}
@@ -1188,7 +1515,118 @@ function getStageLabel(stage) {
   return dict[stage] || stage;
 }
 
-// --- 9. MODALES DE POSTULACIÓN Y PUBLICACIÓN ---
+// --- 11. MODAL DE AUTENTICACIÓN (LOGIN / REGISTRO CON ROLES) ---
+let currentAuthRole = "candidate";
+
+function openAuthModal(initialTab = "login") {
+  const modal = document.getElementById("auth-modal");
+  if (!modal) return;
+  switchAuthTab(initialTab);
+  modal.classList.add("open");
+}
+
+function closeAuthModal() {
+  const modal = document.getElementById("auth-modal");
+  if (modal) modal.classList.remove("open");
+}
+
+function switchAuthTab(tab) {
+  const loginForm = document.getElementById("auth-login-form");
+  const regForm = document.getElementById("auth-register-form");
+  const tabLoginBtn = document.getElementById("auth-tab-login");
+  const tabRegBtn = document.getElementById("auth-tab-register");
+
+  if (tab === "login") {
+    if (loginForm) loginForm.style.display = "block";
+    if (regForm) regForm.style.display = "none";
+    if (tabLoginBtn) tabLoginBtn.classList.add("active");
+    if (tabRegBtn) tabRegBtn.classList.remove("active");
+  } else {
+    if (loginForm) loginForm.style.display = "none";
+    if (regForm) regForm.style.display = "block";
+    if (tabLoginBtn) tabLoginBtn.classList.remove("active");
+    if (tabRegBtn) tabRegBtn.classList.add("active");
+  }
+}
+
+function selectAuthRole(role) {
+  currentAuthRole = role;
+  const candCard = document.getElementById("role-card-candidate");
+  const empCard = document.getElementById("role-card-employer");
+  const candFields = document.getElementById("fields-candidate");
+  const empFields = document.getElementById("fields-employer");
+
+  if (role === "candidate") {
+    if (candCard) candCard.classList.add("selected");
+    if (empCard) empCard.classList.remove("selected");
+    if (candFields) candFields.style.display = "block";
+    if (empFields) empFields.style.display = "none";
+  } else {
+    if (candCard) candCard.classList.remove("selected");
+    if (empCard) empCard.classList.add("selected");
+    if (candFields) candFields.style.display = "none";
+    if (empFields) empFields.style.display = "block";
+  }
+}
+
+function handleLoginSubmit(e) {
+  e.preventDefault();
+  const email = document.getElementById("login-email").value;
+  const pass = document.getElementById("login-password").value;
+  state.login(email, pass);
+}
+
+function handleRegisterSubmit(e) {
+  e.preventDefault();
+  const email = document.getElementById("reg-email").value;
+  const pass = document.getElementById("reg-password").value;
+
+  if (currentAuthRole === "candidate") {
+    const name = document.getElementById("reg-cand-name").value;
+    const phone = document.getElementById("reg-cand-phone").value;
+    const province = document.getElementById("auth-province-candidate").value;
+    const profession = document.getElementById("reg-cand-profession").value;
+    const legalStatus = document.getElementById("reg-cand-legal").value;
+
+    state.register({
+      role: "candidate",
+      name,
+      email,
+      password: pass,
+      phone,
+      province,
+      profession,
+      legalStatus,
+      skills: profession,
+      experience: "Experiencia laboral en " + profession,
+      languages: "Español, Árabe",
+      education: "Formación básica"
+    });
+  } else {
+    const compName = document.getElementById("reg-emp-company").value;
+    const cif = document.getElementById("reg-emp-cif").value;
+    const contact = document.getElementById("reg-emp-contact").value;
+    const phone = document.getElementById("reg-emp-phone").value;
+    const province = document.getElementById("auth-province-employer").value;
+    const sector = document.getElementById("auth-sector-employer").value;
+
+    state.register({
+      role: "employer",
+      name: compName,
+      cif,
+      contactPerson: contact,
+      email,
+      password: pass,
+      phone,
+      province,
+      sector,
+      verified: true,
+      bio: "Empresa del sector " + sector + " ubicada en " + province
+    });
+  }
+}
+
+// --- 12. MODAL DE POSTULACIÓN ---
 let currentApplyingJobId = null;
 
 function openApplyModal(jobId) {
@@ -1202,14 +1640,15 @@ function openApplyModal(jobId) {
     jobNameSpan.textContent = state.getJobLocalized(job, "title") + " - " + job.company;
   }
 
-  // Pre-rellenar con datos de perfil si existen
-  if (state.cvData) {
+  if (state.currentUser && state.currentUser.role === "candidate") {
     const nameInput = document.getElementById("apply-fullname");
     const phoneInput = document.getElementById("apply-phone");
     const emailInput = document.getElementById("apply-email");
-    if (nameInput) nameInput.value = state.cvData.fullName || "";
-    if (phoneInput) phoneInput.value = state.cvData.phone || "";
-    if (emailInput) emailInput.value = state.cvData.email || "";
+    const legalInput = document.getElementById("apply-legal-status");
+    if (nameInput) nameInput.value = state.currentUser.name || "";
+    if (phoneInput) phoneInput.value = state.currentUser.phone || "";
+    if (emailInput) emailInput.value = state.currentUser.email || "";
+    if (legalInput && state.currentUser.legalStatus) legalInput.value = state.currentUser.legalStatus;
   }
 
   if (modal) modal.classList.add("open");
@@ -1233,8 +1672,10 @@ function handleApplySubmit(e) {
   const newApp = {
     id: "app-" + Date.now(),
     jobId: currentApplyingJobId,
+    employerId: job.employerId || "usr-emp-1",
     jobTitle: state.getJobLocalized(job, "title"),
     company: job.company,
+    candidateId: state.currentUser ? state.currentUser.id : "guest",
     candidateName: fullName,
     candidatePhone: phone,
     candidateLegal: legalStatus,
@@ -1256,8 +1697,25 @@ function handleApplySubmit(e) {
   }
 }
 
-// Modal Publicar Oferta
+// --- 13. MODAL PUBLICAR OFERTA ---
 function openPostJobModal() {
+  if (!state.currentUser) {
+    showToast(state.lang === 'ar' ? 'يرجى تسجيل الدخول بحساب مشغل لنشر عروض العمل' : 'Por favor inicia sesión con cuenta de Empresa para publicar ofertas', "warning");
+    openAuthModal("login");
+    return;
+  }
+  if (state.currentUser.role !== "employer") {
+    showToast(state.lang === 'ar' ? 'حسابات الباحثين عن عمل لا يمكنها نشر وظائف. يرجى إنشاء حساب مشغل.' : 'Las cuentas de Candidato no pueden publicar ofertas. Crea o accede con una cuenta de Empresa.', "warning");
+    return;
+  }
+
+  const compInput = document.getElementById("post-job-company");
+  const cifInput = document.getElementById("post-job-cif");
+  const phoneInput = document.getElementById("post-job-whatsapp");
+  if (compInput) compInput.value = state.currentUser.name;
+  if (cifInput) cifInput.value = state.currentUser.cif || "B-84930211";
+  if (phoneInput) phoneInput.value = (state.currentUser.phone || "34612345678").replace(/[^0-9]/g, '');
+
   const modal = document.getElementById("post-job-modal");
   if (modal) modal.classList.add("open");
 }
@@ -1284,6 +1742,7 @@ function handlePostJobSubmit(e) {
 
   const newJob = {
     id: "job-" + Date.now(),
+    employerId: state.currentUser ? state.currentUser.id : "usr-emp-1",
     title: { es: titleVal, ar: titleVal, en: titleVal },
     company: companyVal,
     cif: cifVal,
@@ -1312,24 +1771,18 @@ function handlePostJobSubmit(e) {
     "success"
   );
 
-  state.renderJobsList();
+  if (state.activeTab === "my-offers") {
+    state.renderMyOffers();
+  } else {
+    state.renderJobsList();
+  }
 }
 
-// --- 10. FILTROS Y EVENTOS GLOBALES ---
+// --- 14. EVENTOS GLOBALES ---
 function setupEventListeners() {
-  // Cambio de idioma
   const langSel = document.getElementById("lang-switcher");
-  if (langSel) {
-    langSel.addEventListener("change", (e) => state.setLanguage(e.target.value));
-  }
+  if (langSel) langSel.addEventListener("change", (e) => state.setLanguage(e.target.value));
 
-  // Cambio de rol
-  const roleSel = document.getElementById("role-switcher");
-  if (roleSel) {
-    roleSel.addEventListener("change", (e) => state.setRole(e.target.value));
-  }
-
-  // Búsqueda por palabra clave con debounce
   const searchInput = document.getElementById("search-keyword");
   if (searchInput) {
     searchInput.addEventListener("input", (e) => {
@@ -1338,7 +1791,6 @@ function setupEventListeners() {
     });
   }
 
-  // Selector de provincia de búsqueda
   const provSearch = document.getElementById("search-province");
   if (provSearch) {
     provSearch.addEventListener("change", (e) => {
@@ -1347,7 +1799,6 @@ function setupEventListeners() {
     });
   }
 
-  // Selector de sector
   const secSearch = document.getElementById("search-sector");
   if (secSearch) {
     secSearch.addEventListener("change", (e) => {
@@ -1356,7 +1807,6 @@ function setupEventListeners() {
     });
   }
 
-  // Radio filters de situación legal / arraigo
   document.querySelectorAll("input[name='filter-permit']").forEach(radio => {
     radio.addEventListener("change", (e) => {
       state.filters.permit = e.target.value;
@@ -1364,7 +1814,6 @@ function setupEventListeners() {
     });
   });
 
-  // Checkbox de alojamiento
   const housingCheck = document.getElementById("filter-housing");
   if (housingCheck) {
     housingCheck.addEventListener("change", (e) => {
@@ -1373,7 +1822,6 @@ function setupEventListeners() {
     });
   }
 
-  // Filtro tipo contrato
   document.querySelectorAll("input[name='filter-contract']").forEach(radio => {
     radio.addEventListener("change", (e) => {
       state.filters.contract = e.target.value;
@@ -1381,16 +1829,6 @@ function setupEventListeners() {
     });
   });
 
-  // Pestañas de navegación
-  document.querySelectorAll(".nav-link").forEach(btn => {
-    btn.addEventListener("click", (e) => {
-      e.preventDefault();
-      const tab = btn.getAttribute("data-tab");
-      if (tab) switchTab(tab);
-    });
-  });
-
-  // Quick tags
   document.querySelectorAll(".quick-tag").forEach(tag => {
     tag.addEventListener("click", () => {
       const kw = tag.getAttribute("data-query");
@@ -1400,7 +1838,6 @@ function setupEventListeners() {
     });
   });
 
-  // Formularios
   const applyForm = document.getElementById("apply-form");
   if (applyForm) applyForm.addEventListener("submit", handleApplySubmit);
 
@@ -1409,6 +1846,12 @@ function setupEventListeners() {
 
   const cvForm = document.getElementById("cv-edit-form");
   if (cvForm) cvForm.addEventListener("submit", saveCVForm);
+
+  const loginForm = document.getElementById("auth-login-form");
+  if (loginForm) loginForm.addEventListener("submit", handleLoginSubmit);
+
+  const registerForm = document.getElementById("auth-register-form");
+  if (registerForm) registerForm.addEventListener("submit", handleRegisterSubmit);
 }
 
 function switchTab(tabName) {
@@ -1418,34 +1861,16 @@ function switchTab(tabName) {
 }
 
 function clearAllFilters() {
-  state.filters = {
-    keyword: "",
-    province: "",
-    sector: "",
-    permit: "all",
-    contract: "all",
-    housing: false
-  };
-
-  const kwInput = document.getElementById("search-keyword");
-  if (kwInput) kwInput.value = "";
-  const provInput = document.getElementById("search-province");
-  if (provInput) provInput.value = "";
-  const secInput = document.getElementById("search-sector");
-  if (secInput) secInput.value = "";
-  const housingCheck = document.getElementById("filter-housing");
-  if (housingCheck) housingCheck.checked = false;
-
-  const permitAll = document.querySelector("input[name='filter-permit'][value='all']");
-  if (permitAll) permitAll.checked = true;
-
-  const contractAll = document.querySelector("input[name='filter-contract'][value='all']");
-  if (contractAll) contractAll.checked = true;
-
+  state.filters = { keyword: "", province: "", sector: "", permit: "all", contract: "all", housing: false };
+  const kw = document.getElementById("search-keyword"); if (kw) kw.value = "";
+  const prov = document.getElementById("search-province"); if (prov) prov.value = "";
+  const sec = document.getElementById("search-sector"); if (sec) sec.value = "";
+  const hous = document.getElementById("filter-housing"); if (hous) hous.checked = false;
+  const pAll = document.querySelector("input[name='filter-permit'][value='all']"); if (pAll) pAll.checked = true;
+  const cAll = document.querySelector("input[name='filter-contract'][value='all']"); if (cAll) cAll.checked = true;
   state.renderJobsList();
 }
 
-// Sistema de Notificaciones Toast
 function showToast(message, type = "info") {
   const container = document.getElementById("toast-container");
   if (!container) return;
@@ -1453,7 +1878,7 @@ function showToast(message, type = "info") {
   const toast = document.createElement("div");
   toast.className = `toast ${type}`;
   toast.innerHTML = `
-    <span>${type === 'success' ? '✅' : type === 'warning' ? '⚠️' : 'ℹ️'}</span>
+    <span>${type === 'success' ? '✅' : type === 'warning' ? '⚠️' : type === 'error' ? '❌' : 'ℹ️'}</span>
     <span>${message}</span>
   `;
 
@@ -1467,5 +1892,4 @@ function showToast(message, type = "info") {
   }, 4000);
 }
 
-// Inicializar al cargar el DOM
 document.addEventListener("DOMContentLoaded", initApp);

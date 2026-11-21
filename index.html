@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>IberTrabajo - Plataforma de Intermediación Laboral en España | منصة التوظيف والوساطة بإسبانيا</title>
-  <meta name="description" content="Plataforma de intermediación laboral para personas que buscan empleo y empresas en España. Ofertas verificadas, apoyo en trámites de arraigo y extranjería.">
+  <meta name="description" content="Plataforma de intermediación laboral para personas que buscan empleo y empresas en España. Cuentas con roles diferenciados para candidatos y empleadores.">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -22,18 +22,14 @@
         </div>
       </a>
 
-      <!-- Navigation Links -->
+      <!-- Navigation Links (Dynamically rendered based on active role) -->
       <nav>
-        <ul class="nav-links">
-          <li><a href="#" class="nav-link active" data-tab="jobs" data-i18n="nav_explore">Buscar Empleo</a></li>
-          <li><a href="#" class="nav-link" data-tab="ats" data-i18n="nav_ats">Panel Empleador (ATS)</a></li>
-          <li><a href="#" class="nav-link" data-tab="cv" data-i18n="nav_cv">Creador de CV</a></li>
-          <li><a href="#" class="nav-link" data-tab="guide" data-i18n="nav_guide">Guía Legal & Arraigo</a></li>
-          <li><a href="#" class="nav-link" data-tab="my-apps" data-i18n="nav_my_apps">Mis Solicitudes</a></li>
+        <ul class="nav-links" id="nav-links-list">
+          <!-- Rendered dynamically by state.renderNavbar() -->
         </ul>
       </nav>
 
-      <!-- Nav Controls: Language, Role & Action -->
+      <!-- Nav Controls: Language Switcher, Post Job & Auth Profile -->
       <div class="nav-controls">
         <!-- Language Switcher -->
         <div class="select-wrapper">
@@ -44,23 +40,19 @@
           </select>
         </div>
 
-        <!-- Role Switcher -->
-        <div class="select-wrapper">
-          <select id="role-switcher" class="role-select" aria-label="Seleccionar rol">
-            <option value="candidate" data-i18n="role_candidate">Soy Candidato</option>
-            <option value="employer" data-i18n="role_employer">Soy Empresa</option>
-            <option value="agency" data-i18n="role_agency">Gestor / Mediador</option>
-          </select>
-        </div>
-
-        <!-- Post Job Button -->
-        <button class="btn btn-primary btn-sm" onclick="openPostJobModal()">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+        <!-- Post Job Button (Exclusive for employers or prompts employer login) -->
+        <button id="header-post-job-btn" class="btn btn-primary btn-sm" onclick="openPostJobModal()">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
             <line x1="12" y1="5" x2="12" y2="19"></line>
             <line x1="5" y1="12" x2="19" y2="12"></line>
           </svg>
           <span data-i18n="nav_post_job">Publicar Oferta</span>
         </button>
+
+        <!-- Auth / Profile Container -->
+        <div id="nav-auth-container" style="display: flex; align-items: center; gap: 0.5rem;">
+          <!-- Rendered dynamically: Login/Register buttons or User Profile -->
+        </div>
       </div>
     </div>
   </header>
@@ -74,7 +66,7 @@
       </div>
       <h1 class="hero-title" data-i18n="hero_title">Conectamos Trabajadores y Empresas en España</h1>
       <p class="hero-subtitle" data-i18n="hero_subtitle">
-        Ofertas verificadas en hostelería, agricultura, construcción, cuidados y más. Apoyo a candidatos con permiso de trabajo y ofertas para procesos de arraigo.
+        Plataforma con cuentas dedicadas para candidatos y empleadores. Gestión integral de permisos de trabajo, ofertas para procesos de arraigo y contratación legal.
       </p>
 
       <!-- Live Search Box -->
@@ -243,14 +235,14 @@
       </div>
     </div>
 
-    <!-- 2. VISTA DE GESTIÓN DE CANDIDATURAS (ATS KANBAN EMPLEADOR) -->
+    <!-- 2. VISTA DE GESTIÓN DE CANDIDATURAS (ATS KANBAN EXCLUSIVO EMPRESAS) -->
     <div id="ats-view" style="display: none;">
       <div style="margin-bottom: 2rem;">
         <h2 style="font-size: 1.85rem; font-weight: 800; color: var(--text-main);" data-i18n="ats_title">
           Gestión de Candidatos (Pipeline ATS)
         </h2>
         <p style="color: var(--text-muted); font-size: 1rem;" data-i18n="ats_subtitle">
-          Organiza y gestiona las solicitudes de tus ofertas en tiempo real
+          Exclusivo para empresas: organiza y avanza las solicitudes en tiempo real
         </p>
       </div>
 
@@ -259,7 +251,39 @@
       </div>
     </div>
 
-    <!-- 3. VISTA DE CREADOR DE CURRÍCULUM EN ESPAÑOL -->
+    <!-- 3. VISTA DE GESTIÓN DE MIS OFERTAS PUBLICADAS (EXCLUSIVO EMPRESAS) -->
+    <div id="my-offers-view" style="display: none;">
+      <div style="margin-bottom: 2rem;">
+        <h2 style="font-size: 1.85rem; font-weight: 800; color: var(--text-main);" data-i18n="my_offers_title">
+          Mis Ofertas de Trabajo Publicadas
+        </h2>
+        <p style="color: var(--text-muted); font-size: 1rem;" data-i18n="my_offers_subtitle">
+          Gestiona las vacantes de tu empresa, visualiza postulantes y el estado de la oferta
+        </p>
+      </div>
+
+      <div id="my-offers-container">
+        <!-- Rendered via renderMyOffers() -->
+      </div>
+    </div>
+
+    <!-- 4. VISTA DE BASE DE TALENTOS (EXCLUSIVO EMPRESAS) -->
+    <div id="talents-view" style="display: none;">
+      <div style="margin-bottom: 2rem;">
+        <h2 style="font-size: 1.85rem; font-weight: 800; color: var(--text-main);" data-i18n="talents_title">
+          Base de Talentos en España
+        </h2>
+        <p style="color: var(--text-muted); font-size: 1rem;" data-i18n="talents_subtitle">
+          Exclusivo para empresas: contacta directamente con profesionales disponibles
+        </p>
+      </div>
+
+      <div id="talents-container">
+        <!-- Rendered via renderTalentsPool() -->
+      </div>
+    </div>
+
+    <!-- 5. VISTA DE CREADOR DE CURRÍCULUM EN ESPAÑOL (CANDIDATOS) -->
     <div id="cv-view" style="display: none;">
       <div style="margin-bottom: 2rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
         <div>
@@ -314,18 +338,18 @@
               </div>
               <div class="form-group">
                 <label class="form-label required">Situación Administrativa</label>
-                <input type="text" id="cv-legal-input" class="form-input" value="Permiso de residencia y trabajo en vigor (NIE)" required>
+                <input type="text" id="cv-legal-input" class="form-input" value="Sin permiso vigente (Busco precontrato para Arraigo)" required>
               </div>
             </div>
 
             <div class="form-group">
               <label class="form-label">Idiomas</label>
-              <input type="text" id="cv-languages-input" class="form-input" value="Árabe (Nativo), Español (Fluido / B2), Inglés (Básico)">
+              <input type="text" id="cv-languages-input" class="form-input" value="Árabe (Nativo), Español (Fluido / B2), Francés (Básico)">
             </div>
 
             <div class="form-group">
               <label class="form-label">Habilidades y Competencias</label>
-              <input type="text" id="cv-skills-input" class="form-input" value="Cocina mediterránea, manipulación de alimentos, corte, gestión de pedidos">
+              <input type="text" id="cv-skills-input" class="form-input" value="Cocina tradicional española, manipulación de alimentos, corte, parrilla">
             </div>
 
             <div class="form-group">
@@ -336,7 +360,7 @@
 
             <div class="form-group">
               <label class="form-label">Formación y Certificados</label>
-              <textarea id="cv-education-input" class="form-textarea" rows="2">Certificado de Profesionalidad en Operaciones Básicas de Cocina - Madrid
+              <textarea id="cv-education-input" class="form-textarea" rows="2">Certificado de Profesionalidad en Cocina - Madrid
 Carnet de Manipulador de Alimentos en vigor</textarea>
             </div>
 
@@ -355,88 +379,7 @@ Carnet de Manipulador de Alimentos en vigor</textarea>
       </div>
     </div>
 
-    <!-- 4. VISTA DE GUÍA LEGAL, ARRAIGO Y EXTRANJERÍA -->
-    <div id="guide-view" style="display: none;">
-      <div style="margin-bottom: 2rem;">
-        <h2 style="font-size: 1.85rem; font-weight: 800; color: var(--text-main);" data-i18n="guide_title">
-          Guía de Extranjería y Contratación Laboral
-        </h2>
-        <p style="color: var(--text-muted); font-size: 1rem;" data-i18n="guide_subtitle">
-          Información clave sobre el Nuevo Reglamento de Extranjería, tipos de arraigo y derechos del trabajador en España
-        </p>
-      </div>
-
-      <div class="legal-guide-grid">
-        <!-- Card 1: Arraigo Social y Sociolaboral -->
-        <div class="guide-card">
-          <div class="guide-icon blue">⚖️</div>
-          <h3 class="guide-title">Arraigo Social y Sociolaboral</h3>
-          <p class="guide-text">
-            Permite obtener autorización de residencia y trabajo a personas que acrediten permanencia continuada en España. Requiere contrato de trabajo firmado de duración mínima, garantizando el Salario Mínimo Interprofesional (SMI).
-          </p>
-        </div>
-
-        <!-- Card 2: Arraigo para la Formación -->
-        <div class="guide-card">
-          <div class="guide-icon amber">🎓</div>
-          <h3 class="guide-title">Arraigo para la Formación</h3>
-          <p class="guide-text">
-            Dirigido a quienes lleven 2 años continuados en España y se comprometan a realizar una formación reglada para el empleo o certificación profesional. Al finalizar la formación, se puede solicitar la autorización de trabajo con un contrato.
-          </p>
-        </div>
-
-        <!-- Card 3: Obligaciones del Empleador -->
-        <div class="guide-card">
-          <div class="guide-icon green">📋</div>
-          <h3 class="guide-title">Obligaciones de la Empresa</h3>
-          <p class="guide-text">
-            La empresa empleadora debe estar al corriente con Hacienda y la Seguridad Social, y acreditar solvencia económica para abonar el salario estipulado según el convenio sectorial. Una vez aprobada la resolución favorable, se procede al alta en Seguridad Social.
-          </p>
-        </div>
-
-        <!-- Card 4: SMI y Derechos Laborales -->
-        <div class="guide-card">
-          <div class="guide-icon blue">💶</div>
-          <h3 class="guide-title">Salario Mínimo (SMI) en España</h3>
-          <p class="guide-text">
-            El SMI vigente en España es de 1.134 € brutos mensuales en 14 pagas (o 1.323 € brutos en 12 pagas) para la jornada completa de 40 horas semanales. Ningún contrato legal puede pagar por debajo de este umbral.
-          </p>
-        </div>
-
-        <!-- Card 5: Empadronamiento y Vida Laboral -->
-        <div class="guide-card">
-          <div class="guide-icon amber">🏛️</div>
-          <h3 class="guide-title">Empadronamiento Histórico</h3>
-          <p class="guide-text">
-            El certificado de empadronamiento es la prueba reina para demostrar el tiempo de residencia continuada en España. Se recomienda renovar o mantener siempre actualizado el padrón en el ayuntamiento correspondiente.
-          </p>
-        </div>
-
-        <!-- Card 6: Servicio de Mediación Laboral -->
-        <div class="guide-card">
-          <div class="guide-icon green">🤝</div>
-          <h3 class="guide-title">Intermediación Directa</h3>
-          <p class="guide-text">
-            IberTrabajo ofrece un canal de mediación laboral y asistencia técnica para revisar la idoneidad de los precontratos antes de su presentación ante la Oficina de Extranjería, evitando denegaciones por errores formales.
-          </p>
-        </div>
-      </div>
-
-      <!-- Mediation Request Box -->
-      <div style="background: linear-gradient(135deg, #1e3a8a 0%, #172554 100%); color: white; border-radius: var(--radius-lg); padding: 2.5rem; margin-top: 2.5rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1.5rem;">
-        <div style="max-width: 600px;">
-          <h3 style="font-size: 1.5rem; font-weight: 800; margin-bottom: 0.5rem;">¿Necesitas asesoramiento o mediación personalizada?</h3>
-          <p style="color: #cbd5e1; font-size: 0.95rem;">
-            Nuestro equipo de gestores y mediadores laborales te orienta de forma gratuita en la preparación de ofertas, revisión de convenios colectivos y trámites de extranjería.
-          </p>
-        </div>
-        <a href="https://wa.me/34600000000?text=Hola,%20deseo%20solicitar%20asesoramiento%20y%20mediación%20laboral%20en%20España" target="_blank" class="btn btn-whatsapp btn-lg">
-          💬 Contactar Asesor por WhatsApp
-        </a>
-      </div>
-    </div>
-
-    <!-- 5. VISTA DE MIS SOLICITUDES (CANDIDATO) -->
+    <!-- 6. VISTA DE MIS SOLICITUDES (CANDIDATOS) -->
     <div id="my-apps-view" style="display: none;">
       <div style="margin-bottom: 2rem;">
         <h2 style="font-size: 1.85rem; font-weight: 800; color: var(--text-main);" data-i18n="nav_my_apps">
@@ -452,7 +395,248 @@ Carnet de Manipulador de Alimentos en vigor</textarea>
       </div>
     </div>
 
+    <!-- 7. VISTA DE GUÍA LEGAL, ARRAIGO Y EXTRANJERÍA -->
+    <div id="guide-view" style="display: none;">
+      <div style="margin-bottom: 2rem;">
+        <h2 style="font-size: 1.85rem; font-weight: 800; color: var(--text-main);" data-i18n="guide_title">
+          Guía de Extranjería y Contratación Laboral
+        </h2>
+        <p style="color: var(--text-muted); font-size: 1rem;" data-i18n="guide_subtitle">
+          Información clave sobre el Nuevo Reglamento de Extranjería, tipos de arraigo y derechos del trabajador en España
+        </p>
+      </div>
+
+      <div class="legal-guide-grid">
+        <div class="guide-card">
+          <div class="guide-icon blue">⚖️</div>
+          <h3 class="guide-title">Arraigo Social y Sociolaboral</h3>
+          <p class="guide-text">
+            Permite obtener autorización de residencia y trabajo a personas que acrediten permanencia continuada en España. Requiere contrato de trabajo firmado de duración mínima, garantizando el Salario Mínimo Interprofesional (SMI).
+          </p>
+        </div>
+
+        <div class="guide-card">
+          <div class="guide-icon amber">🎓</div>
+          <h3 class="guide-title">Arraigo para la Formación</h3>
+          <p class="guide-text">
+            Dirigido a quienes lleven 2 años continuados en España y se comprometan a realizar una formación reglada para el empleo o certificación profesional. Al finalizar la formación, se puede solicitar la autorización de trabajo con un contrato.
+          </p>
+        </div>
+
+        <div class="guide-card">
+          <div class="guide-icon green">📋</div>
+          <h3 class="guide-title">Obligaciones de la Empresa</h3>
+          <p class="guide-text">
+            La empresa empleadora debe estar al corriente con Hacienda y la Seguridad Social, y acreditar solvencia económica para abonar el salario estipulado según el convenio sectorial. Una vez aprobada la resolución favorable, se procede al alta en Seguridad Social.
+          </p>
+        </div>
+
+        <div class="guide-card">
+          <div class="guide-icon blue">💶</div>
+          <h3 class="guide-title">Salario Mínimo (SMI) en España</h3>
+          <p class="guide-text">
+            El SMI vigente en España es de 1.134 € brutos mensuales en 14 pagas (o 1.323 € brutos en 12 pagas) para la jornada completa de 40 horas semanales. Ningún contrato legal puede pagar por debajo de este umbral.
+          </p>
+        </div>
+
+        <div class="guide-card">
+          <div class="guide-icon amber">🏛️</div>
+          <h3 class="guide-title">Empadronamiento Histórico</h3>
+          <p class="guide-text">
+            El certificado de empadronamiento es la prueba reina para demostrar el tiempo de residencia continuada en España. Se recomienda renovar o mantener siempre actualizado el padrón en el ayuntamiento correspondiente.
+          </p>
+        </div>
+
+        <div class="guide-card">
+          <div class="guide-icon green">🤝</div>
+          <h3 class="guide-title">Intermediación Directa</h3>
+          <p class="guide-text">
+            IberTrabajo ofrece un canal de mediación laboral y asistencia técnica para revisar la idoneidad de los precontratos antes de su presentación ante la Oficina de Extranjería, evitando denegaciones por errores formales.
+          </p>
+        </div>
+      </div>
+
+      <div style="background: linear-gradient(135deg, #1e3a8a 0%, #172554 100%); color: white; border-radius: var(--radius-lg); padding: 2.5rem; margin-top: 2.5rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1.5rem;">
+        <div style="max-width: 600px;">
+          <h3 style="font-size: 1.5rem; font-weight: 800; margin-bottom: 0.5rem;">¿Necesitas asesoramiento o mediación personalizada?</h3>
+          <p style="color: #cbd5e1; font-size: 0.95rem;">
+            Nuestro equipo de gestores y mediadores laborales te orienta de forma gratuita en la preparación de ofertas, revisión de convenios colectivos y trámites de extranjería.
+          </p>
+        </div>
+        <a href="https://wa.me/34600000000?text=Hola,%20deseo%20solicitar%20asesoramiento%20y%20mediación%20laboral%20en%20España" target="_blank" class="btn btn-whatsapp btn-lg">
+          💬 Contactar Asesor por WhatsApp
+        </a>
+      </div>
+    </div>
+
   </main>
+
+  <!-- MODAL: AUTENTICACIÓN (LOGIN / REGISTRO CON ROLES DIFERENCIADOS) -->
+  <div id="auth-modal" class="modal-overlay" onclick="if(event.target === this) closeAuthModal()">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3 class="modal-title" data-i18n="modal_auth_title">Acceso a IberTrabajo</h3>
+        <button class="modal-close" onclick="closeAuthModal()" aria-label="Cerrar">&times;</button>
+      </div>
+
+      <div class="modal-body">
+        <!-- Auth Tabs (Iniciar Sesión vs Registrarse) -->
+        <div class="auth-tabs">
+          <button id="auth-tab-login" class="auth-tab-btn active" onclick="switchAuthTab('login')" data-i18n="tab_login">
+            Iniciar Sesión
+          </button>
+          <button id="auth-tab-register" class="auth-tab-btn" onclick="switchAuthTab('register')" data-i18n="tab_register">
+            Crear Nueva Cuenta
+          </button>
+        </div>
+
+        <!-- FORMULARIO 1: INICIAR SESIÓN -->
+        <form id="auth-login-form">
+          <div class="form-group">
+            <label class="form-label required" data-i18n="auth_email">Correo Electrónico</label>
+            <input type="email" id="login-email" class="form-input" placeholder="ejemplo@correo.es" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label required" data-i18n="auth_password">Contraseña</label>
+            <input type="password" id="login-password" class="form-input" placeholder="••••••••" required>
+          </div>
+          <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 0.5rem;" data-i18n="btn_do_login">
+            Entrar a mi Cuenta
+          </button>
+
+          <!-- 1-Click Demo Logins -->
+          <div class="demo-box">
+            <div class="demo-box-title" data-i18n="demo_box_title">Acceso Rápido de Prueba (Sin contraseña):</div>
+            <div class="demo-buttons-row">
+              <button type="button" class="demo-btn" onclick="state.quickDemoLogin('candidate')">
+                <span>👤</span> <span data-i18n="demo_as_candidate">Entrar como Candidato (Ahmed)</span>
+              </button>
+              <button type="button" class="demo-btn" onclick="state.quickDemoLogin('employer')">
+                <span>🏢</span> <span data-i18n="demo_as_employer">Entrar como Empresa (Taberna Ibérica)</span>
+              </button>
+            </div>
+          </div>
+        </form>
+
+        <!-- FORMULARIO 2: REGISTRO CON SELECCIÓN DE ROL -->
+        <form id="auth-register-form" style="display: none;">
+          <label class="form-label required" data-i18n="auth_role_title">¿Qué tipo de cuenta deseas abrir?</label>
+          <div class="role-choice-grid">
+            <!-- Tarjeta Rol Candidato -->
+            <div id="role-card-candidate" class="role-choice-card selected" onclick="selectAuthRole('candidate')">
+              <div class="role-choice-icon">🧑‍🔧</div>
+              <div class="role-choice-title" data-i18n="role_candidate">Candidato / Demandante</div>
+              <div class="role-choice-desc" data-i18n="role_candidate_desc">
+                Busco ofertas de trabajo, preparar mi CV y solicitar empleo con o sin permiso de trabajo.
+              </div>
+            </div>
+
+            <!-- Tarjeta Rol Empleador -->
+            <div id="role-card-employer" class="role-choice-card" onclick="selectAuthRole('employer')">
+              <div class="role-choice-icon">🏢</div>
+              <div class="role-choice-title" data-i18n="role_employer">Empresa / Empleador</div>
+              <div class="role-choice-desc" data-i18n="role_employer_desc">
+                Deseo publicar ofertas de empleo, gestionar candidatos en el panel ATS y buscar personal.
+              </div>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label required" data-i18n="auth_email">Correo Electrónico</label>
+              <input type="email" id="reg-email" class="form-input" placeholder="ejemplo@correo.es" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label required" data-i18n="auth_password">Contraseña</label>
+              <input type="password" id="reg-password" class="form-input" placeholder="••••••••" required>
+            </div>
+          </div>
+
+          <!-- Campos Específicos para CANDIDATO -->
+          <div id="fields-candidate">
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label required" data-i18n="auth_candidatename">Nombre y Apellidos</label>
+                <input type="text" id="reg-cand-name" class="form-input" placeholder="Ej. Youssef El Amrani">
+              </div>
+              <div class="form-group">
+                <label class="form-label required" data-i18n="auth_phone">Teléfono / WhatsApp</label>
+                <input type="tel" id="reg-cand-phone" class="form-input" placeholder="+34 600 00 00 00">
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label required" data-i18n="auth_province">Provincia en España</label>
+                <select id="auth-province-candidate" class="form-select">
+                  <!-- Populated dynamically -->
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label required" data-i18n="auth_profession">Profesión u Oficio Principal</label>
+                <input type="text" id="reg-cand-profession" class="form-input" placeholder="Ej. Albañil, Camarero, Peón agrícola...">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label required" data-i18n="auth_legal_status">Situación Legal / Extranjería en España</label>
+              <select id="reg-cand-legal" class="form-select">
+                <option value="status_nie_valid" data-i18n="status_nie_valid">NIE / Permiso de residencia y trabajo en vigor</option>
+                <option value="status_nie_renewal" data-i18n="status_nie_renewal">En trámite de renovación / Prórroga</option>
+                <option value="status_arraigo_needed" data-i18n="status_arraigo_needed">Sin permiso vigente (Busco precontrato para Arraigo)</option>
+                <option value="status_eu_citizen" data-i18n="status_eu_citizen">DNI español o Ciudadano de la Unión Europea</option>
+                <option value="status_origin_visa" data-i18n="status_origin_visa">En país de origen (Interesado en visado de trabajo)</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Campos Específicos para EMPLEADOR / EMPRESA -->
+          <div id="fields-employer" style="display: none;">
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label required" data-i18n="auth_companyname">Nombre de la Empresa o Empleador</label>
+                <input type="text" id="reg-emp-company" class="form-input" placeholder="Ej. Construcciones del Sur S.L.">
+              </div>
+              <div class="form-group">
+                <label class="form-label required" data-i18n="auth_cif">CIF / NIF de la Empresa</label>
+                <input type="text" id="reg-emp-cif" class="form-input" placeholder="B-12345678">
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label required" data-i18n="auth_contactperson">Persona de Contacto / RRHH</label>
+                <input type="text" id="reg-emp-contact" class="form-input" placeholder="Ej. Carlos Martínez">
+              </div>
+              <div class="form-group">
+                <label class="form-label required" data-i18n="auth_phone">Teléfono / WhatsApp</label>
+                <input type="tel" id="reg-emp-phone" class="form-input" placeholder="+34 600 00 00 00">
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label required" data-i18n="auth_province">Provincia de la Sede</label>
+                <select id="auth-province-employer" class="form-select">
+                  <!-- Populated dynamically -->
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label required" data-i18n="form_sector">Sector Laboral</label>
+                <select id="auth-sector-employer" class="form-select">
+                  <!-- Populated dynamically -->
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1rem;" data-i18n="btn_do_register">
+            Registrar mi Cuenta
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
 
   <!-- MODAL: Postular a una Oferta de Empleo -->
   <div id="apply-modal" class="modal-overlay" onclick="if(event.target === this) closeApplyModal()">
@@ -658,8 +842,8 @@ Carnet de Manipulador de Alimentos en vigor</textarea>
           <ul class="footer-links">
             <li><a href="#" onclick="openPostJobModal()">Publicar Oferta de Empleo</a></li>
             <li><a href="#" onclick="switchTab('ats')">Panel ATS de Candidatos</a></li>
+            <li><a href="#" onclick="switchTab('talents')">Base de Talentos</a></li>
             <li><a href="#" onclick="switchTab('guide')">Contratación y SMI</a></li>
-            <li><a href="#">Verificación de Empresas</a></li>
           </ul>
         </div>
 
