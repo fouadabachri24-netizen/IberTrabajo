@@ -3,80 +3,75 @@
 
 ---
 
-## 🌟 Descripción General / Resumen
+## 🌟 Descripción General / نظرة عامة
 
-**IberTrabajo** es una plataforma web moderna, accesible e interactiva diseñada específicamente para actuar como **intermediario laboral** entre personas que buscan empleo y empresas/empleadores en España.
+**IberTrabajo** هي منصة ويب متطورة وتفاعلية تعمل كوسيط مباشر بين **الباحثين عن عمل** و**أصحاب الشركات والمشغلين في إسبانيا**.
 
-Está especialmente adaptada al mercado laboral español, incluyendo tanto a trabajadores nacionales y comunitarios como a **trabajadores migrantes y solicitantes de regularización**, facilitando el filtro y la gestión de contratos válidos para trámites de **Arraigo (Social, Sociolaboral, Formación)** conforme al **Reglamento de Extranjería**.
-
----
-
-## 🚀 Características Principales
-
-1. **Soporte Multilingüe Completo (ES / AR / EN)**:
-   - **Español (ES)**: Lengua vehicular oficial del mercado laboral en España.
-   - **العربية (AR)**: Soporte completo con interfaz adaptada **RTL (من اليمين إلى اليسار)** للجالية العربية والباحثين عن عمل من دول شمال إفريقيا والشرق الأوسط.
-   - **English (EN)**: Para profesionales internacionales y expatriados.
-
-2. **Doble Modalidad / Perfiles de Usuario**:
-   - **Modo Candidato (Demandante de empleo)**:
-     - Búsqueda con filtros avanzados: palabra clave, provincia (50 provincias españolas), sector, modalidad de contrato.
-     - **Filtro legal de extranjería**: Selección específica entre ofertas que *"Aceptan precontrato para Arraigo/Regularización"* o *"Requieren permiso de trabajo en vigor (NIE)"*.
-     - Filtro de **alojamiento incluido** (clave en agricultura y hostelería de temporada).
-     - Inscripción en ofertas en 1 clic con selección de situación administrativa.
-     - Seguimiento en tiempo real de *"Mis Solicitudes"*.
-     - Contacto directo por **WhatsApp con RRHH**.
-   - **Modo Empresa / Empleador**:
-     - Publicación de ofertas con validación de cumplimiento del **SMI (Salario Mínimo Interprofesional)** y convenio.
-     - **Panel ATS (Applicant Tracking System)** con tablero Kanban para mover candidatos por fases: *Nuevas Solicitudes ➡️ En Revisión ➡️ Entrevista Agendada ➡️ Contratados*.
-     - Contacto directo con el candidato.
-   - **Modo Gestor / Mediador**:
-     - Asistencia técnica y asesoramiento en redacción de precontratos de extranjería.
-
-3. **Creador de CV Adaptado a Estándares de España**:
-   - Generador en vivo de Currículum Vitae con estructura clara: Datos personales, Situación administrativa/NIE, Experiencia laboral, Formación y Certificados, Idiomas y Competencias.
-   - Botón directo para **Imprimir o Guardar en PDF**.
-
-4. **Guía Legal y de Extranjería**:
-   - Resumen didáctico del **Reglamento de Extranjería**: Arraigo Social, Sociolaboral y para la Formación.
-   - Requisitos obligatorios de contratación para empresas (solvencia económica, estar al corriente con Hacienda y Seguridad Social, SMI 2026).
-   - Acceso a asesoría personalizada por WhatsApp.
+تتميز المنصة بنظام **حسابات مخصص مع إدارة كاملة للصلاحيات (Role-Based Access Control - RBAC)**، حيث يمتلك كل من الباحث عن عمل والمشغل واجهة وصلاحيات وأدوات تلائم احتياجاته، مع دعم استثنائي لإجراءات **تسوية الوضعية (Arraigo Social / Sociolaboral / Formación)** وفق قانون الهجرة الإسباني (*Nuevo Reglamento de Extranjería*).
 
 ---
 
-## 📂 Estructura del Proyecto
+## 👥 نظام الحسابات والصلاحيات (Roles y Permisos)
 
-```
-spain-job-portal/
-├── index.html        # Estructura principal y vistas de la aplicación
-├── styles.css        # Sistema de diseño moderno, CSS Grid/Flexbox y soporte RTL
-├── app.js            # Lógica reactiva, i18n, estado local, filtros y ATS Kanban
-├── server.js         # Servidor HTTP Node.js sin dependencias externas
-├── package.json      # Metadatos del proyecto y scripts de ejecución
-└── README.md         # Documentación detallada
-```
+### 1. حساب الباحث عن عمل (Cuenta de Candidato)
+* **الصلاحيات والوظائف**:
+  * تصفح والبحث في جميع عروض العمل بإسبانيا مع فلاتر المحافظات (50 محافظة)، القطاعات، والرواتب.
+  * **فلتر الوضعية القانونية**: عروض تقبل تقديم عقد للتسوية (*Arraigo*) وعروض تشترط إقامة وعمل سارية (*NIE*).
+  * **التقديم الفوري على الوظائف**: تعبئة تلقائية لبيانات المترشح المسجلة في حسابه.
+  * **لوحة تتبع طلباتي (Mis Solicitudes)**: مراقبة حالة كل طلب أُرسل للشركات (*قيد الانتظار، مراجعة الـ CV، مبرمج للمقابلة، تم القبول وتوقيع العقد*).
+  * **محرر السيرة الذاتية الإسبانية (Creador de CV)**: تصميم سيرة ذاتية متوافقة مع المعايير الإسبانية مع إمكانية التنزيل والطباعة كـ PDF.
+  * **حفظ العروض المفضلة**.
+  * **التواصل المباشر مع الموارد البشرية عبر واتساب**.
+* **القيود**: لا يمكنه نشر وظائف ولا الاطلاع على بيانات المترشحين الآخرين.
 
 ---
 
-## 💻 Cómo Ejecutar la Aplicación
+### 2. حساب المشغل / أصحاب الشركات (Cuenta de Empresa / Empleador)
+* **الصلاحيات والوظائف**:
+  * **نشر عروض عمل جديدة (Publicar Oferta)** مع تفاصيل الرقم الضريبي (CIF/NIF)، الراتب المتوافق مع الـ SMI، نوع العقد، وتحديد ما إذا كانت المؤسسة مستعدة لمنح عقد لمسار الأرايغو.
+  * **نظام إدارة وتتبع المترشحين (ATS Pipeline Kanban)**: لوحة كانبان تفاعلية لفرز وتصنيف المتقدمين لعروض الشركة، فحص وضعهم القانوني، ونقلهم بين مراحل التوظيف بنقرة واحدة.
+  * **إدارة عروض شركتي (Mis Ofertas Publicadas)**: متابعة الوظائف النشطة، معرفة عدد المتقدمين لكل وظيفة، أو حذف العرض.
+  * **قاعدة بيانات الكفاءات (Base de Talentos)**: تصفح ملفات الباحثين عن عمل المسجلين في المنصة والتواصل معهم مباشرة عبر الواتساب لاقتراح فرص عمل.
+  * شارة التوثيق والاعتماد (**Empresa Verificada**).
+* **القيود**: لا يرى طلبات الشركات المنافسة، ولديه وصول حصري لمترشحي عروضه فقط.
 
-### Opción 1: Con Node.js (Servidor Local)
-Abre una terminal en la carpeta del proyecto y ejecuta:
+---
 
+## 🔑 الحسابات التجريبية الجاهزة للاختبار بنقرة واحدة
+
+تتضمن المنصة أزرار دخول سريع (**Acceso Rápido Demo**) دون الحاجة لإدخال كلمات مرور:
+
+1. **حساب باحث عن عمل (Candidato Demo)**:
+   * **الاسم**: أحمد المنصوري (Ahmed Mansouri)
+   * **البريد الإلكتروني**: `ahmed@candidato.es`
+   * **كلمة المرور**: `123`
+   * **الوضعية**: باحث عن عقد لتسوية الوضعية (Arraigo) - طباخ في مدريد.
+
+2. **حساب مشغل / شركة (Empresa Demo)**:
+   * **اسم المؤسسة**: Restaurante Taberna Ibérica S.L.
+   * **البريد الإلكتروني**: `contacto@tabernaiberica.es`
+   * **كلمة المرور**: `123`
+   * **الرقم الضريبي**: `B-84930211` - قطاع الفندقة بمدريد.
+
+*(كما يمكن لأي مستخدم جديد فتح حساب باحث أو حساب شركة في ثوانٍ عبر نافذة التسجيل).*
+
+---
+
+## 🌐 اللغات المدعومة
+* **العربية (AR)**: واجهة عربية كاملة من اليمين إلى اليسار (RTL).
+* **الإسبانية (ES)**: اللغة الرسمية لسوق العمل في إسبانيا.
+* **الإنجليزية (EN)**: للمهنيين الدوليين والمغتربين.
+
+---
+
+## 💻 كيفية تشغيل واستعراض المنصة
+
+### تشغيل خادم محلي Node.js:
 ```bash
+cd "C:\Users\FOUAD PC\.gemini\antigravity\scratch\spain-job-portal"
 npm start
-# O bien:
-node server.js
 ```
-A continuación, abre en tu navegador:
+ثم افتح الرابط في المتصفح:
 👉 **`http://localhost:3000`**
 
-### Opción 2: Apertura directa
-Puedes hacer doble clic en el archivo `index.html` o abrirlo directamente en Google Chrome / Microsoft Edge. No requiere compilación ni dependencias pesadas.
-
----
-
-## ⚖️ Marco Legal y Normativa de Referencia en España
-- **Real Decreto Legislativo 2/2015** (Estatuto de los Trabajadores).
-- **Ley Orgánica 4/2000** y Real Decreto de desarrollo del **Reglamento de Extranjería** (Figuras de Arraigo Social, Sociolaboral y Formación).
-- **Salario Mínimo Interprofesional (SMI)** fijado anualmente por el Ministerio de Trabajo y Economía Social.
+*(أو يمكن فتح ملف `index.html` مباشرة بالنقر المزدوج عليه في المتصفح).*
