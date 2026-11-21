@@ -1,0 +1,21 @@
+{
+  "name": "spain-job-portal",
+  "version": "1.0.0",
+  "description": "IberTrabajo - Plataforma de intermediación laboral para personas que buscan trabajo y empleadores en España (منصة التوظيف والوساطة بإسبانيا)",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "keywords": [
+    "empleo",
+    "espana",
+    "trabajo",
+    "arraigo",
+    "intermediacion-laboral",
+    "recruitment",
+    "ats"
+  ],
+  "author": "IberTrabajo Team",
+  "license": "MIT"
+}

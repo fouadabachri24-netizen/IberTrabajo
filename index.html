@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="es" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IberTrabajo - Plataforma de Intermediación Laboral en España | منصة التوظيف والوساطة بإسبانيا</title>
+  <meta name="description" content="Plataforma de intermediación laboral para personas que buscan empleo y empresas en España. Ofertas verificadas, apoyo en trámites de arraigo y extranjería.">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- Top Navigation Bar -->
+  <header class="navbar">
+    <div class="container nav-container">
+      <a href="#" class="brand" onclick="switchTab('jobs')">
+        <div class="brand-icon">
+          💼
+        </div>
+        <div>
+          <span data-i18n="brand_title">IberTrabajo</span>
+          <span class="brand-badge">España 🇪🇸</span>
+        </div>
+      </a>
+
+      <!-- Navigation Links -->
+      <nav>
+        <ul class="nav-links">
+          <li><a href="#" class="nav-link active" data-tab="jobs" data-i18n="nav_explore">Buscar Empleo</a></li>
+          <li><a href="#" class="nav-link" data-tab="ats" data-i18n="nav_ats">Panel Empleador (ATS)</a></li>
+          <li><a href="#" class="nav-link" data-tab="cv" data-i18n="nav_cv">Creador de CV</a></li>
+          <li><a href="#" class="nav-link" data-tab="guide" data-i18n="nav_guide">Guía Legal & Arraigo</a></li>
+          <li><a href="#" class="nav-link" data-tab="my-apps" data-i18n="nav_my_apps">Mis Solicitudes</a></li>
+        </ul>
+      </nav>
+
+      <!-- Nav Controls: Language, Role & Action -->
+      <div class="nav-controls">
+        <!-- Language Switcher -->
+        <div class="select-wrapper">
+          <select id="lang-switcher" class="lang-select" aria-label="Seleccionar idioma">
+            <option value="es">🇪🇸 Español</option>
+            <option value="ar">🇲🇦 العربية</option>
+            <option value="en">🇬🇧 English</option>
+          </select>
+        </div>
+
+        <!-- Role Switcher -->
+        <div class="select-wrapper">
+          <select id="role-switcher" class="role-select" aria-label="Seleccionar rol">
+            <option value="candidate" data-i18n="role_candidate">Soy Candidato</option>
+            <option value="employer" data-i18n="role_employer">Soy Empresa</option>
+            <option value="agency" data-i18n="role_agency">Gestor / Mediador</option>
+          </select>
+        </div>
+
+        <!-- Post Job Button -->
+        <button class="btn btn-primary btn-sm" onclick="openPostJobModal()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <line x1="12" y1="5" x2="12" y2="19"></line>
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+          </svg>
+          <span data-i18n="nav_post_job">Publicar Oferta</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="container hero-content">
+      <div class="hero-tagline">
+        <span>⚖️</span>
+        <span data-i18n="hero_tag">Portal de Empleo & Asesoría de Extranjería en España</span>
+      </div>
+      <h1 class="hero-title" data-i18n="hero_title">Conectamos Trabajadores y Empresas en España</h1>
+      <p class="hero-subtitle" data-i18n="hero_subtitle">
+        Ofertas verificadas en hostelería, agricultura, construcción, cuidados y más. Apoyo a candidatos con permiso de trabajo y ofertas para procesos de arraigo.
+      </p>
+
+      <!-- Live Search Box -->
+      <div class="search-card">
+        <div class="search-field" style="flex: 2 1 260px;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+          <input type="text" id="search-keyword" data-i18n-placeholder="search_keyword_placeholder" placeholder="Puesto, oficio o palabra clave (ej. camarero, peón, albañil)...">
+        </div>
+
+        <div class="search-field">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+            <circle cx="12" cy="10" r="3"></circle>
+          </svg>
+          <select id="search-province">
+            <option value="" data-i18n="search_province_all">Todas las provincias</option>
+          </select>
+        </div>
+
+        <div class="search-field">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
+            <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
+          </svg>
+          <select id="search-sector">
+            <option value="" data-i18n="search_sector_all">Todos los sectores</option>
+          </select>
+        </div>
+
+        <button class="btn btn-secondary" onclick="state.renderJobsList()">
+          <span data-i18n="btn_search">Buscar Empleo</span>
+        </button>
+      </div>
+
+      <!-- Quick Search Keywords -->
+      <div class="quick-tags">
+        <span style="font-size: 0.825rem; color: #cbd5e1; font-weight: 600;" data-i18n="quick_tags_label">Frecuentes:</span>
+        <button class="quick-tag" data-query="Arraigo">🤝 Precontrato Arraigo</button>
+        <button class="quick-tag" data-query="Alojamiento">🏠 Con Alojamiento</button>
+        <button class="quick-tag" data-query="Cocina">👨‍🍳 Hostelería & Cocina</button>
+        <button class="quick-tag" data-query="Albañil">🧱 Construcción</button>
+        <button class="quick-tag" data-query="Agrícola">🌱 Campo / Invernaderos</button>
+        <button class="quick-tag" data-query="Cuidadora">👵 Cuidados de Mayores</button>
+      </div>
+
+      <!-- Trust & Impact Stats -->
+      <div class="hero-stats">
+        <div class="stat-item">
+          <div class="stat-num">1.450+</div>
+          <div class="stat-label" data-i18n="stat_jobs">Ofertas Activas</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-num">890+</div>
+          <div class="stat-label" data-i18n="stat_contracts">Contratos Gestionados</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-num">50</div>
+          <div class="stat-label" data-i18n="stat_provinces">Provincias Españolas</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-num">98%</div>
+          <div class="stat-label" data-i18n="stat_verified">Empresas Verificadas</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Main View Container -->
+  <main class="container main-section">
+    
+    <!-- 1. VISTA DE BÚSQUEDA Y OFERTAS DE EMPLEO -->
+    <div id="jobs-view">
+      <div class="portal-grid">
+        <!-- Sidebar Filters -->
+        <aside class="sidebar">
+          <div class="sidebar-header">
+            <div class="sidebar-title">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
+              </svg>
+              <span data-i18n="filter_title">Filtros de Búsqueda</span>
+            </div>
+            <button class="btn btn-outline btn-sm" onclick="clearAllFilters()" style="font-size: 0.75rem;" data-i18n="filter_clear">
+              Limpiar
+            </button>
+          </div>
+
+          <!-- Permiso de Trabajo / Arraigo Filter -->
+          <div class="filter-group">
+            <span class="filter-label" data-i18n="filter_permit_title">Situación Legal / Extranjería</span>
+            <label class="filter-option">
+              <input type="radio" name="filter-permit" value="all" checked>
+              <span data-i18n="filter_permit_all">Cualquier situación</span>
+            </label>
+            <label class="filter-option">
+              <input type="radio" name="filter-permit" value="arraigo">
+              <span data-i18n="filter_permit_arraigo">Acepta precontrato para Arraigo</span>
+            </label>
+            <label class="filter-option">
+              <input type="radio" name="filter-permit" value="nie">
+              <span data-i18n="filter_permit_nie">Requiere NIE / Permiso en vigor</span>
+            </label>
+          </div>
+
+          <!-- Alojamiento Filter -->
+          <div class="filter-group">
+            <span class="filter-label" data-i18n="filter_housing_title">Beneficios</span>
+            <label class="filter-option">
+              <input type="checkbox" id="filter-housing">
+              <span data-i18n="filter_housing_only">Con Alojamiento incluido</span>
+            </label>
+          </div>
+
+          <!-- Tipo de Contrato Filter -->
+          <div class="filter-group">
+            <span class="filter-label" data-i18n="filter_contract_title">Tipo de Contrato</span>
+            <label class="filter-option">
+              <input type="radio" name="filter-contract" value="all" checked>
+              <span data-i18n="filter_contract_all">Todos los contratos</span>
+            </label>
+            <label class="filter-option">
+              <input type="radio" name="filter-contract" value="indefinido">
+              <span data-i18n="filter_contract_indefinido">Contrato Indefinido</span>
+            </label>
+            <label class="filter-option">
+              <input type="radio" name="filter-contract" value="fijo">
+              <span data-i18n="filter_contract_fijo">Fijo Discontinuo</span>
+            </label>
+            <label class="filter-option">
+              <input type="radio" name="filter-contract" value="temporal">
+              <span data-i18n="filter_contract_temporal">Temporal / Campaña</span>
+            </label>
+          </div>
+
+          <!-- Legal Banner in Sidebar -->
+          <div class="legal-highlight-card">
+            <strong>🇪🇸 Nuevo Reglamento Extranjería</strong>
+            Los contratos de trabajo para trámites de regularización por arraigo deben garantizar al menos el SMI (1.134 €/mes en 14 pagas o 1.323 € en 12 pagas) y alta en la Seguridad Social.
+          </div>
+        </aside>
+
+        <!-- Results Area -->
+        <section class="content-area">
+          <div class="results-header">
+            <div class="results-count">
+              <span id="results-count-number">0</span>
+              <span data-i18n="results_found">ofertas encontradas</span>
+            </div>
+            <div class="results-sort">
+              <span>Ordenar por:</span>
+              <select onchange="state.renderJobsList()">
+                <option value="recent">Más recientes</option>
+                <option value="salary">Mayor salario</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Jobs Cards List -->
+          <div id="jobs-container" class="jobs-list">
+            <!-- Dynamic jobs rendered here via app.js -->
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <!-- 2. VISTA DE GESTIÓN DE CANDIDATURAS (ATS KANBAN EMPLEADOR) -->
+    <div id="ats-view" style="display: none;">
+      <div style="margin-bottom: 2rem;">
+        <h2 style="font-size: 1.85rem; font-weight: 800; color: var(--text-main);" data-i18n="ats_title">
+          Gestión de Candidatos (Pipeline ATS)
+        </h2>
+        <p style="color: var(--text-muted); font-size: 1rem;" data-i18n="ats_subtitle">
+          Organiza y gestiona las solicitudes de tus ofertas en tiempo real
+        </p>
+      </div>
+
+      <div id="ats-board-container">
+        <!-- Rendered via renderAtsBoard() -->
+      </div>
+    </div>
+
+    <!-- 3. VISTA DE CREADOR DE CURRÍCULUM EN ESPAÑOL -->
+    <div id="cv-view" style="display: none;">
+      <div style="margin-bottom: 2rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+        <div>
+          <h2 style="font-size: 1.85rem; font-weight: 800; color: var(--text-main);" data-i18n="cv_title">
+            Creador de Currículum para España
+          </h2>
+          <p style="color: var(--text-muted); font-size: 1rem;" data-i18n="cv_subtitle">
+            Genera un CV adaptado a los estándares de selección de empresas españolas
+          </p>
+        </div>
+        <button class="btn btn-primary" onclick="printCV()">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="6 9 6 2 18 2 18 9"></polyline>
+            <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path>
+            <rect x="6" y="14" width="12" height="8"></rect>
+          </svg>
+          <span data-i18n="cv_export_btn">Imprimir / Guardar en PDF</span>
+        </button>
+      </div>
+
+      <div class="cv-preview-container">
+        <!-- Edit Form -->
+        <div style="background: #ffffff; padding: 1.5rem; border-radius: var(--radius-lg); border: 1px solid var(--border);">
+          <h3 style="font-size: 1.15rem; font-weight: 700; margin-bottom: 1.25rem;">📝 Editar Información de tu CV</h3>
+          <form id="cv-edit-form">
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label required">Nombre y Apellidos</label>
+                <input type="text" id="cv-name-input" class="form-input" value="Ahmed Mansouri" required>
+              </div>
+              <div class="form-group">
+                <label class="form-label required">Puesto u Oficio Principal</label>
+                <input type="text" id="cv-profession-input" class="form-input" value="Cocinero & Ayudante de Hostelería" required>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label required">Teléfono / WhatsApp</label>
+                <input type="tel" id="cv-phone-input" class="form-input" value="+34 612 345 678" required>
+              </div>
+              <div class="form-group">
+                <label class="form-label required">Correo Electrónico</label>
+                <input type="email" id="cv-email-input" class="form-input" value="ahmed.mansouri@ejemplo.es" required>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label required">Provincia en España</label>
+                <input type="text" id="cv-province-input" class="form-input" value="Madrid" required>
+              </div>
+              <div class="form-group">
+                <label class="form-label required">Situación Administrativa</label>
+                <input type="text" id="cv-legal-input" class="form-input" value="Permiso de residencia y trabajo en vigor (NIE)" required>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Idiomas</label>
+              <input type="text" id="cv-languages-input" class="form-input" value="Árabe (Nativo), Español (Fluido / B2), Inglés (Básico)">
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Habilidades y Competencias</label>
+              <input type="text" id="cv-skills-input" class="form-input" value="Cocina mediterránea, manipulación de alimentos, corte, gestión de pedidos">
+            </div>
+
+            <div class="form-group">
+              <label class="form-label required">Experiencia Laboral</label>
+              <textarea id="cv-experience-input" class="form-textarea" rows="4" required>3 años en Restaurante El Olivo (Madrid) como ayudante de cocina.
+2 años de experiencia previa en sector hostelero.</textarea>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Formación y Certificados</label>
+              <textarea id="cv-education-input" class="form-textarea" rows="2">Certificado de Profesionalidad en Operaciones Básicas de Cocina - Madrid
+Carnet de Manipulador de Alimentos en vigor</textarea>
+            </div>
+
+            <button type="submit" class="btn btn-primary" style="width: 100%;">
+              💾 Guardar y Actualizar Vista Previa
+            </button>
+          </form>
+        </div>
+
+        <!-- Live Spanish Resume Sheet Preview -->
+        <div>
+          <div id="cv-preview-sheet" class="cv-sheet">
+            <!-- Rendered live via renderCVPreview() -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4. VISTA DE GUÍA LEGAL, ARRAIGO Y EXTRANJERÍA -->
+    <div id="guide-view" style="display: none;">
+      <div style="margin-bottom: 2rem;">
+        <h2 style="font-size: 1.85rem; font-weight: 800; color: var(--text-main);" data-i18n="guide_title">
+          Guía de Extranjería y Contratación Laboral
+        </h2>
+        <p style="color: var(--text-muted); font-size: 1rem;" data-i18n="guide_subtitle">
+          Información clave sobre el Nuevo Reglamento de Extranjería, tipos de arraigo y derechos del trabajador en España
+        </p>
+      </div>
+
+      <div class="legal-guide-grid">
+        <!-- Card 1: Arraigo Social y Sociolaboral -->
+        <div class="guide-card">
+          <div class="guide-icon blue">⚖️</div>
+          <h3 class="guide-title">Arraigo Social y Sociolaboral</h3>
+          <p class="guide-text">
+            Permite obtener autorización de residencia y trabajo a personas que acrediten permanencia continuada en España. Requiere contrato de trabajo firmado de duración mínima, garantizando el Salario Mínimo Interprofesional (SMI).
+          </p>
+        </div>
+
+        <!-- Card 2: Arraigo para la Formación -->
+        <div class="guide-card">
+          <div class="guide-icon amber">🎓</div>
+          <h3 class="guide-title">Arraigo para la Formación</h3>
+          <p class="guide-text">
+            Dirigido a quienes lleven 2 años continuados en España y se comprometan a realizar una formación reglada para el empleo o certificación profesional. Al finalizar la formación, se puede solicitar la autorización de trabajo con un contrato.
+          </p>
+        </div>
+
+        <!-- Card 3: Obligaciones del Empleador -->
+        <div class="guide-card">
+          <div class="guide-icon green">📋</div>
+          <h3 class="guide-title">Obligaciones de la Empresa</h3>
+          <p class="guide-text">
+            La empresa empleadora debe estar al corriente con Hacienda y la Seguridad Social, y acreditar solvencia económica para abonar el salario estipulado según el convenio sectorial. Una vez aprobada la resolución favorable, se procede al alta en Seguridad Social.
+          </p>
+        </div>
+
+        <!-- Card 4: SMI y Derechos Laborales -->
+        <div class="guide-card">
+          <div class="guide-icon blue">💶</div>
+          <h3 class="guide-title">Salario Mínimo (SMI) en España</h3>
+          <p class="guide-text">
+            El SMI vigente en España es de 1.134 € brutos mensuales en 14 pagas (o 1.323 € brutos en 12 pagas) para la jornada completa de 40 horas semanales. Ningún contrato legal puede pagar por debajo de este umbral.
+          </p>
+        </div>
+
+        <!-- Card 5: Empadronamiento y Vida Laboral -->
+        <div class="guide-card">
+          <div class="guide-icon amber">🏛️</div>
+          <h3 class="guide-title">Empadronamiento Histórico</h3>
+          <p class="guide-text">
+            El certificado de empadronamiento es la prueba reina para demostrar el tiempo de residencia continuada en España. Se recomienda renovar o mantener siempre actualizado el padrón en el ayuntamiento correspondiente.
+          </p>
+        </div>
+
+        <!-- Card 6: Servicio de Mediación Laboral -->
+        <div class="guide-card">
+          <div class="guide-icon green">🤝</div>
+          <h3 class="guide-title">Intermediación Directa</h3>
+          <p class="guide-text">
+            IberTrabajo ofrece un canal de mediación laboral y asistencia técnica para revisar la idoneidad de los precontratos antes de su presentación ante la Oficina de Extranjería, evitando denegaciones por errores formales.
+          </p>
+        </div>
+      </div>
+
+      <!-- Mediation Request Box -->
+      <div style="background: linear-gradient(135deg, #1e3a8a 0%, #172554 100%); color: white; border-radius: var(--radius-lg); padding: 2.5rem; margin-top: 2.5rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1.5rem;">
+        <div style="max-width: 600px;">
+          <h3 style="font-size: 1.5rem; font-weight: 800; margin-bottom: 0.5rem;">¿Necesitas asesoramiento o mediación personalizada?</h3>
+          <p style="color: #cbd5e1; font-size: 0.95rem;">
+            Nuestro equipo de gestores y mediadores laborales te orienta de forma gratuita en la preparación de ofertas, revisión de convenios colectivos y trámites de extranjería.
+          </p>
+        </div>
+        <a href="https://wa.me/34600000000?text=Hola,%20deseo%20solicitar%20asesoramiento%20y%20mediación%20laboral%20en%20España" target="_blank" class="btn btn-whatsapp btn-lg">
+          💬 Contactar Asesor por WhatsApp
+        </a>
+      </div>
+    </div>
+
+    <!-- 5. VISTA DE MIS SOLICITUDES (CANDIDATO) -->
+    <div id="my-apps-view" style="display: none;">
+      <div style="margin-bottom: 2rem;">
+        <h2 style="font-size: 1.85rem; font-weight: 800; color: var(--text-main);" data-i18n="nav_my_apps">
+          Mis Solicitudes de Empleo
+        </h2>
+        <p style="color: var(--text-muted); font-size: 1rem;">
+          Estado de tus candidaturas enviadas a empresas y empleadores en España
+        </p>
+      </div>
+
+      <div id="my-apps-container">
+        <!-- Rendered via renderMyApplications() -->
+      </div>
+    </div>
+
+  </main>
+
+  <!-- MODAL: Postular a una Oferta de Empleo -->
+  <div id="apply-modal" class="modal-overlay" onclick="if(event.target === this) closeApplyModal()">
+    <div class="modal-box">
+      <div class="modal-header">
+        <div>
+          <h3 class="modal-title" data-i18n="modal_apply_title">Solicitud de Empleo</h3>
+          <span id="apply-modal-job-name" style="font-size: 0.85rem; color: var(--text-muted); font-weight: 600;"></span>
+        </div>
+        <button class="modal-close" onclick="closeApplyModal()" aria-label="Cerrar">&times;</button>
+      </div>
+
+      <form id="apply-form">
+        <div class="modal-body">
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label required" data-i18n="form_fullname">Nombre y Apellidos</label>
+              <input type="text" id="apply-fullname" class="form-input" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label required" data-i18n="form_phone">Teléfono / WhatsApp</label>
+              <input type="tel" id="apply-phone" class="form-input" placeholder="+34 600 00 00 00" required>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label required" data-i18n="form_email">Correo Electrónico</label>
+              <input type="email" id="apply-email" class="form-input" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label required" data-i18n="form_province">Provincia de residencia en España</label>
+              <select id="apply-province" class="form-select" required>
+                <!-- Populated dynamically -->
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label required" data-i18n="form_legal_status">Situación administrativa / legal en España</label>
+            <select id="apply-legal-status" class="form-select" required>
+              <option value="status_nie_valid" data-i18n="status_nie_valid">NIE / Permiso de residencia y trabajo en vigor</option>
+              <option value="status_nie_renewal" data-i18n="status_nie_renewal">En trámite de renovación / Prórroga</option>
+              <option value="status_arraigo_needed" data-i18n="status_arraigo_needed">Sin permiso vigente (Busco precontrato para Arraigo)</option>
+              <option value="status_eu_citizen" data-i18n="status_eu_citizen">DNI español o Ciudadano de la Unión Europea</option>
+              <option value="status_origin_visa" data-i18n="status_origin_visa">En país de origen (Interesado en visado de trabajo)</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label required" data-i18n="form_experience">Breve resumen de tu experiencia</label>
+            <textarea id="apply-experience" class="form-textarea" rows="3" data-i18n-placeholder="form_experience_placeholder" placeholder="Indica en qué has trabajado, años de experiencia y disponibilidad horaria..." required></textarea>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" data-i18n="form_cv_file">Adjuntar CV o usar perfil de la plataforma</label>
+            <input type="file" class="form-input" accept=".pdf,.doc,.docx">
+            <div class="form-help">Si no dispones de archivo, el empleador consultará tu perfil generado en la plataforma.</div>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline" onclick="closeApplyModal()">Cancelar</button>
+          <button type="submit" class="btn btn-primary">
+            <span data-i18n="btn_submit_application">Enviar Solicitud a la Empresa</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: Publicar Oferta de Empleo (Empresas) -->
+  <div id="post-job-modal" class="modal-overlay" onclick="if(event.target === this) closePostJobModal()">
+    <div class="modal-box lg">
+      <div class="modal-header">
+        <div>
+          <h3 class="modal-title" data-i18n="modal_post_title">Publicar Nueva Oferta de Trabajo</h3>
+          <span style="font-size: 0.85rem; color: var(--text-muted);">Empresas y empleadores verificados en España</span>
+        </div>
+        <button class="modal-close" onclick="closePostJobModal()" aria-label="Cerrar">&times;</button>
+      </div>
+
+      <form id="post-job-form">
+        <div class="modal-body">
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label required" data-i18n="form_job_title">Título del puesto de trabajo</label>
+              <input type="text" id="post-job-title" class="form-input" placeholder="Ej. Cocinero/a, Peón de obra, Conductor..." required>
+            </div>
+            <div class="form-group">
+              <label class="form-label required" data-i18n="form_company_name">Nombre de la Empresa o Empleador</label>
+              <input type="text" id="post-job-company" class="form-input" placeholder="Ej. Hostelería Sol S.L." required>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label required" data-i18n="form_cif">CIF / NIF de la Empresa</label>
+              <input type="text" id="post-job-cif" class="form-input" placeholder="B-12345678" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label required" data-i18n="form_sector">Sector Laboral</label>
+              <select id="post-job-sector" class="form-select" required>
+                <!-- Populated dynamically -->
+              </select>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label required" data-i18n="form_province">Provincia de trabajo</label>
+              <select id="post-job-province" class="form-select" required>
+                <!-- Populated dynamically -->
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label required" data-i18n="form_salary">Salario Neto / Bruto mensual (€)</label>
+              <input type="number" id="post-job-salary" class="form-input" placeholder="1450" min="1134" required>
+              <div class="form-help" data-i18n="form_salary_help">Debe respetar el SMI (Salario Mínimo) o Convenio colectivo aplicable.</div>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label required" data-i18n="form_contract_type">Modalidad de Contrato</label>
+              <select id="post-job-contract" class="form-select" required>
+                <option value="indefinido">Indefinido (Jornada completa)</option>
+                <option value="fijo">Fijo Discontinuo</option>
+                <option value="temporal">Temporal / Campaña</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label required" data-i18n="form_arraigo_support">¿La empresa emite precontrato para Arraigo?</label>
+              <select id="post-job-arraigo" class="form-select" required>
+                <option value="yes" data-i18n="form_yes">Sí, apoyamos regularización</option>
+                <option value="no" data-i18n="form_no">No, requiere permiso en vigor</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label required" data-i18n="form_housing_support">¿Incluye alojamiento para el trabajador?</label>
+              <select id="post-job-housing" class="form-select" required>
+                <option value="no">No incluye alojamiento</option>
+                <option value="yes">Sí, incluye alojamiento gratuito / facilitado</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label required" data-i18n="form_whatsapp_contact">WhatsApp para contacto directo</label>
+              <input type="text" id="post-job-whatsapp" class="form-input" placeholder="34612345678" required>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label required" data-i18n="form_job_desc">Descripción del puesto, funciones y requisitos</label>
+            <textarea id="post-job-desc" class="form-textarea" rows="4" placeholder="Describe los requisitos, horarios y tareas del puesto..." required></textarea>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline" onclick="closePostJobModal()">Cancelar</button>
+          <button type="submit" class="btn btn-primary">
+            <span data-i18n="btn_publish_job">Publicar Oferta Ahora</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div id="toast-container" class="toast-container"></div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <div class="brand" style="color: white; margin-bottom: 1rem;">
+            <div class="brand-icon">💼</div>
+            <span>IberTrabajo</span>
+          </div>
+          <p style="font-size: 0.9rem; line-height: 1.6; margin-bottom: 1rem;">
+            Plataforma digital de intermediación laboral y asesoría en extranjería en el Reino de España. Conectamos talento con empleadores de confianza, promoviendo el empleo digno, legal y seguro.
+          </p>
+          <div style="font-size: 0.85rem; color: #94a3b8;">
+            📍 Madrid · Barcelona · Valencia · Sevilla · Almería
+          </div>
+        </div>
+
+        <div class="footer-col">
+          <h4>Para Candidatos</h4>
+          <ul class="footer-links">
+            <li><a href="#" onclick="switchTab('jobs')">Buscar Empleo por Provincia</a></li>
+            <li><a href="#" onclick="switchTab('cv')">Crear Currículum Vitae</a></li>
+            <li><a href="#" onclick="switchTab('guide')">Requisitos de Arraigo Social</a></li>
+            <li><a href="#" onclick="switchTab('my-apps')">Seguimiento de Candidaturas</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>Para Empleadores</h4>
+          <ul class="footer-links">
+            <li><a href="#" onclick="openPostJobModal()">Publicar Oferta de Empleo</a></li>
+            <li><a href="#" onclick="switchTab('ats')">Panel ATS de Candidatos</a></li>
+            <li><a href="#" onclick="switchTab('guide')">Contratación y SMI</a></li>
+            <li><a href="#">Verificación de Empresas</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>Marco Legal & Soporte</h4>
+          <ul class="footer-links">
+            <li><a href="#" onclick="switchTab('guide')">Nuevo Reglamento de Extranjería</a></li>
+            <li><a href="#">Seguridad Social y Convenios</a></li>
+            <li><a href="#">Términos y Condiciones de Uso</a></li>
+            <li><a href="#">Política de Privacidad (RGPD)</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div>
+          © 2026 IberTrabajo - Plataforma de Intermediación Laboral en España. Todos los derechos reservados.
+        </div>
+        <div style="display: flex; gap: 1.5rem;">
+          <a href="#" style="color: #94a3b8; text-decoration: none;">Aviso Legal</a>
+          <a href="#" style="color: #94a3b8; text-decoration: none;">Cookies</a>
+          <a href="#" style="color: #94a3b8; text-decoration: none;">Contacto</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
