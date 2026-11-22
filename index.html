@@ -66,7 +66,7 @@
       </div>
       <h1 class="hero-title" data-i18n="hero_title">Conectamos Trabajadores y Empresas en España</h1>
       <p class="hero-subtitle" data-i18n="hero_subtitle">
-        Plataforma con cuentas dedicadas para candidatos y empleadores. Gestión integral de permisos de trabajo, ofertas para procesos de arraigo y contratación legal.
+        Plataforma con cuentas dedicadas para candidatos y empleadores. Perfiles detallados con carnet de conducir, edad, formación académica, certificados profesionales y niveles de idiomas.
       </p>
 
       <!-- Live Search Box -->
@@ -306,62 +306,158 @@
 
       <div class="cv-preview-container">
         <!-- Edit Form -->
-        <div style="background: #ffffff; padding: 1.5rem; border-radius: var(--radius-lg); border: 1px solid var(--border);">
-          <h3 style="font-size: 1.15rem; font-weight: 700; margin-bottom: 1.25rem;">📝 Editar Información de tu CV</h3>
+        <div style="background: #ffffff; padding: 1.75rem; border-radius: var(--radius-lg); border: 1px solid var(--border);">
+          <h3 style="font-size: 1.2rem; font-weight: 800; margin-bottom: 1.25rem;">📝 Editar Información de tu CV</h3>
           <form id="cv-edit-form">
+
+            <!-- FOTO DE PERFIL -->
+            <div class="avatar-upload-wrap">
+              <div class="profile-photo-circle">
+                <img id="cv-photo-preview-img" src="" alt="Avatar">
+              </div>
+              <div class="avatar-upload-info">
+                <label>📸 Foto de Perfil (Photo de Profil)</label>
+                <input type="file" id="cv-photo-file-input" class="form-input" style="padding:0.35rem;font-size:0.8rem;" accept="image/*" onchange="handlePhotoUpload('cv', this)">
+                <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.35rem;">O selecciona un avatar profesional:</div>
+                <div class="preset-avatars">
+                  <button type="button" class="preset-avatar-btn" onclick="selectPresetPhoto('cv', PRESET_AVATARS[0])"><img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80" alt="Avatar 1"></button>
+                  <button type="button" class="preset-avatar-btn" onclick="selectPresetPhoto('cv', PRESET_AVATARS[1])"><img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&auto=format&fit=crop&q=80" alt="Avatar 2"></button>
+                  <button type="button" class="preset-avatar-btn" onclick="selectPresetPhoto('cv', PRESET_AVATARS[2])"><img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=150&auto=format&fit=crop&q=80" alt="Avatar 3"></button>
+                  <button type="button" class="preset-avatar-btn" onclick="selectPresetPhoto('cv', PRESET_AVATARS[3])"><img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80" alt="Avatar 4"></button>
+                </div>
+              </div>
+            </div>
+
+            <!-- DATOS BÁSICOS -->
             <div class="form-row">
               <div class="form-group">
                 <label class="form-label required">Nombre y Apellidos</label>
-                <input type="text" id="cv-name-input" class="form-input" value="Ahmed Mansouri" required>
+                <input type="text" id="cv-name-input" class="form-input" required>
               </div>
               <div class="form-group">
                 <label class="form-label required">Puesto u Oficio Principal</label>
-                <input type="text" id="cv-profession-input" class="form-input" value="Cocinero & Ayudante de Hostelería" required>
+                <input type="text" id="cv-profession-input" class="form-input" required>
+              </div>
+            </div>
+
+            <!-- FECHA DE NACIMIENTO Y EDAD DINÁMICA -->
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label required">📅 Fecha de Nacimiento (Calcula Edad)</label>
+                <div style="display:flex;align-items:center;gap:0.75rem;">
+                  <input type="date" id="cv-birthdate-input" class="form-input" style="flex:1;" required>
+                  <span id="cv-age-badge" class="age-badge" style="display:none;"></span>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="form-label required">Provincia en España</label>
+                <select id="cv-province-input" class="form-select" required>
+                  <!-- Populated dynamically -->
+                </select>
               </div>
             </div>
 
             <div class="form-row">
               <div class="form-group">
                 <label class="form-label required">Teléfono / WhatsApp</label>
-                <input type="tel" id="cv-phone-input" class="form-input" value="+34 612 345 678" required>
+                <input type="tel" id="cv-phone-input" class="form-input" required>
               </div>
               <div class="form-group">
                 <label class="form-label required">Correo Electrónico</label>
-                <input type="email" id="cv-email-input" class="form-input" value="ahmed.mansouri@ejemplo.es" required>
-              </div>
-            </div>
-
-            <div class="form-row">
-              <div class="form-group">
-                <label class="form-label required">Provincia en España</label>
-                <input type="text" id="cv-province-input" class="form-input" value="Madrid" required>
-              </div>
-              <div class="form-group">
-                <label class="form-label required">Situación Administrativa</label>
-                <input type="text" id="cv-legal-input" class="form-input" value="Sin permiso vigente (Busco precontrato para Arraigo)" required>
+                <input type="email" id="cv-email-input" class="form-input" required>
               </div>
             </div>
 
             <div class="form-group">
-              <label class="form-label">Idiomas</label>
-              <input type="text" id="cv-languages-input" class="form-input" value="Árabe (Nativo), Español (Fluido / B2), Francés (Básico)">
+              <label class="form-label required">Situación Administrativa / Extranjería</label>
+              <select id="cv-legal-input" class="form-select" required>
+                <option value="status_nie_valid" data-i18n="status_nie_valid">NIE / Permiso de residencia y trabajo en vigor</option>
+                <option value="status_nie_renewal" data-i18n="status_nie_renewal">En trámite de renovación / Prórroga</option>
+                <option value="status_arraigo_needed" data-i18n="status_arraigo_needed">Sin permiso vigente (Busco precontrato para Arraigo)</option>
+                <option value="status_eu_citizen" data-i18n="status_eu_citizen">DNI español o Ciudadano de la Unión Europea</option>
+                <option value="status_origin_visa" data-i18n="status_origin_visa">En país de origen (Interesado en visado de trabajo)</option>
+              </select>
             </div>
 
-            <div class="form-group">
-              <label class="form-label">Habilidades y Competencias</label>
-              <input type="text" id="cv-skills-input" class="form-input" value="Cocina tradicional española, manipulación de alimentos, corte, parrilla">
+            <!-- PERMISO DE CONDUCIR Y MOVILIDAD -->
+            <div class="form-group" style="background:#f8fafc;padding:1rem;border-radius:var(--radius-md);border:1px solid var(--border);">
+              <label class="form-label">🚗 Carnet de Conducir y Movilidad</label>
+              <label class="filter-option" style="margin-bottom:0.4rem;font-weight:700;">
+                <input type="checkbox" id="cv-has-license" onchange="toggleDrivingLicenseFields('cv')">
+                <span>¿Dispone de permiso de conducir? (Permis de conduire)</span>
+              </label>
+
+              <div id="cv-license-details" style="display:none;margin-top:0.75rem;padding-top:0.75rem;border-top:1px dashed #cbd5e1;">
+                <div style="font-size:0.8rem;font-weight:700;color:var(--text-muted);margin-bottom:0.4rem;">Seleccione los tipos de carnet que posee:</div>
+                <div class="license-options-grid">
+                  <label class="license-chip-label"><input type="checkbox" class="cv-license-type-cb" value="B"> B (Turismos)</label>
+                  <label class="license-chip-label"><input type="checkbox" class="cv-license-type-cb" value="A"> A / A1 / A2 (Motos)</label>
+                  <label class="license-chip-label"><input type="checkbox" class="cv-license-type-cb" value="C"> C / C1 (Camiones)</label>
+                  <label class="license-chip-label"><input type="checkbox" class="cv-license-type-cb" value="D"> D / D1 (Autobuses)</label>
+                  <label class="license-chip-label"><input type="checkbox" class="cv-license-type-cb" value="B+E"> B+E / C+E (Remolques)</label>
+                  <label class="license-chip-label"><input type="checkbox" class="cv-license-type-cb" value="Carretillero"> 🚜 Carretillero</label>
+                </div>
+                <label class="filter-option" style="margin-top:0.75rem;">
+                  <input type="checkbox" id="cv-has-vehicle">
+                  <span>🔑 ¿Dispone de vehículo propio para desplazarse al trabajo?</span>
+                </label>
+              </div>
             </div>
 
-            <div class="form-group">
-              <label class="form-label required">Experiencia Laboral</label>
-              <textarea id="cv-experience-input" class="form-textarea" rows="4" required>3 años en Restaurante El Olivo (Madrid) como ayudante de cocina.
-2 años de experiencia previa en sector hostelero.</textarea>
+            <!-- PUESTOS Y SECTORES DE INTERÉS -->
+            <div class="form-group" style="background:#f8fafc;padding:1rem;border-radius:var(--radius-md);border:1px solid var(--border);">
+              <label class="form-label">🎯 Puestos y Sectores de Interés (Postes et Domaines Ciblés)</label>
+              <div style="margin-bottom:0.75rem;">
+                <input type="text" id="cv-target-positions" class="form-input" placeholder="Puestos concretos que le interesan (ej. Cocinero, Camarero, Mozo de almacén)...">
+              </div>
+              <div style="font-size:0.8rem;font-weight:700;color:var(--text-muted);margin-bottom:0.4rem;">Marque los sectores laborales en los que desea trabajar:</div>
+              <div class="sector-select-grid">
+                <label class="sector-chip-label"><input type="checkbox" class="cv-sector-cb" value="Hostelería"> 🍽️ Hostelería</label>
+                <label class="sector-chip-label"><input type="checkbox" class="cv-sector-cb" value="Agricultura"> 🌱 Agricultura</label>
+                <label class="sector-chip-label"><input type="checkbox" class="cv-sector-cb" value="Construcción"> 🧱 Construcción</label>
+                <label class="sector-chip-label"><input type="checkbox" class="cv-sector-cb" value="Servicios y Cuidados"> 👵 Cuidados</label>
+                <label class="sector-chip-label"><input type="checkbox" class="cv-sector-cb" value="Logística y Almacén"> 📦 Logística</label>
+                <label class="sector-chip-label"><input type="checkbox" class="cv-sector-cb" value="Limpieza"> 🧹 Limpieza</label>
+                <label class="sector-chip-label"><input type="checkbox" class="cv-sector-cb" value="Electricidad y Energía"> ⚡ Electricidad</label>
+                <label class="sector-chip-label"><input type="checkbox" class="cv-sector-cb" value="Comercio"> 🛒 Comercio</label>
+              </div>
             </div>
 
+            <!-- SEPARACIÓN 1: FORMACIÓN ACADÉMICA -->
             <div class="form-group">
-              <label class="form-label">Formación y Certificados</label>
-              <textarea id="cv-education-input" class="form-textarea" rows="2">Certificado de Profesionalidad en Cocina - Madrid
-Carnet de Manipulador de Alimentos en vigor</textarea>
+              <label class="form-label required">🎓 Formación Académica y Titulaciones Oficiales</label>
+              <div class="form-help" style="margin-bottom:0.35rem;">ESO, Bachillerato, FP Grado Medio / Grado Superior, Licenciaturas, Grados Universitarios, etc.</div>
+              <textarea id="cv-academic-input" class="form-textarea" rows="3" placeholder="Indique sus titulaciones oficiales de secundaria, formación profesional o universidad..." required></textarea>
+            </div>
+
+            <!-- SEPARACIÓN 2: OTROS DIPLOMAS Y CURSOS PROFESIONALES -->
+            <div class="form-group">
+              <label class="form-label">📜 Otros Diplomas, Cursos y Certificados Profesionales</label>
+              <div class="form-help" style="margin-bottom:0.35rem;">Certificados de Profesionalidad (SEPE), Carnet de Manipulador, Cursos PRL de Construcción (20h/60h), Carnet de Carretillero, etc.</div>
+              <textarea id="cv-certs-input" class="form-textarea" rows="3" placeholder="Indique sus certificados profesionales, cursos de prevención o diplomas específicos..."></textarea>
+            </div>
+
+            <!-- IDIOMAS DINÁMICOS CON 4 NIVELES -->
+            <div class="form-group">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.35rem;">
+                <label class="form-label" style="margin-bottom:0;">🌐 Idiomas y Nivel de Dominio (4 Niveles)</label>
+                <button type="button" class="btn btn-outline btn-sm" onclick="addLanguageRow('cv')">➕ Añadir Idioma</button>
+              </div>
+              <div id="cv-languages-container" class="languages-builder-wrap">
+                <!-- Injected via renderLanguageRows() -->
+              </div>
+            </div>
+
+            <!-- EXPERIENCIA LABORAL -->
+            <div class="form-group">
+              <label class="form-label required">💼 Experiencia Laboral</label>
+              <textarea id="cv-experience-input" class="form-textarea" rows="4" required></textarea>
+            </div>
+
+            <!-- HABILIDADES -->
+            <div class="form-group">
+              <label class="form-label">⚡ Habilidades y Competencias</label>
+              <input type="text" id="cv-skills-input" class="form-input">
             </div>
 
             <button type="submit" class="btn btn-primary" style="width: 100%;">
@@ -554,6 +650,24 @@ Carnet de Manipulador de Alimentos en vigor</textarea>
 
           <!-- Campos Específicos para CANDIDATO -->
           <div id="fields-candidate">
+            <!-- Foto de perfil de registro -->
+            <div class="avatar-upload-wrap">
+              <div class="profile-photo-circle">
+                <img id="reg-photo-preview-img" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80" alt="Avatar">
+              </div>
+              <div class="avatar-upload-info">
+                <label>📸 Foto de Perfil (Photo de Profil)</label>
+                <input type="file" class="form-input" style="padding:0.35rem;font-size:0.8rem;" accept="image/*" onchange="handlePhotoUpload('reg', this)">
+                <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.35rem;">O selecciona un avatar:</div>
+                <div class="preset-avatars">
+                  <button type="button" class="preset-avatar-btn" onclick="selectPresetPhoto('reg', PRESET_AVATARS[0])"><img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80" alt="Avatar 1"></button>
+                  <button type="button" class="preset-avatar-btn" onclick="selectPresetPhoto('reg', PRESET_AVATARS[1])"><img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&auto=format&fit=crop&q=80" alt="Avatar 2"></button>
+                  <button type="button" class="preset-avatar-btn" onclick="selectPresetPhoto('reg', PRESET_AVATARS[2])"><img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=150&auto=format&fit=crop&q=80" alt="Avatar 3"></button>
+                  <button type="button" class="preset-avatar-btn" onclick="selectPresetPhoto('reg', PRESET_AVATARS[3])"><img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80" alt="Avatar 4"></button>
+                </div>
+              </div>
+            </div>
+
             <div class="form-row">
               <div class="form-group">
                 <label class="form-label required" data-i18n="auth_candidatename">Nombre y Apellidos</label>
@@ -565,29 +679,94 @@ Carnet de Manipulador de Alimentos en vigor</textarea>
               </div>
             </div>
 
+            <!-- FECHA DE NACIMIENTO CON CÁLCULO DE EDAD -->
             <div class="form-row">
+              <div class="form-group">
+                <label class="form-label required">📅 Fecha de Nacimiento (Calcula Edad)</label>
+                <div style="display:flex;align-items:center;gap:0.75rem;">
+                  <input type="date" id="reg-cand-birthdate" class="form-input" style="flex:1;">
+                  <span id="reg-age-badge" class="age-badge" style="display:none;"></span>
+                </div>
+              </div>
               <div class="form-group">
                 <label class="form-label required" data-i18n="auth_province">Provincia en España</label>
                 <select id="auth-province-candidate" class="form-select">
                   <!-- Populated dynamically -->
                 </select>
               </div>
+            </div>
+
+            <div class="form-row">
               <div class="form-group">
                 <label class="form-label required" data-i18n="auth_profession">Profesión u Oficio Principal</label>
                 <input type="text" id="reg-cand-profession" class="form-input" placeholder="Ej. Albañil, Camarero, Peón agrícola...">
               </div>
+              <div class="form-group">
+                <label class="form-label required" data-i18n="auth_legal_status">Situación Legal en España</label>
+                <select id="reg-cand-legal" class="form-select">
+                  <option value="status_nie_valid" data-i18n="status_nie_valid">NIE / Permiso de residencia y trabajo en vigor</option>
+                  <option value="status_nie_renewal" data-i18n="status_nie_renewal">En trámite de renovación / Prórroga</option>
+                  <option value="status_arraigo_needed" data-i18n="status_arraigo_needed">Sin permiso vigente (Busco precontrato para Arraigo)</option>
+                  <option value="status_eu_citizen" data-i18n="status_eu_citizen">DNI español o Ciudadano de la Unión Europea</option>
+                  <option value="status_origin_visa" data-i18n="status_origin_visa">En país de origen (Interesado en visado de trabajo)</option>
+                </select>
+              </div>
             </div>
 
-            <div class="form-group">
-              <label class="form-label required" data-i18n="auth_legal_status">Situación Legal / Extranjería en España</label>
-              <select id="reg-cand-legal" class="form-select">
-                <option value="status_nie_valid" data-i18n="status_nie_valid">NIE / Permiso de residencia y trabajo en vigor</option>
-                <option value="status_nie_renewal" data-i18n="status_nie_renewal">En trámite de renovación / Prórroga</option>
-                <option value="status_arraigo_needed" data-i18n="status_arraigo_needed">Sin permiso vigente (Busco precontrato para Arraigo)</option>
-                <option value="status_eu_citizen" data-i18n="status_eu_citizen">DNI español o Ciudadano de la Unión Europea</option>
-                <option value="status_origin_visa" data-i18n="status_origin_visa">En país de origen (Interesado en visado de trabajo)</option>
-              </select>
+            <!-- CARNET DE CONDUCIR EN REGISTRO -->
+            <div class="form-group" style="background:#f8fafc;padding:0.85rem;border-radius:var(--radius-md);border:1px solid var(--border);">
+              <label class="filter-option" style="margin-bottom:0.4rem;font-weight:700;">
+                <input type="checkbox" id="reg-has-license" onchange="toggleDrivingLicenseFields('reg')">
+                <span>🚗 ¿Dispone de Carnet de Conducir?</span>
+              </label>
+
+              <div id="reg-license-details" style="display:none;margin-top:0.5rem;padding-top:0.5rem;border-top:1px dashed #cbd5e1;">
+                <div style="font-size:0.75rem;font-weight:700;color:var(--text-muted);margin-bottom:0.35rem;">Categorías de permiso:</div>
+                <div class="license-options-grid">
+                  <label class="license-chip-label"><input type="checkbox" class="reg-license-type-cb" value="B"> B (Turismos)</label>
+                  <label class="license-chip-label"><input type="checkbox" class="reg-license-type-cb" value="A"> A (Motos)</label>
+                  <label class="license-chip-label"><input type="checkbox" class="reg-license-type-cb" value="C"> C (Camiones)</label>
+                  <label class="license-chip-label"><input type="checkbox" class="reg-license-type-cb" value="Carretillero"> 🚜 Carretillero</label>
+                </div>
+                <label class="filter-option" style="margin-top:0.5rem;">
+                  <input type="checkbox" id="reg-has-vehicle">
+                  <span>🔑 ¿Dispone de vehículo propio?</span>
+                </label>
+              </div>
             </div>
+
+            <!-- SECTORES DE INTERÉS EN REGISTRO -->
+            <div class="form-group" style="background:#f8fafc;padding:0.85rem;border-radius:var(--radius-md);border:1px solid var(--border);">
+              <label class="form-label" style="font-size:0.85rem;">🎯 Sectores laborales de su interés</label>
+              <div class="sector-select-grid">
+                <label class="sector-chip-label"><input type="checkbox" class="reg-sector-cb" value="Hostelería"> 🍽️ Hostelería</label>
+                <label class="sector-chip-label"><input type="checkbox" class="reg-sector-cb" value="Agricultura"> 🌱 Agricultura</label>
+                <label class="sector-chip-label"><input type="checkbox" class="reg-sector-cb" value="Construcción"> 🧱 Construcción</label>
+                <label class="sector-chip-label"><input type="checkbox" class="reg-sector-cb" value="Cuidados"> 👵 Cuidados</label>
+                <label class="sector-chip-label"><input type="checkbox" class="reg-sector-cb" value="Logística"> 📦 Logística</label>
+                <label class="sector-chip-label"><input type="checkbox" class="reg-sector-cb" value="Limpieza"> 🧹 Limpieza</label>
+              </div>
+            </div>
+
+            <!-- IDIOMAS EN REGISTRO -->
+            <div class="form-group">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.35rem;">
+                <label class="form-label" style="margin-bottom:0;font-size:0.85rem;">🌐 Idiomas y Nivel (4 Niveles)</label>
+                <button type="button" class="btn btn-outline btn-sm" onclick="addLanguageRow('reg')">➕ Añadir</button>
+              </div>
+              <div id="reg-languages-container" class="languages-builder-wrap">
+                <div class="language-entry-row" data-index="0">
+                  <input type="text" class="form-input lang-name-input" style="flex:2;" value="Español" placeholder="Idioma..." required>
+                  <select class="form-select lang-level-select" style="flex:2;">
+                    <option value="basico">Básico (A1-A2)</option>
+                    <option value="intermedio" selected>Intermedio (B1-B2)</option>
+                    <option value="avanzado">Avanzado (C1)</option>
+                    <option value="nativo">Nativo / Bilingüe (C2)</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
           </div>
 
           <!-- Campos Específicos para EMPLEADOR / EMPRESA -->
@@ -694,7 +873,7 @@ Carnet de Manipulador de Alimentos en vigor</textarea>
           <div class="form-group">
             <label class="form-label" data-i18n="form_cv_file">Adjuntar CV o usar perfil de la plataforma</label>
             <input type="file" class="form-input" accept=".pdf,.doc,.docx">
-            <div class="form-help">Si no dispones de archivo, el empleador consultará tu perfil generado en la plataforma.</div>
+            <div class="form-help">Si no dispones de archivo, el empleador consultará tu perfil completo generado en la plataforma.</div>
           </div>
         </div>
 

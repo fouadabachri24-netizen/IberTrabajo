@@ -1,6 +1,8 @@
 /**
  * IberTrabajo - Plataforma de Intermediación Laboral en España
  * Sistema de Autenticación, Control de Acceso por Roles (RBAC), i18n, ATS & Base de Talentos
+ * Perfil Completo: Foto, Permiso de Conducir, Fecha de Nacimiento/Edad, Sectores de Interés,
+ * Doble Formación (Académica vs Otros Diplomas) e Idiomas con 4 Niveles
  */
 
 // --- 1. DICCIONARIO MULTILINGÜE COMPLETO (ES / AR / EN) ---
@@ -25,7 +27,7 @@ const TRANSLATIONS = {
     
     hero_tag: "Portal de Empleo & Asesoría de Extranjería en España",
     hero_title: "Conectamos Trabajadores y Empresas en España",
-    hero_subtitle: "Plataforma con cuentas dedicadas para candidatos y empleadores. Gestión integral de permisos de trabajo, ofertas para procesos de arraigo y contratación legal.",
+    hero_subtitle: "Plataforma con cuentas dedicadas para candidatos y empleadores. Perfiles detallados con carnet de conducir, edad, formación académica, certificados profesionales y niveles de idiomas.",
     stat_jobs: "Ofertas Activas",
     stat_contracts: "Contratos Gestionados",
     stat_provinces: "Provincias Españolas",
@@ -62,6 +64,7 @@ const TRANSLATIONS = {
     btn_saved: "Guardada",
     posted_on: "Publicado hace",
     salary_unit: "€/mes",
+    years_old: "años",
     
     // Auth Modal
     modal_auth_title: "Acceso a IberTrabajo",
@@ -79,6 +82,14 @@ const TRANSLATIONS = {
     auth_phone: "Teléfono / WhatsApp",
     auth_province: "Provincia en España",
     auth_profession: "Profesión u Oficio Principal",
+    auth_birthdate: "Fecha de Nacimiento",
+    auth_age: "Edad",
+    auth_has_license: "¿Dispone de carnet de conducir?",
+    auth_license_types: "Tipos de permiso que posee",
+    auth_has_vehicle: "¿Tiene vehículo propio disponible?",
+    auth_target_sectors: "Sectores laborales de su interés",
+    auth_target_positions: "Puestos de trabajo que busca",
+    auth_photo: "Foto de Perfil",
     auth_legal_status: "Situación Legal / Extranjería en España",
     status_nie_valid: "NIE / Permiso de residencia y trabajo en vigor",
     status_nie_renewal: "En trámite de renovación / Prórroga",
@@ -131,10 +142,19 @@ const TRANSLATIONS = {
     talents_subtitle: "Exclusivo para empresas: contacta directamente con profesionales disponibles",
     btn_contact_talent: "Contactar por WhatsApp",
 
-    // CV Builder
+    // CV Builder & Dual Education
     cv_title: "Creador de Currículum para España",
     cv_subtitle: "Genera un CV adaptado a los estándares de selección de empresas españolas",
     cv_export_btn: "Imprimir / Guardar en PDF",
+    cv_academic_title: "🎓 Formación Académica y Titulaciones Oficiales",
+    cv_certs_title: "📜 Otros Diplomas, Cursos y Certificados Profesionales",
+    cv_languages_title: "🌐 Idiomas y Nivel de Dominio",
+    cv_license_title: "🚗 Carnet de Conducir y Movilidad",
+    cv_interest_title: "🎯 Puestos y Sectores de Interés",
+    lang_level_basico: "Básico (A1 - A2)",
+    lang_level_intermedio: "Intermedio (B1 - B2)",
+    lang_level_avanzado: "Avanzado (C1)",
+    lang_level_nativo: "Nativo / Bilingüe (C2)",
 
     // Legal Guide
     guide_title: "Guía de Extranjería y Contratación Laboral",
@@ -161,7 +181,7 @@ const TRANSLATIONS = {
 
     hero_tag: "المنصة الأولى للتوظيف والاستشارات القانونية بإسبانيا",
     hero_title: "صلة الوصل الموثوقة بين الباحثين عن عمل والشركات في إسبانيا",
-    hero_subtitle: "منصة بحسابات وصلاحيات مخصصة لكل من الباحث عن عمل والمشغل. عقود عمل قانونية، ودعم لملفات تسوية الوضعية (Arraigo).",
+    hero_subtitle: "ملفات متقدمة للباحثين عن عمل: رخصة السياقة، تاريخ الميلاد والعمر التلقائي، القطاعات المستهدفة، الفصل بين الشواهد الأكاديمية والمهنية، وتقييم اللغات بـ 4 مستويات.",
     stat_jobs: "عروض عمل نشطة",
     stat_contracts: "عقود موثقة هذا العام",
     stat_provinces: "محافظات إسبانية",
@@ -198,6 +218,7 @@ const TRANSLATIONS = {
     btn_saved: "تم الحفظ",
     posted_on: "نشر منذ",
     salary_unit: "يورو/شهرياً",
+    years_old: "سنة",
 
     // Auth Modal
     modal_auth_title: "الدخول إلى منصة إيبير تراباخو",
@@ -215,6 +236,14 @@ const TRANSLATIONS = {
     auth_phone: "رقم الهاتف / الواتساب",
     auth_province: "المحافظة بإسبانيا",
     auth_profession: "المهنة أو الحرفة الرئيسية",
+    auth_birthdate: "تاريخ الميلاد",
+    auth_age: "العمر",
+    auth_has_license: "هل تملك رخصة سياقة (بيرمي)؟",
+    auth_license_types: "أصناف رخصة السياقة المتوفرة لديك",
+    auth_has_vehicle: "هل تتوفر على سيارة أو وسيلة تنقل خاصة؟",
+    auth_target_sectors: "القطاعات ومجالات النشاط التي تهمك",
+    auth_target_positions: "الوظائف والمناصب التي تبحث عنها",
+    auth_photo: "الصورة الشخصية للبروفايل",
     auth_legal_status: "الوضعية الإدارية والقانونية في إسبانيا",
     status_nie_valid: "أملك بطاقة إقامة وعمل سارية المفعول (NIE / TIE)",
     status_nie_renewal: "في طور تجديد الإقامة / التمديد (En trámite)",
@@ -267,10 +296,19 @@ const TRANSLATIONS = {
     talents_subtitle: "خاص بالشركات: تصفح وتواصل مباشرة مع العمال والمهنيين المتاحين",
     btn_contact_talent: "تواصل عبر واتساب",
 
-    // CV Builder
+    // CV Builder & Dual Education
     cv_title: "منشئ السيرة الذاتية المتوافقة مع معايير إسبانيا",
     cv_subtitle: "صمم سيرة ذاتية احترافية بالصيغة المقبولة لدى الشركات الإسبانية",
     cv_export_btn: "طباعة / تحميل بصيغة PDF",
+    cv_academic_title: "🎓 الشواهد والتكوينات الأكاديمية الرسمية",
+    cv_certs_title: "📜 الديبلومات المهنية والشهادات التكوينية والتدريبية",
+    cv_languages_title: "🌐 اللغات ومستوى الإتقان",
+    cv_license_title: "🚗 رخصة السياقة والقدرة على التنقل",
+    cv_interest_title: "🎯 المناصب والقطاعات المستهدفة",
+    lang_level_basico: "مستوى أساسي (A1 - A2)",
+    lang_level_intermedio: "مستوى متوسط (B1 - B2)",
+    lang_level_avanzado: "مستوى متقدم (C1)",
+    lang_level_nativo: "لغة أم / إتقان تام (C2)",
 
     // Legal Guide
     guide_title: "الدليل القانوني لعقود العمل وقانون الأجانب بإسبانيا",
@@ -297,7 +335,7 @@ const TRANSLATIONS = {
 
     hero_tag: "Verified Jobs & Immigration Mediation in Spain",
     hero_title: "Connecting Workers and Employers in Spain",
-    hero_subtitle: "Platform with dedicated accounts and permissions for job seekers and employers. Work permit management, Arraigo regularization sponsorship, and legal contracting.",
+    hero_subtitle: "Enhanced profiles: driver's license types, birth date & automatic age calculation, target job fields, separate academic degrees vs professional certificates, and 4-level language scale.",
     stat_jobs: "Active Openings",
     stat_contracts: "Contracts Facilitated",
     stat_provinces: "Spanish Provinces",
@@ -334,6 +372,7 @@ const TRANSLATIONS = {
     btn_saved: "Saved",
     posted_on: "Posted",
     salary_unit: "€/month",
+    years_old: "years old",
 
     // Auth Modal
     modal_auth_title: "Access IberTrabajo",
@@ -351,6 +390,14 @@ const TRANSLATIONS = {
     auth_phone: "Phone / WhatsApp",
     auth_province: "Province in Spain",
     auth_profession: "Primary Occupation / Trade",
+    auth_birthdate: "Birth Date",
+    auth_age: "Age",
+    auth_has_license: "Do you have a driver's license?",
+    auth_license_types: "Driver's license categories you hold",
+    auth_has_vehicle: "Do you have your own vehicle?",
+    auth_target_sectors: "Target Industry Sectors",
+    auth_target_positions: "Target Job Titles / Positions",
+    auth_photo: "Profile Picture",
     auth_legal_status: "Legal / Residency Status in Spain",
     status_nie_valid: "Valid Spanish Work & Residency Permit (NIE/TIE)",
     status_nie_renewal: "Renewal in progress (En trámite)",
@@ -403,16 +450,47 @@ const TRANSLATIONS = {
     talents_subtitle: "Exclusive for Employers: contact available candidates directly on WhatsApp",
     btn_contact_talent: "Contact via WhatsApp",
 
-    // CV Builder
+    // CV Builder & Dual Education
     cv_title: "Spanish Standard CV Builder",
     cv_subtitle: "Generate a professional Europass-styled Spanish resume in seconds",
     cv_export_btn: "Print / Export to PDF",
+    cv_academic_title: "🎓 Academic Education & Official Degrees",
+    cv_certs_title: "📜 Vocational Diplomas, Certificates & Courses",
+    cv_languages_title: "🌐 Languages & Proficiency Levels",
+    cv_license_title: "🚗 Driving License & Mobility",
+    cv_interest_title: "🎯 Target Roles & Industry Sectors",
+    lang_level_basico: "Basic (A1 - A2)",
+    lang_level_intermedio: "Intermediate (B1 - B2)",
+    lang_level_avanzado: "Advanced (C1)",
+    lang_level_nativo: "Native / Bilingual (C2)",
 
     // Legal Guide
     guide_title: "Spanish Labor & Immigration Legal Guide",
     guide_subtitle: "Clear insights on Spanish immigration regulations, Arraigo work contracts, and employee rights"
   }
 };
+
+// Helper: Calculateur d'âge dynamique à partir de la date de naissance
+function calculateAge(birthDateString) {
+  if (!birthDateString) return null;
+  const today = new Date();
+  const birthDate = new Date(birthDateString);
+  if (isNaN(birthDate.getTime())) return null;
+  let age = today.getFullYear() - birthDate.getFullYear();
+  const m = today.getMonth() - birthDate.getMonth();
+  if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+    age--;
+  }
+  return age >= 0 ? age : null;
+}
+
+// Avatars par défaut professionnels
+const PRESET_AVATARS = [
+  "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80",
+  "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&auto=format&fit=crop&q=80",
+  "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=150&auto=format&fit=crop&q=80",
+  "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80"
+];
 
 // --- 2. BASE DE DATOS INICIAL DE USUARIOS (CANDIDATOS Y EMPLEADORES) ---
 const INITIAL_USERS = [
@@ -426,10 +504,22 @@ const INITIAL_USERS = [
     province: "Madrid",
     profession: "Cocinero & Ayudante de Hostelería",
     legalStatus: "status_arraigo_needed",
-    skills: "Cocina tradicional española, manipulación de alimentos, corte, parrilla",
-    experience: "3 años en Restaurante El Olivo (Madrid) como ayudante de cocina.\n2 años de experiencia previa en sector hostelero.",
-    languages: "Árabe (Nativo), Español (Fluido / B2), Francés (Básico)",
-    education: "Certificado de Profesionalidad en Cocina - Madrid"
+    photo: PRESET_AVATARS[0],
+    birthDate: "1998-04-12",
+    hasDrivingLicense: true,
+    drivingLicenseTypes: ["B", "Carretillero"],
+    hasVehicle: true,
+    targetSectors: ["Hostelería", "Logística y Almacén"],
+    targetPositions: "Cocinero, Ayudante de cocina, Mozo de almacén",
+    academicEducation: "Bachillerato en Ciencias Sociales - Título Homologado\nEducación Secundaria Obligatoria (ESO)",
+    otherCertifications: "Certificado de Profesionalidad en Operaciones Básicas de Cocina (HOTR0108 - SEPE)\nCarnet Oficial de Manipulador de Alimentos de Mayor Riesgo\nCurso de Prevención de Riesgos Laborales en Hostelería (PRL 30h)",
+    languagesList: [
+      { language: "Árabe", level: "nativo" },
+      { language: "Español", level: "intermedio" },
+      { language: "Francés", level: "basico" }
+    ],
+    skills: "Cocina tradicional española, manipulación de alimentos, corte, parrilla, recepción de mercancías",
+    experience: "3 años en Restaurante El Olivo (Madrid) como ayudante de cocina y plancha.\n2 años de experiencia previa en sector hostelero y servicio de barra."
   },
   {
     id: "usr-cand-2",
@@ -441,10 +531,21 @@ const INITIAL_USERS = [
     province: "Almería",
     profession: "Peón Agrícola Especializado & Carretillero",
     legalStatus: "status_nie_valid",
-    skills: "Recolección invernadero, carnet de carretillero, riego por goteo, mantenimiento",
-    experience: "4 años de trabajo continuo en explotaciones agrícolas en Campo de Dalías (Almería).",
-    languages: "Árabe (Nativo), Español (Avanzado)",
-    education: "Carnet de Carretillero homologado (UNE 58451)"
+    photo: PRESET_AVATARS[1],
+    birthDate: "1995-09-20",
+    hasDrivingLicense: true,
+    drivingLicenseTypes: ["B", "C", "Carretillero"],
+    hasVehicle: true,
+    targetSectors: ["Agricultura", "Logística y Almacén", "Construcción"],
+    targetPositions: "Peón agrícola especializado, Carretillero de almacén, Conductor de reparto",
+    academicEducation: "Educación Secundaria (Certificado de Estudios Medios)",
+    otherCertifications: "Carnet Oficial de Conductor de Carretillas Elevadoras (Norma UNE 58451)\nCertificado de Profesionalidad en Actividades Auxiliares en Agricultura (AGAX0208)\nCarnet de Aplicador de Productos Fitosanitarios (Nivel Cualificado)",
+    languagesList: [
+      { language: "Árabe", level: "nativo" },
+      { language: "Español", level: "avanzado" }
+    ],
+    skills: "Recolección invernadero, carnet de carretillero, riego por goteo, mantenimiento de aperos, carga y descarga",
+    experience: "4 años de trabajo continuo en explotaciones agrícolas en Campo de Dalías (Almería).\n1 año en almacén de empaquetado de hortalizas como carretillero."
   },
   {
     id: "usr-cand-3",
@@ -456,10 +557,22 @@ const INITIAL_USERS = [
     province: "Barcelona",
     profession: "Cuidadora Sociosanitaria & Servicios del Hogar",
     legalStatus: "status_nie_valid",
-    skills: "Atención a personas dependientes, geriatría, cocina dietética, primeros auxilios",
-    experience: "3 años atendiendo a personas mayores con movilidad reducida en Barcelona y Hospitalet.",
-    languages: "Árabe (Nativo), Español (Fluido), Catalán (Básico)",
-    education: "Certificado de Atención Sociosanitaria a Personas Dependientes en Instituciones Sociales"
+    photo: PRESET_AVATARS[2],
+    birthDate: "1992-02-15",
+    hasDrivingLicense: true,
+    drivingLicenseTypes: ["B"],
+    hasVehicle: false,
+    targetSectors: ["Servicios y Cuidados", "Limpieza", "Hostelería"],
+    targetPositions: "Cuidadora sociosanitaria, Ayuda a domicilio, Camarera de pisos",
+    academicEducation: "Diplomatura en Trabajo Social (País de origen)\nHomologación de título universitario en trámite ante el Ministerio de Educación",
+    otherCertifications: "Certificado de Profesionalidad en Atención Sociosanitaria a Personas Dependientes en Instituciones Sociales (SSCS0208)\nCurso de Primeros Auxilios y Soporte Vital Básico (Cruz Roja Española)\nCarnet de Manipulador de Alimentos",
+    languagesList: [
+      { language: "Árabe", level: "nativo" },
+      { language: "Español", level: "avanzado" },
+      { language: "Catalán", level: "basico" }
+    ],
+    skills: "Atención a personas dependientes, geriatría, cocina dietética, control de medicación, acompañamiento",
+    experience: "3 años atendiendo a personas mayores con movilidad reducida en Barcelona y Hospitalet.\n1 año en servicio de limpieza y mantenimiento hospitalario."
   },
   {
     id: "usr-emp-1",
@@ -689,18 +802,27 @@ class AppState {
       housing: false
     };
 
-    // CV Data
+    // CV Data enriquecido con foto, carnet, edad, doble formación y lenguas con 4 niveles
+    const cand1 = INITIAL_USERS[0];
     this.cvData = JSON.parse(localStorage.getItem("iber_cv")) || {
-      fullName: "Ahmed Mansouri",
-      profession: "Cocinero & Ayudante de Hostelería",
-      phone: "+34 612 345 678",
-      email: "ahmed.mansouri@ejemplo.es",
-      province: "Madrid",
+      fullName: cand1.name,
+      profession: cand1.profession,
+      phone: cand1.phone,
+      email: cand1.email,
+      province: cand1.province,
       legalStatus: "Sin permiso vigente (Busco precontrato para Arraigo)",
-      languages: "Árabe (Nativo), Español (Fluido / B2), Francés (Básico)",
-      skills: "Cocina tradicional española, manipulación de alimentos, corte, parrilla",
-      experience: "3 años en Restaurante El Olivo (Madrid) como ayudante de cocina.\n2 años de experiencia previa en sector hostelero.",
-      education: "Certificado de Profesionalidad en Cocina - Madrid"
+      photo: cand1.photo,
+      birthDate: cand1.birthDate,
+      hasDrivingLicense: cand1.hasDrivingLicense,
+      drivingLicenseTypes: cand1.drivingLicenseTypes,
+      hasVehicle: cand1.hasVehicle,
+      targetSectors: cand1.targetSectors,
+      targetPositions: cand1.targetPositions,
+      academicEducation: cand1.academicEducation,
+      otherCertifications: cand1.otherCertifications,
+      languagesList: cand1.languagesList,
+      skills: cand1.skills,
+      experience: cand1.experience
     };
   }
 
@@ -734,16 +856,12 @@ class AppState {
     this.currentUser = user;
     localStorage.setItem("iber_auth_user", JSON.stringify(user));
     
-    // Redirigir a vista según rol
+    // Redirigir según rol
     if (user.role === "employer") {
       this.activeTab = "ats";
     } else {
       this.activeTab = "jobs";
-      if (user.profession) this.cvData.profession = user.profession;
-      if (user.name) this.cvData.fullName = user.name;
-      if (user.phone) this.cvData.phone = user.phone;
-      if (user.province) this.cvData.province = user.province;
-      this.saveCV();
+      this.loadUserIntoCV(user);
     }
 
     closeAuthModal();
@@ -753,6 +871,27 @@ class AppState {
     );
     this.render();
     return true;
+  }
+
+  loadUserIntoCV(user) {
+    this.cvData.fullName = user.name || this.cvData.fullName;
+    this.cvData.email = user.email || this.cvData.email;
+    this.cvData.phone = user.phone || this.cvData.phone;
+    this.cvData.province = user.province || this.cvData.province;
+    this.cvData.profession = user.profession || this.cvData.profession;
+    if (user.photo) this.cvData.photo = user.photo;
+    if (user.birthDate) this.cvData.birthDate = user.birthDate;
+    if (user.hasDrivingLicense !== undefined) this.cvData.hasDrivingLicense = user.hasDrivingLicense;
+    if (user.drivingLicenseTypes) this.cvData.drivingLicenseTypes = user.drivingLicenseTypes;
+    if (user.hasVehicle !== undefined) this.cvData.hasVehicle = user.hasVehicle;
+    if (user.targetSectors) this.cvData.targetSectors = user.targetSectors;
+    if (user.targetPositions) this.cvData.targetPositions = user.targetPositions;
+    if (user.academicEducation) this.cvData.academicEducation = user.academicEducation;
+    if (user.otherCertifications) this.cvData.otherCertifications = user.otherCertifications;
+    if (user.languagesList) this.cvData.languagesList = user.languagesList;
+    if (user.skills) this.cvData.skills = user.skills;
+    if (user.experience) this.cvData.experience = user.experience;
+    this.saveCV();
   }
 
   register(userData) {
@@ -777,12 +916,7 @@ class AppState {
       this.activeTab = "my-offers";
     } else {
       this.activeTab = "jobs";
-      this.cvData.fullName = newUser.name;
-      this.cvData.email = newUser.email;
-      this.cvData.phone = newUser.phone;
-      this.cvData.province = newUser.province;
-      if (newUser.profession) this.cvData.profession = newUser.profession;
-      this.saveCV();
+      this.loadUserIntoCV(newUser);
     }
 
     closeAuthModal();
@@ -886,6 +1020,7 @@ AppState.prototype.render = function() {
     this.renderTalentsPool();
   } else if (this.activeTab === "cv") {
     this.renderCVPreview();
+    this.populateCVEditForm();
   } else if (this.activeTab === "my-apps") {
     this.renderMyApplications();
   }
@@ -932,10 +1067,11 @@ AppState.prototype.renderNavbar = function() {
 
   if (this.currentUser) {
     const isEmployer = this.currentUser.role === "employer";
+    const avatarImg = this.currentUser.photo ? `<img src="${this.currentUser.photo}" style="width:100%;height:100%;border-radius:50%;object-fit:cover;" alt="Avatar">` : (isEmployer ? '🏢' : '👤');
     authContainer.innerHTML = `
       <div class="user-nav-profile" title="${this.currentUser.name}">
-        <div class="user-avatar ${isEmployer ? 'employer' : ''}">
-          ${isEmployer ? '🏢' : '👤'}
+        <div class="user-avatar ${isEmployer ? 'employer' : ''}" style="overflow:hidden;padding:0;">
+          ${avatarImg}
         </div>
         <div class="user-meta-header">
           <span class="user-name-text">${this.currentUser.name}</span>
@@ -995,7 +1131,8 @@ function populateProvinces() {
     document.getElementById("post-job-province"),
     document.getElementById("apply-province"),
     document.getElementById("auth-province-candidate"),
-    document.getElementById("auth-province-employer")
+    document.getElementById("auth-province-employer"),
+    document.getElementById("cv-province-input")
   ];
   selects.forEach(sel => {
     if (!sel) return;
@@ -1186,13 +1323,28 @@ AppState.prototype.renderAtsBoard = function() {
               <span class="ats-col-count">${stageApps.length}</span>
             </div>
             <div class="ats-cards-list" ondragover="event.preventDefault()" ondrop="handleDropAts(event, '${stage.key}')">
-              ${stageApps.map(app => `
+              ${stageApps.map(app => {
+                const candUser = state.users.find(u => u.id === app.candidateId || u.name === app.candidateName) || {};
+                const candAge = calculateAge(candUser.birthDate);
+                const avatarSrc = candUser.photo || PRESET_AVATARS[0];
+                return `
                 <div class="ats-candidate-card" draggable="true" ondragstart="handleDragAts(event, '${app.id}')">
-                  <div class="ats-card-name">👤 ${app.candidateName}</div>
+                  <div style="display:flex;align-items:center;gap:0.6rem;margin-bottom:0.4rem;">
+                    <img src="${avatarSrc}" style="width:34px;height:34px;border-radius:50%;object-fit:cover;" alt="Avatar">
+                    <div>
+                      <div class="ats-card-name">${app.candidateName}</div>
+                      ${candAge ? `<span style="font-size:0.75rem;color:var(--text-muted);">🎂 ${candAge} ${state.t("years_old")}</span>` : ''}
+                    </div>
+                  </div>
                   <div class="ats-card-job">💼 ${app.jobTitle}</div>
                   <div class="ats-card-status-badge ${stage.cssClass}">
                     ${state.t(app.candidateLegal || 'status_nie_valid')}
                   </div>
+                  ${candUser.hasDrivingLicense ? `
+                    <div style="font-size:0.75rem;color:#059669;font-weight:600;margin-bottom:0.35rem;">
+                      🚗 ${(candUser.drivingLicenseTypes || ['B']).join(', ')}
+                    </div>
+                  ` : ''}
                   <div style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0.5rem;">
                     📞 ${app.candidatePhone}
                   </div>
@@ -1205,7 +1357,8 @@ AppState.prototype.renderAtsBoard = function() {
                     </a>
                   </div>
                 </div>
-              `).join('')}
+              `;
+              }).join('')}
               ${stageApps.length === 0 ? `
                 <div style="text-align: center; padding: 2.5rem 0.5rem; color: var(--text-light); font-size: 0.85rem;">
                   ${state.lang === 'ar' ? 'لا توجد طلبات في هذه المرحلة' : 'Sin candidatos en esta fase'}
@@ -1342,15 +1495,22 @@ AppState.prototype.renderTalentsPool = function() {
 
   container.innerHTML = `
     <div class="talent-grid">
-      ${candidates.map(cand => `
+      ${candidates.map(cand => {
+        const age = calculateAge(cand.birthDate);
+        const photoSrc = cand.photo || PRESET_AVATARS[0];
+        const licenseText = cand.hasDrivingLicense ? (cand.drivingLicenseTypes || ['B']).join(', ') : null;
+        return `
         <div class="talent-card">
           <div>
             <div class="talent-card-header">
-              <div class="talent-avatar">${cand.name.substring(0, 2).toUpperCase()}</div>
+              <img src="${photoSrc}" class="talent-avatar" alt="${cand.name}">
               <div>
                 <h4 class="talent-name">${cand.name}</h4>
                 <div class="talent-profession">${cand.profession || 'Profesional'}</div>
-                <div class="talent-location">📍 ${cand.province || 'España'}</div>
+                <div class="talent-location">
+                  📍 ${cand.province || 'España'} 
+                  ${age ? `· <span class="age-badge">🎂 ${age} ${state.t("years_old")}</span>` : ''}
+                </div>
               </div>
             </div>
             
@@ -1358,8 +1518,43 @@ AppState.prototype.renderTalentsPool = function() {
               ⚖️ ${state.t(cand.legalStatus || 'status_nie_valid')}
             </div>
 
+            <!-- Permiso de conducir y movilidad -->
+            <div style="display:flex;gap:0.4rem;flex-wrap:wrap;margin-bottom:0.65rem;">
+              ${licenseText ? `
+                <span class="license-badge-pill" title="Permiso de conducir">
+                  🚗 Carnet: ${licenseText}
+                </span>
+              ` : `
+                <span class="license-badge-pill" style="color:var(--text-light);background:#f8fafc;">
+                  🚶 Sin carnet
+                </span>
+              `}
+              ${cand.hasVehicle ? `
+                <span class="license-badge-pill" style="background:#ecfdf5;color:#065f46;border-color:#a7f3d0;">
+                  🔑 Vehículo propio
+                </span>
+              ` : ''}
+            </div>
+
+            <!-- Puestos y sectores de interés -->
+            ${cand.targetPositions || cand.targetSectors ? `
+              <div style="font-size:0.8rem;background:#fffbeb;padding:0.4rem 0.6rem;border-radius:4px;border:1px solid #fef3c7;margin-bottom:0.65rem;">
+                <strong>🎯 ${state.lang === 'ar' ? 'يبحث عن:' : 'Busca:'}</strong> ${cand.targetPositions || (cand.targetSectors || []).join(', ')}
+              </div>
+            ` : ''}
+
+            <!-- Idiomas y Niveles -->
+            ${cand.languagesList && cand.languagesList.length > 0 ? `
+              <div style="margin-bottom:0.65rem;">
+                <div style="font-size:0.75rem;color:var(--text-muted);font-weight:700;margin-bottom:0.25rem;">🌐 ${state.lang === 'ar' ? 'اللغات:' : 'Idiomas:'}</div>
+                <div style="display:flex;gap:0.35rem;flex-wrap:wrap;">
+                  ${cand.languagesList.map(l => `<span class="lang-level-badge level-${l.level}">${l.language}: ${state.t("lang_level_" + l.level)}</span>`).join('')}
+                </div>
+              </div>
+            ` : ''}
+
             <p style="font-size: 0.85rem; color: #475569; margin-bottom: 0.65rem; line-height: 1.4;">
-              ${cand.experience ? cand.experience.substring(0, 100) + '...' : 'Experiencia contrastada en el sector.'}
+              ${cand.experience ? cand.experience.substring(0, 95) + '...' : 'Experiencia contrastada en el sector.'}
             </p>
 
             <div class="talent-skills-tags">
@@ -1373,48 +1568,114 @@ AppState.prototype.renderTalentsPool = function() {
             </a>
           </div>
         </div>
-      `).join('')}
+      `;
+      }).join('')}
     </div>
   `;
 };
 
-// --- 9. CREADOR DE CV EN ESPAÑOL ---
+// --- 9. CREADOR DE CV EN ESPAÑOL (CON FOTO, EDAD, PERMISO Y DOBLE FORMACIÓN) ---
 AppState.prototype.renderCVPreview = function() {
   const container = document.getElementById("cv-preview-sheet");
   if (!container) return;
 
   const cv = this.cvData;
+  const age = calculateAge(cv.birthDate);
+  const photoSrc = cv.photo || PRESET_AVATARS[0];
+  const licenseText = cv.hasDrivingLicense ? (cv.drivingLicenseTypes || ['B']).join(', ') : null;
+
   container.innerHTML = `
-    <div class="cv-header-print">
-      <h1 class="cv-name">${cv.fullName}</h1>
-      <div class="cv-profession">${cv.profession}</div>
-      <div class="cv-contact-row">
-        <span>📍 ${cv.province}, España</span>
-        <span>📞 ${cv.phone}</span>
-        <span>✉️ ${cv.email}</span>
+    <!-- Cabecera con Foto de Perfil -->
+    <div class="cv-header-layout">
+      <img src="${photoSrc}" class="cv-photo-img" alt="Foto de perfil de ${cv.fullName}">
+      <div class="cv-header-details">
+        <h1 class="cv-name">${cv.fullName}</h1>
+        <div class="cv-profession">${cv.profession}</div>
+        <div class="cv-contact-row">
+          <span>📍 ${cv.province}, España</span>
+          ${cv.birthDate ? `<span>📅 ${cv.birthDate} ${age ? `(${age} ${state.t("years_old")})` : ''}</span>` : ''}
+          <span>📞 ${cv.phone}</span>
+          <span>✉️ ${cv.email}</span>
+        </div>
       </div>
     </div>
 
+    <!-- Situación Administrativa -->
     <div class="cv-section">
       <div class="cv-section-title">⚖️ Situación Administrativa / Extranjería</div>
       <p style="font-size: 0.95rem; font-weight: 600; color: #1e3a8a;">${cv.legalStatus}</p>
     </div>
 
+    <!-- Permiso de Conducir y Vehículo -->
+    <div class="cv-section">
+      <div class="cv-section-title">🚗 Carnet de Conducir y Movilidad</div>
+      <div style="display:flex;gap:0.75rem;align-items:center;flex-wrap:wrap;font-size:0.9rem;">
+        ${licenseText ? `
+          <span class="license-badge-pill">
+            🚘 <strong>Permiso de Conducir:</strong> ${licenseText}
+          </span>
+        ` : `
+          <span style="color:var(--text-muted);">Sin permiso de conducir actualmente</span>
+        `}
+        ${cv.hasVehicle ? `
+          <span class="license-badge-pill" style="background:#ecfdf5;color:#065f46;border-color:#a7f3d0;">
+            🔑 Vehículo propio disponible
+          </span>
+        ` : ''}
+      </div>
+    </div>
+
+    <!-- Puestos y Sectores de Interés -->
+    ${cv.targetPositions || (cv.targetSectors && cv.targetSectors.length > 0) ? `
+      <div class="cv-section">
+        <div class="cv-section-title">🎯 Puestos y Sectores de Interés</div>
+        ${cv.targetPositions ? `<p style="font-size:0.925rem;margin-bottom:0.4rem;"><strong>Puestos deseados:</strong> ${cv.targetPositions}</p>` : ''}
+        ${cv.targetSectors && cv.targetSectors.length > 0 ? `
+          <div style="display:flex;gap:0.35rem;flex-wrap:wrap;">
+            ${cv.targetSectors.map(sec => `<span class="job-skill-tag" style="background:#eff6ff;color:#1e40af;border-color:#bfdbfe;">🏢 ${sec}</span>`).join('')}
+          </div>
+        ` : ''}
+      </div>
+    ` : ''}
+
+    <!-- Experiencia Laboral -->
     <div class="cv-section">
       <div class="cv-section-title">💼 Experiencia Laboral</div>
       <div style="font-size: 0.925rem; white-space: pre-line; line-height: 1.6;">${cv.experience}</div>
     </div>
 
+    <!-- SEPARACIÓN 1: Formación Académica y Titulaciones Oficiales -->
     <div class="cv-section">
-      <div class="cv-section-title">🎓 Formación y Certificados</div>
-      <div style="font-size: 0.925rem; white-space: pre-line; line-height: 1.6;">${cv.education}</div>
+      <div class="cv-section-title">${state.t("cv_academic_title")}</div>
+      <div class="education-academic-card">
+        <div style="font-size: 0.925rem; white-space: pre-line; line-height: 1.6;">${cv.academicEducation || 'Educación Secundaria Obligatoria'}</div>
+      </div>
     </div>
 
+    <!-- SEPARACIÓN 2: Otros Diplomas, Cursos y Certificados Profesionales -->
     <div class="cv-section">
-      <div class="cv-section-title">🌐 Idiomas</div>
-      <div style="font-size: 0.925rem;">${cv.languages}</div>
+      <div class="cv-section-title">${state.t("cv_certs_title")}</div>
+      <div class="education-certs-card">
+        <div style="font-size: 0.925rem; white-space: pre-line; line-height: 1.6;">${cv.otherCertifications || 'Certificados de formación complementaria'}</div>
+      </div>
     </div>
 
+    <!-- Idiomas con 4 Niveles -->
+    <div class="cv-section">
+      <div class="cv-section-title">${state.t("cv_languages_title")}</div>
+      <div style="display:flex;gap:0.5rem;flex-wrap:wrap;">
+        ${(cv.languagesList || [
+          { language: "Español", level: "intermedio" },
+          { language: "Árabe", level: "nativo" }
+        ]).map(l => `
+          <span class="lang-level-badge level-${l.level}" style="font-size:0.85rem;padding:0.3rem 0.75rem;">
+            ${l.language}: <strong>${state.t("lang_level_" + l.level)}</strong>
+          </span>
+        `).join('')}
+      </div>
+    </div>
+
+    <!-- Habilidades y Competencias -->
     <div class="cv-section">
       <div class="cv-section-title">⚡ Habilidades y Competencias</div>
       <div style="font-size: 0.925rem;">${cv.skills}</div>
@@ -1422,8 +1683,176 @@ AppState.prototype.renderCVPreview = function() {
   `;
 };
 
+// Rellenar formulario de edición de CV con valores actuales
+AppState.prototype.populateCVEditForm = function() {
+  const cv = this.cvData;
+  const nameInput = document.getElementById("cv-name-input");
+  const profInput = document.getElementById("cv-profession-input");
+  const phoneInput = document.getElementById("cv-phone-input");
+  const emailInput = document.getElementById("cv-email-input");
+  const provInput = document.getElementById("cv-province-input");
+  const legalInput = document.getElementById("cv-legal-input");
+  const birthInput = document.getElementById("cv-birthdate-input");
+  const hasLicInput = document.getElementById("cv-has-license");
+  const hasVehInput = document.getElementById("cv-has-vehicle");
+  const targetPosInput = document.getElementById("cv-target-positions");
+  const academicInput = document.getElementById("cv-academic-input");
+  const certsInput = document.getElementById("cv-certs-input");
+  const skillsInput = document.getElementById("cv-skills-input");
+  const expInput = document.getElementById("cv-experience-input");
+
+  if (nameInput) nameInput.value = cv.fullName || "";
+  if (profInput) profInput.value = cv.profession || "";
+  if (phoneInput) phoneInput.value = cv.phone || "";
+  if (emailInput) emailInput.value = cv.email || "";
+  if (provInput) provInput.value = cv.province || "Madrid";
+  if (legalInput) legalInput.value = cv.legalStatus || "status_arraigo_needed";
+  if (birthInput) birthInput.value = cv.birthDate || "";
+  if (targetPosInput) targetPosInput.value = cv.targetPositions || "";
+  if (academicInput) academicInput.value = cv.academicEducation || "";
+  if (certsInput) certsInput.value = cv.otherCertifications || "";
+  if (skillsInput) skillsInput.value = cv.skills || "";
+  if (expInput) expInput.value = cv.experience || "";
+
+  // Foto de perfil preview
+  const photoPreview = document.getElementById("cv-photo-preview-img");
+  if (photoPreview) photoPreview.src = cv.photo || PRESET_AVATARS[0];
+
+  // Carnet de conducir checkboxes
+  if (hasLicInput) {
+    hasLicInput.checked = !!cv.hasDrivingLicense;
+    toggleDrivingLicenseFields('cv');
+  }
+  if (hasVehInput) hasVehInput.checked = !!cv.hasVehicle;
+
+  const licenseTypes = cv.drivingLicenseTypes || [];
+  document.querySelectorAll(".cv-license-type-cb").forEach(cb => {
+    cb.checked = licenseTypes.includes(cb.value);
+  });
+
+  // Sectores de interés checkboxes
+  const sectors = cv.targetSectors || [];
+  document.querySelectorAll(".cv-sector-cb").forEach(cb => {
+    cb.checked = sectors.includes(cb.value);
+  });
+
+  // Idiomas dinámicos
+  renderLanguageRows('cv', cv.languagesList || [
+    { language: "Español", level: "intermedio" },
+    { language: "Árabe", level: "nativo" }
+  ]);
+
+  // Actualizar badge de edad
+  updateAgeBadge('cv', cv.birthDate);
+};
+
+function updateAgeBadge(prefix, birthDateVal) {
+  const badge = document.getElementById(`${prefix}-age-badge`);
+  if (!badge) return;
+  const age = calculateAge(birthDateVal);
+  if (age !== null) {
+    badge.style.display = "inline-flex";
+    badge.innerHTML = `🎂 ${age} ${state.t("years_old")}`;
+  } else {
+    badge.style.display = "none";
+  }
+}
+
+function toggleDrivingLicenseFields(prefix) {
+  const checkbox = document.getElementById(`${prefix}-has-license`);
+  const detailsWrap = document.getElementById(`${prefix}-license-details`);
+  if (!checkbox || !detailsWrap) return;
+  detailsWrap.style.display = checkbox.checked ? "block" : "none";
+}
+
+function renderLanguageRows(prefix, languages) {
+  const container = document.getElementById(`${prefix}-languages-container`);
+  if (!container) return;
+
+  container.innerHTML = languages.map((l, index) => `
+    <div class="language-entry-row" data-index="${index}">
+      <input type="text" class="form-input lang-name-input" style="flex:2;" value="${l.language}" placeholder="Idioma (ej. Español, Árabe, Francés, Inglés)..." required>
+      <select class="form-select lang-level-select" style="flex:2;">
+        <option value="basico" ${l.level === 'basico' ? 'selected' : ''}>${state.t("lang_level_basico")}</option>
+        <option value="intermedio" ${l.level === 'intermedio' ? 'selected' : ''}>${state.t("lang_level_intermedio")}</option>
+        <option value="avanzado" ${l.level === 'avanzado' ? 'selected' : ''}>${state.t("lang_level_avanzado")}</option>
+        <option value="nativo" ${l.level === 'nativo' ? 'selected' : ''}>${state.t("lang_level_nativo")}</option>
+      </select>
+      <button type="button" class="btn btn-outline btn-sm" style="color:var(--danger);padding:0.4rem 0.6rem;" onclick="removeLanguageRow('${prefix}', ${index})">✕</button>
+    </div>
+  `).join('');
+}
+
+function addLanguageRow(prefix) {
+  const container = document.getElementById(`${prefix}-languages-container`);
+  if (!container) return;
+  const currentLangs = getLanguagesFromContainer(prefix);
+  currentLangs.push({ language: "", level: "intermedio" });
+  renderLanguageRows(prefix, currentLangs);
+}
+
+function removeLanguageRow(prefix, index) {
+  const currentLangs = getLanguagesFromContainer(prefix);
+  currentLangs.splice(index, 1);
+  renderLanguageRows(prefix, currentLangs);
+}
+
+function getLanguagesFromContainer(prefix) {
+  const container = document.getElementById(`${prefix}-languages-container`);
+  if (!container) return [];
+  const rows = container.querySelectorAll(".language-entry-row");
+  const list = [];
+  rows.forEach(row => {
+    const nameInput = row.querySelector(".lang-name-input");
+    const levelSelect = row.querySelector(".lang-level-select");
+    if (nameInput && levelSelect && nameInput.value.trim()) {
+      list.push({ language: nameInput.value.trim(), level: levelSelect.value });
+    }
+  });
+  return list;
+}
+
+function selectPresetPhoto(prefix, photoUrl) {
+  const preview = document.getElementById(`${prefix}-photo-preview-img`);
+  if (preview) preview.src = photoUrl;
+  if (prefix === 'cv') {
+    state.cvData.photo = photoUrl;
+  }
+}
+
+function handlePhotoUpload(prefix, input) {
+  if (input.files && input.files[0]) {
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      const dataUrl = e.target.result;
+      const preview = document.getElementById(`${prefix}-photo-preview-img`);
+      if (preview) preview.src = dataUrl;
+      if (prefix === 'cv') {
+        state.cvData.photo = dataUrl;
+      }
+    };
+    reader.readAsDataURL(input.files[0]);
+  }
+}
+
 function saveCVForm(e) {
   e.preventDefault();
+
+  // Licencias seleccionadas
+  const selectedLicenses = [];
+  document.querySelectorAll(".cv-license-type-cb:checked").forEach(cb => selectedLicenses.push(cb.value));
+
+  // Sectores seleccionados
+  const selectedSectors = [];
+  document.querySelectorAll(".cv-sector-cb:checked").forEach(cb => selectedSectors.push(cb.value));
+
+  // Idiomas
+  const languagesList = getLanguagesFromContainer('cv');
+
+  // Foto
+  const photoPreview = document.getElementById("cv-photo-preview-img");
+  const photoSrc = photoPreview ? photoPreview.src : PRESET_AVATARS[0];
+
   state.cvData = {
     fullName: document.getElementById("cv-name-input").value,
     profession: document.getElementById("cv-profession-input").value,
@@ -1431,13 +1860,34 @@ function saveCVForm(e) {
     email: document.getElementById("cv-email-input").value,
     province: document.getElementById("cv-province-input").value,
     legalStatus: document.getElementById("cv-legal-input").value,
-    languages: document.getElementById("cv-languages-input").value,
+    photo: photoSrc,
+    birthDate: document.getElementById("cv-birthdate-input").value,
+    hasDrivingLicense: document.getElementById("cv-has-license").checked,
+    drivingLicenseTypes: selectedLicenses,
+    hasVehicle: document.getElementById("cv-has-vehicle").checked,
+    targetSectors: selectedSectors,
+    targetPositions: document.getElementById("cv-target-positions").value,
+    academicEducation: document.getElementById("cv-academic-input").value,
+    otherCertifications: document.getElementById("cv-certs-input").value,
+    languagesList: languagesList.length > 0 ? languagesList : state.cvData.languagesList,
     skills: document.getElementById("cv-skills-input").value,
-    experience: document.getElementById("cv-experience-input").value,
-    education: document.getElementById("cv-education-input").value
+    experience: document.getElementById("cv-experience-input").value
   };
+
+  // Si hay usuario candidato conectado, sincronizar su usuario
+  if (state.currentUser && state.currentUser.role === 'candidate') {
+    Object.assign(state.currentUser, state.cvData);
+    localStorage.setItem("iber_auth_user", JSON.stringify(state.currentUser));
+    const userIndex = state.users.findIndex(u => u.id === state.currentUser.id);
+    if (userIndex !== -1) {
+      state.users[userIndex] = { ...state.users[userIndex], ...state.cvData };
+      state.saveUsers();
+    }
+  }
+
   state.saveCV();
   state.renderCVPreview();
+  state.renderNavbar();
   showToast(state.lang === 'ar' ? 'تم حفظ وتحديث السيرة الذاتية بنجاح' : 'Currículum actualizado correctamente', "success");
 }
 
@@ -1587,6 +2037,24 @@ function handleRegisterSubmit(e) {
     const province = document.getElementById("auth-province-candidate").value;
     const profession = document.getElementById("reg-cand-profession").value;
     const legalStatus = document.getElementById("reg-cand-legal").value;
+    const birthDate = document.getElementById("reg-cand-birthdate").value;
+    const hasLicense = document.getElementById("reg-has-license").checked;
+    const hasVehicle = document.getElementById("reg-has-vehicle") ? document.getElementById("reg-has-vehicle").checked : false;
+
+    // Licencias
+    const selectedLicenses = [];
+    document.querySelectorAll(".reg-license-type-cb:checked").forEach(cb => selectedLicenses.push(cb.value));
+
+    // Sectores
+    const selectedSectors = [];
+    document.querySelectorAll(".reg-sector-cb:checked").forEach(cb => selectedSectors.push(cb.value));
+
+    // Foto
+    const photoPreview = document.getElementById("reg-photo-preview-img");
+    const photoSrc = photoPreview ? photoPreview.src : PRESET_AVATARS[0];
+
+    // Idiomas
+    const languagesList = getLanguagesFromContainer('reg');
 
     state.register({
       role: "candidate",
@@ -1597,10 +2065,18 @@ function handleRegisterSubmit(e) {
       province,
       profession,
       legalStatus,
+      photo: photoSrc,
+      birthDate,
+      hasDrivingLicense: hasLicense,
+      drivingLicenseTypes: selectedLicenses,
+      hasVehicle,
+      targetSectors: selectedSectors,
+      targetPositions: profession,
+      academicEducation: "Educación Secundaria",
+      otherCertifications: "Certificados de formación profesional",
+      languagesList: languagesList.length > 0 ? languagesList : [{ language: "Español", level: "intermedio" }],
       skills: profession,
-      experience: "Experiencia laboral en " + profession,
-      languages: "Español, Árabe",
-      education: "Formación básica"
+      experience: "Experiencia laboral en " + profession
     });
   } else {
     const compName = document.getElementById("reg-emp-company").value;
@@ -1837,6 +2313,16 @@ function setupEventListeners() {
       state.renderJobsList();
     });
   });
+
+  // Listener para calcular edad en vivo al cambiar fecha de nacimiento
+  const cvBirth = document.getElementById("cv-birthdate-input");
+  if (cvBirth) {
+    cvBirth.addEventListener("input", (e) => updateAgeBadge('cv', e.target.value));
+  }
+  const regBirth = document.getElementById("reg-cand-birthdate");
+  if (regBirth) {
+    regBirth.addEventListener("input", (e) => updateAgeBadge('reg', e.target.value));
+  }
 
   const applyForm = document.getElementById("apply-form");
   if (applyForm) applyForm.addEventListener("submit", handleApplySubmit);
