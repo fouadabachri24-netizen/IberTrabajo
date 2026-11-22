@@ -7,31 +7,33 @@
 // ================================================================
 
 const SUPABASE_CONFIG = {
-  // Obtenez ces valeurs depuis: Supabase Dashboard > Settings > API
-  url: window.SUPABASE_URL || 'https://YOUR_PROJECT_ID.supabase.co',
-  anonKey: window.SUPABASE_ANON_KEY || 'YOUR_SUPABASE_ANON_KEY',
+  // Configuré avec votre instance Supabase
+  url: window.SUPABASE_URL || 'https://fzfjmlbhugqdlyoaoidw.supabase.co',
+  anonKey: window.SUPABASE_ANON_KEY || 'sb_publishable_bt3faF0rcTLfSgTgWtevPw_cWOuTn5U',
 };
 
 // ================================================================
 // DÉTECTION: Mode démo (localStorage) vs Mode production (Supabase)
 // ================================================================
-// Si les vraies clés ne sont pas configurées, l'app tourne en mode
-// démo local (localStorage). Idéal pour le développement et les tests.
 
 const IS_DEMO_MODE = (
+  !SUPABASE_CONFIG.url ||
+  !SUPABASE_CONFIG.anonKey ||
   SUPABASE_CONFIG.url.includes('YOUR_PROJECT_ID') ||
   SUPABASE_CONFIG.anonKey.includes('YOUR_SUPABASE_ANON_KEY')
 );
 
-if (IS_DEMO_MODE) {
-  console.info(
-    '%c🎭 IberTrabajo - Mode Démonstration (localStorage)\n' +
-    'Pour activer la base de données Supabase, configurez les variables\n' +
-    'SUPABASE_URL et SUPABASE_ANON_KEY dans votre fichier .env ou vercel.json',
-    'color: #d97706; font-weight: bold; font-size: 12px;'
-  );
-} else {
-  console.info('✅ IberTrabajo - Connecté à Supabase');
+// Initialisation du client Supabase officiel si la bibliothèque est disponible
+let supabaseClient = null;
+if (typeof supabase !== 'undefined' && supabase.createClient && !IS_DEMO_MODE) {
+  try {
+    supabaseClient = supabase.createClient(SUPABASE_CONFIG.url, SUPABASE_CONFIG.anonKey);
+    console.info('✅ IberTrabajo - Connecté à Supabase avec succès (Production)');
+  } catch (err) {
+    console.warn('⚠️ Erreur initialisation client Supabase:', err);
+  }
+} else if (IS_DEMO_MODE) {
+  console.info('🎭 IberTrabajo - Mode Démonstration actif');
 }
 
 // ================================================================
