@@ -94,6 +94,11 @@ const TRANSLATIONS = {
     status_nie_valid: "NIE / Permiso de residencia y trabajo en vigor",
     status_nie_renewal: "En trámite de renovación / Prórroga",
     status_arraigo_needed: "Sin permiso vigente (Busco precontrato para Arraigo)",
+    status_arraigo_social: "Arraigo Social (+2 años en España - RD 1155/2024)",
+    status_arraigo_sociolaboral: "Arraigo Sociolaboral (+2 años con oferta de empleo)",
+    status_arraigo_socioformativo: "Arraigo Socioformativo (Formación + trabajo hasta 30h)",
+    status_arraigo_segunda_oportunidad: "Arraigo de Segunda Oportunidad (Residencia previa no renovada)",
+    status_arraigo_familiar: "Arraigo Familiar (Familiar de ciudadano español/UE)",
     status_eu_citizen: "DNI español o Ciudadano de la Unión Europea",
     status_origin_visa: "En país de origen (Interesado en visado de trabajo)",
     btn_do_login: "Entrar a mi Cuenta",
@@ -158,7 +163,7 @@ const TRANSLATIONS = {
 
     // Legal Guide
     guide_title: "Guía de Extranjería y Contratación Laboral",
-    guide_subtitle: "Información clave sobre el Nuevo Reglamento de Extranjería, tipos de arraigo y derechos del trabajador en España"
+    guide_subtitle: "Nuevo Reglamento de Extranjería (RD 1155/2024 - En vigor el 20 de mayo de 2025): las 5 figuras de arraigo y contratación laboral en España"
   },
 
   ar: {
@@ -248,6 +253,11 @@ const TRANSLATIONS = {
     status_nie_valid: "أملك بطاقة إقامة وعمل سارية المفعول (NIE / TIE)",
     status_nie_renewal: "في طور تجديد الإقامة / التمديد (En trámite)",
     status_arraigo_needed: "بدون أوراق حالياً (أبحث عن عقد لتسوية الوضعية - Arraigo)",
+    status_arraigo_social: "أرايغو اجتماعي Arraigo Social (+سنتان بإسبانيا - قانون 2025)",
+    status_arraigo_sociolaboral: "أرايغو مهني Arraigo Sociolaboral (+سنتان مع عقد عمل)",
+    status_arraigo_socioformativo: "أرايغو تكويني Arraigo Socioformativo (تكوين مهني + عمل 30 ساعة)",
+    status_arraigo_segunda_oportunidad: "أرايغو الفرصة الثانية Segunda Oportunidad (إقامة سابقة فُقدت)",
+    status_arraigo_familiar: "أرايغو عائلي Arraigo Familiar (أحد أفراد عائلة مواطن إسباني/أوروبي)",
     status_eu_citizen: "حامل للجنسية الإسبانية أو جنسية أوروبية",
     status_origin_visa: "مقيم خارج إسبانيا (أرغب في عقد عمل من بلد الأصل)",
     btn_do_login: "دخول إلى حسابي",
@@ -312,7 +322,7 @@ const TRANSLATIONS = {
 
     // Legal Guide
     guide_title: "الدليل القانوني لعقود العمل وقانون الأجانب بإسبانيا",
-    guide_subtitle: "معلومات شاملة حول قانون الهجرة الجديد، شروط عقد العمل للتسوية (Arraigo)، والحد الأدنى للأجور"
+    guide_subtitle: "قانون الهجرة الجديد (مرسوم ملكي 1155/2024 - يدخل حيز التنفيذ في 20 ماي 2025): الأنواع الـ5 للتسوية (Arraigo) وتصاريح العمل"
   },
 
   en: {
@@ -402,6 +412,11 @@ const TRANSLATIONS = {
     status_nie_valid: "Valid Spanish Work & Residency Permit (NIE/TIE)",
     status_nie_renewal: "Renewal in progress (En trámite)",
     status_arraigo_needed: "Seeking pre-contract for Arraigo (Legalization)",
+    status_arraigo_social: "Arraigo Social (+2 years stay - 2025 Reform RD 1155/2024)",
+    status_arraigo_sociolaboral: "Arraigo Sociolaboral (+2 years with job offer)",
+    status_arraigo_socioformativo: "Arraigo Socioformativo (Vocational training + work 30h)",
+    status_arraigo_segunda_oportunidad: "Second Chance Arraigo (Previously held residence permit)",
+    status_arraigo_familiar: "Family Arraigo (Relative of Spanish/EU citizen)",
     status_eu_citizen: "Spanish Citizen or EU Passport Holder",
     status_origin_visa: "Abroad (Seeking Work Visa from origin country)",
     btn_do_login: "Sign In to My Account",
@@ -466,7 +481,7 @@ const TRANSLATIONS = {
 
     // Legal Guide
     guide_title: "Spanish Labor & Immigration Legal Guide",
-    guide_subtitle: "Clear insights on Spanish immigration regulations, Arraigo work contracts, and employee rights"
+    guide_subtitle: "New Spanish Immigration Regulations (RD 1155/2024 - In force May 20, 2025): the 5 Arraigo figures & work permits"
   }
 };
 

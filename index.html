@@ -373,7 +373,12 @@
               <select id="cv-legal-input" class="form-select" required>
                 <option value="status_nie_valid" data-i18n="status_nie_valid">NIE / Permiso de residencia y trabajo en vigor</option>
                 <option value="status_nie_renewal" data-i18n="status_nie_renewal">En trámite de renovación / Prórroga</option>
-                <option value="status_arraigo_needed" data-i18n="status_arraigo_needed">Sin permiso vigente (Busco precontrato para Arraigo)</option>
+                <option value="status_arraigo_social" data-i18n="status_arraigo_social">Arraigo Social (+2 años en España - RD 1155/2024)</option>
+                <option value="status_arraigo_sociolaboral" data-i18n="status_arraigo_sociolaboral">Arraigo Sociolaboral (+2 años con oferta de empleo)</option>
+                <option value="status_arraigo_socioformativo" data-i18n="status_arraigo_socioformativo">Arraigo Socioformativo (Formación + trabajo hasta 30h)</option>
+                <option value="status_arraigo_segunda_oportunidad" data-i18n="status_arraigo_segunda_oportunidad">Arraigo de Segunda Oportunidad (Residencia previa no renovada)</option>
+                <option value="status_arraigo_familiar" data-i18n="status_arraigo_familiar">Arraigo Familiar (Familiar de ciudadano español/UE)</option>
+                <option value="status_arraigo_needed" data-i18n="status_arraigo_needed">Sin permiso vigente (Busco precontrato para Arraigo general)</option>
                 <option value="status_eu_citizen" data-i18n="status_eu_citizen">DNI español o Ciudadano de la Unión Europea</option>
                 <option value="status_origin_visa" data-i18n="status_origin_visa">En país de origen (Interesado en visado de trabajo)</option>
               </select>
@@ -493,73 +498,131 @@
 
     <!-- 7. VISTA DE GUÍA LEGAL, ARRAIGO Y EXTRANJERÍA -->
     <div id="guide-view" style="display: none;">
-      <div style="margin-bottom: 2rem;">
+      <div style="margin-bottom: 1.5rem;">
         <h2 style="font-size: 1.85rem; font-weight: 800; color: var(--text-main);" data-i18n="guide_title">
           Guía de Extranjería y Contratación Laboral
         </h2>
         <p style="color: var(--text-muted); font-size: 1rem;" data-i18n="guide_subtitle">
-          Información clave sobre el Nuevo Reglamento de Extranjería, tipos de arraigo y derechos del trabajador en España
+          Nuevo Reglamento de Extranjería (RD 1155/2024 - En vigor el 20 de mayo de 2025): las 5 figuras de arraigo y contratación laboral en España
+        </p>
+      </div>
+
+      <!-- BANNER INFORMATIVO REFORMA 20 DE MAYO DE 2025 -->
+      <div style="background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); border: 1.5px solid #93c5fd; border-radius: var(--radius-lg); padding: 1.5rem 1.75rem; margin-bottom: 2rem; box-shadow: var(--shadow-sm);">
+        <div style="display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap; margin-bottom: 0.65rem;">
+          <span style="background: #2563eb; color: #fff; font-size: 0.75rem; font-weight: 800; padding: 0.3rem 0.75rem; border-radius: 999px; text-transform: uppercase; letter-spacing: 0.05em;">
+            ⚡ Reforma Oficial RD 1155/2024
+          </span>
+          <span style="font-weight: 800; color: #1e3a8a; font-size: 1.1rem;">
+            En vigor a partir del 20 de Mayo de 2025
+          </span>
+          <span style="background: #dcfce7; color: #166534; font-size: 0.75rem; font-weight: 700; padding: 0.25rem 0.6rem; border-radius: 999px;">
+            Permanencia reducida a 2 años
+          </span>
+        </div>
+        <p style="color: #1e40af; font-size: 0.95rem; margin: 0; line-height: 1.6;">
+          El <strong>Nuevo Reglamento de Extranjería</strong> aprobado por el Consejo de Ministros unifica el plazo general de permanencia continuada a <strong>2 años</strong> (en lugar de 3), reestructura las vías de regularización en <strong>5 figuras oficiales de arraigo</strong>, habilita de manera simultánea para el <strong>trabajo por cuenta ajena y propia</strong>, autoriza trabajar hasta <strong>30 horas semanales</strong> durante la formación reglada y amplía las renovaciones iniciales a <strong>4 años</strong>.
         </p>
       </div>
 
       <div class="legal-guide-grid">
-        <div class="guide-card">
-          <div class="guide-icon blue">⚖️</div>
-          <h3 class="guide-title">Arraigo Social y Sociolaboral</h3>
+        <!-- 1. ARRAIGO SOCIAL -->
+        <div class="guide-card" style="border-top: 4px solid #2563eb;">
+          <div class="guide-icon blue">🤝</div>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+            <h3 class="guide-title" style="margin-bottom: 0;">1. Arraigo Social</h3>
+            <span style="background: #dbeafe; color: #1e40af; font-size: 0.75rem; font-weight: 700; padding: 0.2rem 0.5rem; border-radius: 4px;">2 años</span>
+          </div>
           <p class="guide-text">
-            Permite obtener autorización de residencia y trabajo a personas que acrediten permanencia continuada en España. Requiere contrato de trabajo firmado de duración mínima, garantizando el Salario Mínimo Interprofesional (SMI).
+            <strong>Requisitos:</strong> Permanencia continuada en España reducida a <strong>2 años</strong> (antes 3 años) acreditada mediante empadronamiento. Se requiere informe de arraigo emitido por el ayuntamiento o vínculos de parentesco, junto con una <strong>oferta o contrato de trabajo</strong> que garantice el Salario Mínimo (SMI), o acreditación de recursos económicos propios/familiares suficientes.
           </p>
         </div>
 
-        <div class="guide-card">
+        <!-- 2. ARRAIGO SOCIOLABORAL -->
+        <div class="guide-card" style="border-top: 4px solid #059669;">
+          <div class="guide-icon green">💼</div>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+            <h3 class="guide-title" style="margin-bottom: 0;">2. Arraigo Sociolaboral</h3>
+            <span style="background: #d1fae5; color: #065f46; font-size: 0.75rem; font-weight: 700; padding: 0.2rem 0.5rem; border-radius: 4px;">2 años</span>
+          </div>
+          <p class="guide-text">
+            <strong>Requisitos:</strong> Permanencia continuada en España durante <strong>2 años</strong> y existencia de relaciones laborales previas comprobables o una <strong>oferta formal de empleo</strong> vigente que garantice las condiciones del convenio colectivo y al menos el SMI. Habilita plenamente para la actividad profesional inmediata.
+          </p>
+        </div>
+
+        <!-- 3. ARRAIGO SOCIOFORMATIVO -->
+        <div class="guide-card" style="border-top: 4px solid #d97706;">
           <div class="guide-icon amber">🎓</div>
-          <h3 class="guide-title">Arraigo para la Formación</h3>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+            <h3 class="guide-title" style="margin-bottom: 0;">3. Arraigo Socioformativo</h3>
+            <span style="background: #fef3c7; color: #92400e; font-size: 0.75rem; font-weight: 700; padding: 0.2rem 0.5rem; border-radius: 4px;">Estudios + Trabajo</span>
+          </div>
           <p class="guide-text">
-            Dirigido a quienes lleven 2 años continuados en España y se comprometan a realizar una formación reglada para el empleo o certificación profesional. Al finalizar la formación, se puede solicitar la autorización de trabajo con un contrato.
+            <strong>Sustituye al arraigo para la formación:</strong> Exige <strong>2 años</strong> de permanencia continuada y matrícula o compromiso de realización de formación reglada (FP, certificados de profesionalidad u oficio). <br>
+            <span style="color: #92400e; font-weight: 700;">⭐ Novedad histórica:</span> ¡Autoriza a <strong>trabajar legalmente por cuenta ajena hasta 30 horas semanales</strong> desde el inicio de los estudios!
           </p>
         </div>
 
-        <div class="guide-card">
-          <div class="guide-icon green">📋</div>
-          <h3 class="guide-title">Obligaciones de la Empresa</h3>
+        <!-- 4. ARRAIGO SEGUNDA OPORTUNIDAD -->
+        <div class="guide-card" style="border-top: 4px solid #7c3aed;">
+          <div class="guide-icon purple" style="background: #ede9fe; color: #6d28d9; width: 42px; height: 42px; border-radius: 10px; display: inline-flex; align-items: center; justify-content: center; font-size: 1.3rem; margin-bottom: 0.75rem;">🔄</div>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+            <h3 class="guide-title" style="margin-bottom: 0;">4. Segunda Oportunidad</h3>
+            <span style="background: #ede9fe; color: #5b21b6; font-size: 0.75rem; font-weight: 700; padding: 0.2rem 0.5rem; border-radius: 4px;">¡Nueva Figura 2025!</span>
+          </div>
           <p class="guide-text">
-            La empresa empleadora debe estar al corriente con Hacienda y la Seguridad Social, y acreditar solvencia económica para abonar el salario estipulado según el convenio sectorial. Una vez aprobada la resolución favorable, se procede al alta en Seguridad Social.
+            <strong>Para recuperación de residencia:</strong> Dirigido a quienes tuvieron una autorización de residencia legal previa en España en el pasado (que no fuera por arraigo) y cayeron en irregularidad sobrevenida por dificultades para renovar o desempleo. Exige acreditar <strong>2 años de permanencia continuada</strong> previos a la solicitud.
           </p>
         </div>
 
-        <div class="guide-card">
-          <div class="guide-icon blue">💶</div>
-          <h3 class="guide-title">Salario Mínimo (SMI) en España</h3>
+        <!-- 5. ARRAIGO FAMILIAR -->
+        <div class="guide-card" style="border-top: 4px solid #ea580c;">
+          <div class="guide-icon orange" style="background: #ffedd5; color: #c2410c; width: 42px; height: 42px; border-radius: 10px; display: inline-flex; align-items: center; justify-content: center; font-size: 1.3rem; margin-bottom: 0.75rem;">👨‍👩‍👧</div>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+            <h3 class="guide-title" style="margin-bottom: 0;">5. Arraigo Familiar</h3>
+            <span style="background: #ffedd5; color: #9a3412; font-size: 0.75rem; font-weight: 700; padding: 0.2rem 0.5rem; border-radius: 4px;">5 años directos</span>
+          </div>
           <p class="guide-text">
-            El SMI vigente en España es de 1.134 € brutos mensuales en 14 pagas (o 1.323 € brutos en 12 pagas) para la jornada completa de 40 horas semanales. Ningún contrato legal puede pagar por debajo de este umbral.
+            <strong>Protección a familias de españoles y comunitarios:</strong> Destinado a progenitores de menores con nacionalidad española, o cónyuges / parejas registradas de ciudadanos españoles. <strong>NO requiere permanencia previa de 2 años</strong> y se concede directamente por <strong>5 años</strong> con autorización plena de trabajo.
           </p>
         </div>
 
-        <div class="guide-card">
-          <div class="guide-icon amber">🏛️</div>
-          <h3 class="guide-title">Empadronamiento Histórico</h3>
+        <!-- 6. HABILITACIÓN DUAL: CUENTA AJENA Y PROPIA -->
+        <div class="guide-card" style="border-top: 4px solid #0284c7;">
+          <div class="guide-icon blue">⚡</div>
+          <h3 class="guide-title">Habilitación Laboral Dual</h3>
           <p class="guide-text">
-            El certificado de empadronamiento es la prueba reina para demostrar el tiempo de residencia continuada en España. Se recomienda renovar o mantener siempre actualizado el padrón en el ayuntamiento correspondiente.
+            Bajo el marco del RD 1155/2024, las autorizaciones concedidas por circunstancias excepcionales de arraigo <strong>habilitan para trabajar tanto por cuenta ajena (empleado contratado) como por cuenta propia (autónomo / emprendedor)</strong> en cualquier territorio de España y en cualquier sector de actividad económica.
           </p>
         </div>
 
-        <div class="guide-card">
-          <div class="guide-icon green">🤝</div>
-          <h3 class="guide-title">Intermediación Directa</h3>
+        <!-- 7. OBLIGACIONES DE LA EMPRESA & SMI -->
+        <div class="guide-card" style="border-top: 4px solid #16a34a;">
+          <div class="guide-icon green">💶</div>
+          <h3 class="guide-title">Salario Mínimo (SMI) & Empresa</h3>
           <p class="guide-text">
-            IberTrabajo ofrece un canal de mediación laboral y asistencia técnica para revisar la idoneidad de los precontratos antes de su presentación ante la Oficina de Extranjería, evitando denegaciones por errores formales.
+            El contrato presentado para el trámite debe garantizar el <strong>Salario Mínimo Interprofesional (SMI)</strong> vigente en España (1.134 € brutos/mes en 14 pagas o 1.323 € en 12 pagas). La empresa empleadora debe estar al corriente en Hacienda y Seguridad Social y acreditar solvencia económica para sostener el puesto.
+          </p>
+        </div>
+
+        <!-- 8. RENOVACIÓN DIRECTA POR 4 AÑOS -->
+        <div class="guide-card" style="border-top: 4px solid #4f46e5;">
+          <div class="guide-icon blue">🏛️</div>
+          <h3 class="guide-title">Renovación Cuadrienal (4 años)</h3>
+          <p class="guide-text">
+            Gran simplificación administrativa: tras el primer año de vigencia de la autorización inicial de arraigo, <strong>la primera renovación pasa a concederse directamente por 4 años</strong> (en lugar de 2), permitiendo enlazar de manera directa con la residencia permanente o de larga duración al alcanzar los 5 años en España.
           </p>
         </div>
       </div>
 
       <div style="background: linear-gradient(135deg, #1e3a8a 0%, #172554 100%); color: white; border-radius: var(--radius-lg); padding: 2.5rem; margin-top: 2.5rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1.5rem;">
         <div style="max-width: 600px;">
-          <h3 style="font-size: 1.5rem; font-weight: 800; margin-bottom: 0.5rem;">¿Necesitas asesoramiento o mediación personalizada?</h3>
+          <h3 style="font-size: 1.5rem; font-weight: 800; margin-bottom: 0.5rem;">¿Dudas sobre tu situación según la Reforma de Mayo 2025?</h3>
           <p style="color: #cbd5e1; font-size: 0.95rem;">
-            Nuestro equipo de gestores y mediadores laborales te orienta de forma gratuita en la preparación de ofertas, revisión de convenios colectivos y trámites de extranjería.
+            Nuestro equipo de mediadores laborales te orienta de forma gratuita en la adecuación de tu perfil a las 5 nuevas figuras de arraigo (RD 1155/2024), revisión de precontratos y convenios colectivos.
           </p>
         </div>
-        <a href="https://wa.me/34600000000?text=Hola,%20deseo%20solicitar%20asesoramiento%20y%20mediación%20laboral%20en%20España" target="_blank" class="btn btn-whatsapp btn-lg">
+        <a href="https://wa.me/34600000000?text=Hola,%20deseo%20asesoramiento%20sobre%20la%20Reforma%20de%20Extranjería%202025%20y%20contratos%20en%20España" target="_blank" class="btn btn-whatsapp btn-lg">
           💬 Contactar Asesor por WhatsApp
         </a>
       </div>
@@ -706,7 +769,12 @@
                 <select id="reg-cand-legal" class="form-select">
                   <option value="status_nie_valid" data-i18n="status_nie_valid">NIE / Permiso de residencia y trabajo en vigor</option>
                   <option value="status_nie_renewal" data-i18n="status_nie_renewal">En trámite de renovación / Prórroga</option>
-                  <option value="status_arraigo_needed" data-i18n="status_arraigo_needed">Sin permiso vigente (Busco precontrato para Arraigo)</option>
+                  <option value="status_arraigo_social" data-i18n="status_arraigo_social">Arraigo Social (+2 años en España - RD 1155/2024)</option>
+                  <option value="status_arraigo_sociolaboral" data-i18n="status_arraigo_sociolaboral">Arraigo Sociolaboral (+2 años con oferta de empleo)</option>
+                  <option value="status_arraigo_socioformativo" data-i18n="status_arraigo_socioformativo">Arraigo Socioformativo (Formación + trabajo hasta 30h)</option>
+                  <option value="status_arraigo_segunda_oportunidad" data-i18n="status_arraigo_segunda_oportunidad">Arraigo de Segunda Oportunidad (Residencia previa no renovada)</option>
+                  <option value="status_arraigo_familiar" data-i18n="status_arraigo_familiar">Arraigo Familiar (Familiar de ciudadano español/UE)</option>
+                  <option value="status_arraigo_needed" data-i18n="status_arraigo_needed">Sin permiso vigente (Busco precontrato para Arraigo general)</option>
                   <option value="status_eu_citizen" data-i18n="status_eu_citizen">DNI español o Ciudadano de la Unión Europea</option>
                   <option value="status_origin_visa" data-i18n="status_origin_visa">En país de origen (Interesado en visado de trabajo)</option>
                 </select>
@@ -859,7 +927,12 @@
             <select id="apply-legal-status" class="form-select" required>
               <option value="status_nie_valid" data-i18n="status_nie_valid">NIE / Permiso de residencia y trabajo en vigor</option>
               <option value="status_nie_renewal" data-i18n="status_nie_renewal">En trámite de renovación / Prórroga</option>
-              <option value="status_arraigo_needed" data-i18n="status_arraigo_needed">Sin permiso vigente (Busco precontrato para Arraigo)</option>
+              <option value="status_arraigo_social" data-i18n="status_arraigo_social">Arraigo Social (+2 años en España - RD 1155/2024)</option>
+              <option value="status_arraigo_sociolaboral" data-i18n="status_arraigo_sociolaboral">Arraigo Sociolaboral (+2 años con oferta de empleo)</option>
+              <option value="status_arraigo_socioformativo" data-i18n="status_arraigo_socioformativo">Arraigo Socioformativo (Formación + trabajo hasta 30h)</option>
+              <option value="status_arraigo_segunda_oportunidad" data-i18n="status_arraigo_segunda_oportunidad">Arraigo de Segunda Oportunidad (Residencia previa no renovada)</option>
+              <option value="status_arraigo_familiar" data-i18n="status_arraigo_familiar">Arraigo Familiar (Familiar de ciudadano español/UE)</option>
+              <option value="status_arraigo_needed" data-i18n="status_arraigo_needed">Sin permiso vigente (Busco precontrato para Arraigo general)</option>
               <option value="status_eu_citizen" data-i18n="status_eu_citizen">DNI español o Ciudadano de la Unión Europea</option>
               <option value="status_origin_visa" data-i18n="status_origin_visa">En país de origen (Interesado en visado de trabajo)</option>
             </select>
