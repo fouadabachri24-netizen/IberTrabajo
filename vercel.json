@@ -80,7 +80,7 @@
       "destination": "/index.html"
     }
   ],
-  "regions": ["cdg1", "mad1"],
+  "regions": ["cdg1"],
   "cleanUrls": true,
   "trailingSlash": false
 }
