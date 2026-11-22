@@ -3,13 +3,28 @@ logs
 *.log
 npm-debug.log*
 
-# Dependency directories
+# Dependencies
 node_modules/
 
 # OS metadata
 .DS_Store
 Thumbs.db
+ehthumbs.db
 
-# Environment variables
+# Environment variables & secrets (CRITICAL)
 .env
-.env.local
+.env*.local
+.env.production
+.env.development
+.env.test
+
+# Vercel deployment artifacts
+.vercel
+
+# Supabase local temp
+supabase/.temp/
+.supabase/
+
+# IDE files
+.vscode/
+.idea/

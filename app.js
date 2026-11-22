@@ -507,14 +507,36 @@ const PRESET_AVATARS = [
   "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80"
 ];
 
+// --- HELPER DE SEGURIDAD: Escapa HTML para prevenir XSS ---
+// Usa Security.sanitizeHTML() si está disponible (security.js cargado), o escapa caracteres peligrosos directamente.
+function s(str) {
+  if (typeof Security !== 'undefined' && Security.sanitizeHTML) {
+    return Security.sanitizeHTML(String(str == null ? '' : str));
+  }
+  // Fallback mínimo: escapar caracteres HTML críticos
+  return String(str == null ? '' : str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#x27;');
+}
+
 // --- 2. BASE DE DATOS INICIAL DE USUARIOS (CANDIDATOS Y EMPLEADORES) ---
+// NOTA DE SEGURIDAD (PRODUCCIÓN):
+// En producción, los usuarios se gestionan exclusivamente via Supabase Auth.
+// Las contraseñas son procesadas por bcrypt de Supabase y nunca se almacenan en texto plano.
+// Estos usuarios demo solo existen en modo localStorage para demostración.
+// La contraseña demo para todos es "demo123" (acceso rápido sin contraseña real).
+const DEMO_PASS_TOKEN = "demo123"; // token demo únicamente
+
 const INITIAL_USERS = [
   {
     id: "usr-cand-1",
     role: "candidate",
     name: "Ahmed Mansouri",
     email: "ahmed@candidato.es",
-    password: "123",
+    password: DEMO_PASS_TOKEN,
     phone: "+34 612 345 678",
     province: "Madrid",
     profession: "Cocinero & Ayudante de Hostelería",
@@ -541,7 +563,7 @@ const INITIAL_USERS = [
     role: "candidate",
     name: "Karim Hadad",
     email: "karim@candidato.es",
-    password: "123",
+    password: DEMO_PASS_TOKEN,
     phone: "+34 655 432 109",
     province: "Almería",
     profession: "Peón Agrícola Especializado & Carretillero",
@@ -567,7 +589,7 @@ const INITIAL_USERS = [
     role: "candidate",
     name: "Fatima Ezzahra",
     email: "fatima@candidato.es",
-    password: "123",
+    password: DEMO_PASS_TOKEN,
     phone: "+34 677 889 900",
     province: "Barcelona",
     profession: "Cuidadora Sociosanitaria & Servicios del Hogar",
@@ -594,7 +616,7 @@ const INITIAL_USERS = [
     role: "employer",
     name: "Restaurante Taberna Ibérica S.L.",
     email: "contacto@tabernaiberica.es",
-    password: "123",
+    password: DEMO_PASS_TOKEN,
     cif: "B-84930211",
     contactPerson: "María Gómez (Directora RRHH)",
     phone: "+34 611 22 33 44",
@@ -608,7 +630,7 @@ const INITIAL_USERS = [
     role: "employer",
     name: "AgroSur Levante S.L.",
     email: "info@agrosurlevante.es",
-    password: "123",
+    password: DEMO_PASS_TOKEN,
     cif: "B-04128934",
     contactPerson: "Javier Navarro (Gerente)",
     phone: "+34 655 44 33 22",
@@ -842,7 +864,13 @@ class AppState {
   }
 
   saveUsers() {
-    localStorage.setItem("iber_users", JSON.stringify(this.users));
+    // Strip passwords before persisting — NEVER store plaintext passwords in localStorage
+    const safeUsers = this.users.map(u => {
+      if (typeof Security !== 'undefined') return Security.sanitizeUserForStorage(u);
+      const { password, ...rest } = u;
+      return rest;
+    });
+    localStorage.setItem("iber_users", JSON.stringify(safeUsers));
   }
 
   saveJobs() {
@@ -862,14 +890,37 @@ class AppState {
   }
 
   // --- MÉTODOS DE AUTENTICACIÓN ---
+  // SECURITY: En mode demo, comparaison directe. En production, Supabase Auth gère bcrypt.
   login(email, password) {
-    const user = this.users.find(u => u.email.toLowerCase() === email.toLowerCase() && u.password === password);
+    // Rate limiting: max 5 tentatives par minute
+    if (typeof Security !== 'undefined' && !Security.checkRateLimit('login_' + email, 5, 60000)) {
+      showToast(this.lang === 'ar' ? 'عدد كبير من المحاولات، انتظر دقيقة' : 'Demasiados intentos. Espera 1 minuto.', "error");
+      return false;
+    }
+
+    if (typeof Security !== 'undefined' && !Security.isValidEmail(email)) {
+      showToast(this.lang === 'ar' ? 'صيغة البريد الإلكتروني غير صحيحة' : 'Formato de correo electrónico inválido', "error");
+      return false;
+    }
+
+    // Comparaison des identifiants (mode démo uniquement - clés fictives)
+    // En production: await supabase.auth.signInWithPassword({ email, password })
+    const demoKey = typeof DEMO_PASSWORDS !== 'undefined' ? DEMO_PASSWORDS[email.toLowerCase()] : null;
+    const isDemo = demoKey && password === "demo";
+    const isDirectMatch = this.users.find(u => u.email.toLowerCase() === email.toLowerCase() && u.password === password);
+    const user = isDemo
+      ? this.users.find(u => u.email.toLowerCase() === email.toLowerCase())
+      : isDirectMatch;
+
     if (!user) {
       showToast(this.lang === 'ar' ? 'البريد الإلكتروني أو كلمة المرور غير صحيحة' : 'Correo electrónico o contraseña incorrectos', "error");
       return false;
     }
-    this.currentUser = user;
-    localStorage.setItem("iber_auth_user", JSON.stringify(user));
+
+    // SÉCURITÉ: Stocker le profil sans mot de passe dans localStorage
+    const safeUser = typeof Security !== 'undefined' ? Security.sanitizeUserForStorage(user) : (({ password, ...rest }) => rest)(user);
+    this.currentUser = safeUser;
+    localStorage.setItem("iber_auth_user", JSON.stringify(safeUser));
     
     // Redirigir según rol
     if (user.role === "employer") {
@@ -910,6 +961,16 @@ class AppState {
   }
 
   register(userData) {
+    // Validation email
+    if (typeof Security !== 'undefined' && !Security.isValidEmail(userData.email)) {
+      showToast(this.lang === 'ar' ? 'صيغة البريد الإلكتروني غير صحيحة' : 'Formato de correo electrónico inválido', "error");
+      return false;
+    }
+    // Validation mot de passe (longueur minimale)
+    if (userData.password && userData.password.length < 6) {
+      showToast(this.lang === 'ar' ? 'كلمة المرور يجب أن تكون 6 أحرف على الأقل' : 'La contraseña debe tener al menos 6 caracteres', "error");
+      return false;
+    }
     const exists = this.users.some(u => u.email.toLowerCase() === userData.email.toLowerCase());
     if (exists) {
       showToast(this.lang === 'ar' ? 'هذا البريد الإلكتروني مسجل بالفعل' : 'Este correo electrónico ya está registrado', "error");
@@ -917,15 +978,17 @@ class AppState {
     }
 
     const newUser = {
-      id: "usr-" + Date.now(),
+      id: typeof Security !== 'undefined' ? Security.generateId('usr') : ("usr-" + Date.now()),
       ...userData
     };
 
     this.users.push(newUser);
     this.saveUsers();
 
-    this.currentUser = newUser;
-    localStorage.setItem("iber_auth_user", JSON.stringify(newUser));
+    // SÉCURITÉ: Ne stocker que le profil sans mot de passe
+    const safeUser = typeof Security !== 'undefined' ? Security.sanitizeUserForStorage(newUser) : (({ password, ...rest }) => rest)(newUser);
+    this.currentUser = safeUser;
+    localStorage.setItem("iber_auth_user", JSON.stringify(safeUser));
 
     if (newUser.role === "employer") {
       this.activeTab = "my-offers";
@@ -953,9 +1016,9 @@ class AppState {
 
   quickDemoLogin(role) {
     if (role === "candidate") {
-      this.login("ahmed@candidato.es", "123");
+      this.login("ahmed@candidato.es", DEMO_PASS_TOKEN);
     } else {
-      this.login("contacto@tabernaiberica.es", "123");
+      this.login("contacto@tabernaiberica.es", DEMO_PASS_TOKEN);
     }
   }
 
@@ -1228,21 +1291,21 @@ AppState.prototype.renderJobsList = function() {
     const desc = state.getJobLocalized(job, "description");
     
     return `
-      <div class="job-card ${job.arraigoOk ? 'featured' : ''}" data-job-id="${job.id}">
+      <div class="job-card ${job.arraigoOk ? 'featured' : ''}" data-job-id="${s(job.id)}">
         <div class="job-card-top">
           <div class="job-main-info">
             <div class="company-avatar">
-              ${job.company.substring(0, 2).toUpperCase()}
+              ${s(job.company.substring(0, 2).toUpperCase())}
             </div>
             <div class="job-title-group">
-              <h3>${title}</h3>
+              <h3>${s(title)}</h3>
               <div class="job-company-name">
-                <span>${job.company}</span>
+                <span>${s(job.company)}</span>
                 ${job.verified ? `<span class="verified-badge"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg> ${state.t("badge_verified")}</span>` : ''}
               </div>
             </div>
           </div>
-          <button class="btn btn-outline btn-sm" onclick="state.toggleSaveJob('${job.id}')" title="${state.t('btn_save')}">
+          <button class="btn btn-outline btn-sm" onclick="state.toggleSaveJob('${s(job.id)}')" title="${state.t('btn_save')}">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="${isSaved ? '#d97706' : 'none'}" stroke="currentColor" stroke-width="2">
               <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/>
             </svg>
@@ -1250,18 +1313,18 @@ AppState.prototype.renderJobsList = function() {
         </div>
 
         <div class="job-meta-badges">
-          <span class="meta-badge salary">💶 ${job.salary.toLocaleString()} ${state.t("salary_unit")} (${job.salaryType})</span>
-          <span class="meta-badge">📍 ${job.city || job.province} (${job.province})</span>
-          <span class="meta-badge">📑 ${job.contractType.toUpperCase()}</span>
+          <span class="meta-badge salary">💶 ${job.salary.toLocaleString()} ${state.t("salary_unit")} (${s(job.salaryType)})</span>
+          <span class="meta-badge">📍 ${s(job.city || job.province)} (${s(job.province)})</span>
+          <span class="meta-badge">📑 ${s(job.contractType.toUpperCase())}</span>
           ${job.arraigoOk ? `<span class="meta-badge arraigo-badge">🤝 ${state.t("badge_arraigo")}</span>` : ''}
           ${job.nieRequired ? `<span class="meta-badge nie-badge">📋 ${state.t("badge_nie_req")}</span>` : ''}
           ${job.hasHousing ? `<span class="meta-badge housing-badge">🏠 ${state.t("badge_housing")}</span>` : ''}
         </div>
 
-        <p class="job-description-preview">${desc}</p>
+        <p class="job-description-preview">${s(desc)}</p>
 
         <div class="job-tags-list">
-          ${(job.skills || []).map(skill => `<span class="job-skill-tag">#${skill}</span>`).join('')}
+          ${(job.skills || []).map(skill => `<span class="job-skill-tag">#${s(skill)}</span>`).join('')}
         </div>
 
         <div class="job-card-footer">
@@ -1274,7 +1337,7 @@ AppState.prototype.renderJobsList = function() {
                 💬 ${state.t("btn_whatsapp")}
               </a>
             ` : ''}
-            <button class="btn btn-primary btn-sm" onclick="handleJobApplyClick('${job.id}')">
+            <button class="btn btn-primary btn-sm" onclick="handleJobApplyClick('${s(job.id)}')">
               ${state.t("btn_apply")}
             </button>
           </div>
@@ -1343,28 +1406,28 @@ AppState.prototype.renderAtsBoard = function() {
                 const candAge = calculateAge(candUser.birthDate);
                 const avatarSrc = candUser.photo || PRESET_AVATARS[0];
                 return `
-                <div class="ats-candidate-card" draggable="true" ondragstart="handleDragAts(event, '${app.id}')">
+                <div class="ats-candidate-card" draggable="true" ondragstart="handleDragAts(event, '${s(app.id)}')">
                   <div style="display:flex;align-items:center;gap:0.6rem;margin-bottom:0.4rem;">
-                    <img src="${avatarSrc}" style="width:34px;height:34px;border-radius:50%;object-fit:cover;" alt="Avatar">
+                    <img src="${s(avatarSrc)}" style="width:34px;height:34px;border-radius:50%;object-fit:cover;" alt="Avatar">
                     <div>
-                      <div class="ats-card-name">${app.candidateName}</div>
+                      <div class="ats-card-name">${s(app.candidateName)}</div>
                       ${candAge ? `<span style="font-size:0.75rem;color:var(--text-muted);">🎂 ${candAge} ${state.t("years_old")}</span>` : ''}
                     </div>
                   </div>
-                  <div class="ats-card-job">💼 ${app.jobTitle}</div>
+                  <div class="ats-card-job">💼 ${s(app.jobTitle)}</div>
                   <div class="ats-card-status-badge ${stage.cssClass}">
                     ${state.t(app.candidateLegal || 'status_nie_valid')}
                   </div>
                   ${candUser.hasDrivingLicense ? `
                     <div style="font-size:0.75rem;color:#059669;font-weight:600;margin-bottom:0.35rem;">
-                      🚗 ${(candUser.drivingLicenseTypes || ['B']).join(', ')}
+                      🚗 ${s((candUser.drivingLicenseTypes || ['B']).join(', '))}
                     </div>
                   ` : ''}
                   <div style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0.5rem;">
-                    📞 ${app.candidatePhone}
+                    📞 ${s(app.candidatePhone)}
                   </div>
                   <div class="ats-actions">
-                    <button class="btn btn-outline btn-sm" style="flex: 1;" onclick="advanceCandidateStage('${app.id}')" title="Avanzar">
+                    <button class="btn btn-outline btn-sm" style="flex: 1;" onclick="advanceCandidateStage('${s(app.id)}')" title="Avanzar">
                       ➡️ ${state.lang === 'ar' ? 'المرحلة التالية' : 'Avanzar'}
                     </button>
                     <a href="https://wa.me/${app.candidatePhone.replace(/[^0-9]/g, '')}" target="_blank" class="btn btn-whatsapp btn-sm" title="WhatsApp">
@@ -1518,12 +1581,12 @@ AppState.prototype.renderTalentsPool = function() {
         <div class="talent-card">
           <div>
             <div class="talent-card-header">
-              <img src="${photoSrc}" class="talent-avatar" alt="${cand.name}">
+              <img src="${s(photoSrc)}" class="talent-avatar" alt="${s(cand.name)}">
               <div>
-                <h4 class="talent-name">${cand.name}</h4>
-                <div class="talent-profession">${cand.profession || 'Profesional'}</div>
+                <h4 class="talent-name">${s(cand.name)}</h4>
+                <div class="talent-profession">${s(cand.profession || 'Profesional')}</div>
                 <div class="talent-location">
-                  📍 ${cand.province || 'España'} 
+                  📍 ${s(cand.province || 'España')} 
                   ${age ? `· <span class="age-badge">🎂 ${age} ${state.t("years_old")}</span>` : ''}
                 </div>
               </div>
@@ -1537,7 +1600,7 @@ AppState.prototype.renderTalentsPool = function() {
             <div style="display:flex;gap:0.4rem;flex-wrap:wrap;margin-bottom:0.65rem;">
               ${licenseText ? `
                 <span class="license-badge-pill" title="Permiso de conducir">
-                  🚗 Carnet: ${licenseText}
+                  🚗 Carnet: ${s(licenseText)}
                 </span>
               ` : `
                 <span class="license-badge-pill" style="color:var(--text-light);background:#f8fafc;">
@@ -1554,7 +1617,7 @@ AppState.prototype.renderTalentsPool = function() {
             <!-- Puestos y sectores de interés -->
             ${cand.targetPositions || cand.targetSectors ? `
               <div style="font-size:0.8rem;background:#fffbeb;padding:0.4rem 0.6rem;border-radius:4px;border:1px solid #fef3c7;margin-bottom:0.65rem;">
-                <strong>🎯 ${state.lang === 'ar' ? 'يبحث عن:' : 'Busca:'}</strong> ${cand.targetPositions || (cand.targetSectors || []).join(', ')}
+                <strong>🎯 ${state.lang === 'ar' ? 'يبحث عن:' : 'Busca:'}</strong> ${s(cand.targetPositions || (cand.targetSectors || []).join(', '))}
               </div>
             ` : ''}
 
@@ -1563,17 +1626,17 @@ AppState.prototype.renderTalentsPool = function() {
               <div style="margin-bottom:0.65rem;">
                 <div style="font-size:0.75rem;color:var(--text-muted);font-weight:700;margin-bottom:0.25rem;">🌐 ${state.lang === 'ar' ? 'اللغات:' : 'Idiomas:'}</div>
                 <div style="display:flex;gap:0.35rem;flex-wrap:wrap;">
-                  ${cand.languagesList.map(l => `<span class="lang-level-badge level-${l.level}">${l.language}: ${state.t("lang_level_" + l.level)}</span>`).join('')}
+                  ${cand.languagesList.map(l => `<span class="lang-level-badge level-${s(l.level)}">${s(l.language)}: ${state.t("lang_level_" + l.level)}</span>`).join('')}
                 </div>
               </div>
             ` : ''}
 
             <p style="font-size: 0.85rem; color: #475569; margin-bottom: 0.65rem; line-height: 1.4;">
-              ${cand.experience ? cand.experience.substring(0, 95) + '...' : 'Experiencia contrastada en el sector.'}
+              ${cand.experience ? s(cand.experience.substring(0, 95)) + '...' : 'Experiencia contrastada en el sector.'}
             </p>
 
             <div class="talent-skills-tags">
-              ${(cand.skills || 'Hostelería, Responsabilidad').split(',').map(s => `<span class="talent-tag">#${s.trim()}</span>`).join('')}
+              ${(cand.skills || 'Hostelería, Responsabilidad').split(',').map(sItem => `<span class="talent-tag">#${s(sItem.trim())}</span>`).join('')}
             </div>
           </div>
 
@@ -1602,15 +1665,15 @@ AppState.prototype.renderCVPreview = function() {
   container.innerHTML = `
     <!-- Cabecera con Foto de Perfil -->
     <div class="cv-header-layout">
-      <img src="${photoSrc}" class="cv-photo-img" alt="Foto de perfil de ${cv.fullName}">
+      <img src="${s(photoSrc)}" class="cv-photo-img" alt="Foto de perfil de ${s(cv.fullName)}">
       <div class="cv-header-details">
-        <h1 class="cv-name">${cv.fullName}</h1>
-        <div class="cv-profession">${cv.profession}</div>
+        <h1 class="cv-name">${s(cv.fullName)}</h1>
+        <div class="cv-profession">${s(cv.profession)}</div>
         <div class="cv-contact-row">
-          <span>📍 ${cv.province}, España</span>
-          ${cv.birthDate ? `<span>📅 ${cv.birthDate} ${age ? `(${age} ${state.t("years_old")})` : ''}</span>` : ''}
-          <span>📞 ${cv.phone}</span>
-          <span>✉️ ${cv.email}</span>
+          <span>📍 ${s(cv.province)}, España</span>
+          ${cv.birthDate ? `<span>📅 ${s(cv.birthDate)} ${age ? `(${age} ${state.t("years_old")})` : ''}</span>` : ''}
+          <span>📞 ${s(cv.phone)}</span>
+          <span>✉️ ${s(cv.email)}</span>
         </div>
       </div>
     </div>
@@ -1618,7 +1681,7 @@ AppState.prototype.renderCVPreview = function() {
     <!-- Situación Administrativa -->
     <div class="cv-section">
       <div class="cv-section-title">⚖️ Situación Administrativa / Extranjería</div>
-      <p style="font-size: 0.95rem; font-weight: 600; color: #1e3a8a;">${cv.legalStatus}</p>
+      <p style="font-size: 0.95rem; font-weight: 600; color: #1e3a8a;">${s(cv.legalStatus)}</p>
     </div>
 
     <!-- Permiso de Conducir y Vehículo -->
@@ -1627,7 +1690,7 @@ AppState.prototype.renderCVPreview = function() {
       <div style="display:flex;gap:0.75rem;align-items:center;flex-wrap:wrap;font-size:0.9rem;">
         ${licenseText ? `
           <span class="license-badge-pill">
-            🚘 <strong>Permiso de Conducir:</strong> ${licenseText}
+            🚘 <strong>Permiso de Conducir:</strong> ${s(licenseText)}
           </span>
         ` : `
           <span style="color:var(--text-muted);">Sin permiso de conducir actualmente</span>
@@ -1644,10 +1707,10 @@ AppState.prototype.renderCVPreview = function() {
     ${cv.targetPositions || (cv.targetSectors && cv.targetSectors.length > 0) ? `
       <div class="cv-section">
         <div class="cv-section-title">🎯 Puestos y Sectores de Interés</div>
-        ${cv.targetPositions ? `<p style="font-size:0.925rem;margin-bottom:0.4rem;"><strong>Puestos deseados:</strong> ${cv.targetPositions}</p>` : ''}
+        ${cv.targetPositions ? `<p style="font-size:0.925rem;margin-bottom:0.4rem;"><strong>Puestos deseados:</strong> ${s(cv.targetPositions)}</p>` : ''}
         ${cv.targetSectors && cv.targetSectors.length > 0 ? `
           <div style="display:flex;gap:0.35rem;flex-wrap:wrap;">
-            ${cv.targetSectors.map(sec => `<span class="job-skill-tag" style="background:#eff6ff;color:#1e40af;border-color:#bfdbfe;">🏢 ${sec}</span>`).join('')}
+            ${cv.targetSectors.map(sec => `<span class="job-skill-tag" style="background:#eff6ff;color:#1e40af;border-color:#bfdbfe;">🏢 ${s(sec)}</span>`).join('')}
           </div>
         ` : ''}
       </div>
@@ -1656,14 +1719,14 @@ AppState.prototype.renderCVPreview = function() {
     <!-- Experiencia Laboral -->
     <div class="cv-section">
       <div class="cv-section-title">💼 Experiencia Laboral</div>
-      <div style="font-size: 0.925rem; white-space: pre-line; line-height: 1.6;">${cv.experience}</div>
+      <div style="font-size: 0.925rem; white-space: pre-line; line-height: 1.6;">${s(cv.experience)}</div>
     </div>
 
     <!-- SEPARACIÓN 1: Formación Académica y Titulaciones Oficiales -->
     <div class="cv-section">
       <div class="cv-section-title">${state.t("cv_academic_title")}</div>
       <div class="education-academic-card">
-        <div style="font-size: 0.925rem; white-space: pre-line; line-height: 1.6;">${cv.academicEducation || 'Educación Secundaria Obligatoria'}</div>
+        <div style="font-size: 0.925rem; white-space: pre-line; line-height: 1.6;">${s(cv.academicEducation || 'Educación Secundaria Obligatoria')}</div>
       </div>
     </div>
 
@@ -1671,7 +1734,7 @@ AppState.prototype.renderCVPreview = function() {
     <div class="cv-section">
       <div class="cv-section-title">${state.t("cv_certs_title")}</div>
       <div class="education-certs-card">
-        <div style="font-size: 0.925rem; white-space: pre-line; line-height: 1.6;">${cv.otherCertifications || 'Certificados de formación complementaria'}</div>
+        <div style="font-size: 0.925rem; white-space: pre-line; line-height: 1.6;">${s(cv.otherCertifications || 'Certificados de formación complementaria')}</div>
       </div>
     </div>
 
@@ -1837,6 +1900,26 @@ function selectPresetPhoto(prefix, photoUrl) {
 
 function handlePhotoUpload(prefix, input) {
   if (input.files && input.files[0]) {
+    const file = input.files[0];
+    // Limit file size to 500 KB in demo mode to avoid localStorage overflow
+    const MAX_SIZE = 500 * 1024;
+    if (file.size > MAX_SIZE) {
+      showToast(
+        state.lang === 'ar'
+          ? 'الصورة كبيرة جداً. الحد الأقصى 500 كيلوبايت.'
+          : 'La foto es demasiado grande. Máximo 500 KB.',
+        "error"
+      );
+      return;
+    }
+    // Only accept image files
+    if (!file.type.startsWith('image/')) {
+      showToast(
+        state.lang === 'ar' ? 'يجب أن يكون الملف صورة.' : 'El archivo debe ser una imagen.',
+        "error"
+      );
+      return;
+    }
     const reader = new FileReader();
     reader.onload = function(e) {
       const dataUrl = e.target.result;
@@ -1846,7 +1929,7 @@ function handlePhotoUpload(prefix, input) {
         state.cvData.photo = dataUrl;
       }
     };
-    reader.readAsDataURL(input.files[0]);
+    reader.readAsDataURL(file);
   }
 }
 
@@ -1892,11 +1975,15 @@ function saveCVForm(e) {
   // Si hay usuario candidato conectado, sincronizar su usuario
   if (state.currentUser && state.currentUser.role === 'candidate') {
     Object.assign(state.currentUser, state.cvData);
-    localStorage.setItem("iber_auth_user", JSON.stringify(state.currentUser));
+    // Strip password before persisting to localStorage
+    const safeCurrentUser = typeof Security !== 'undefined'
+      ? Security.sanitizeUserForStorage(state.currentUser)
+      : (({ password, ...rest }) => rest)(state.currentUser);
+    localStorage.setItem("iber_auth_user", JSON.stringify(safeCurrentUser));
     const userIndex = state.users.findIndex(u => u.id === state.currentUser.id);
     if (userIndex !== -1) {
       state.users[userIndex] = { ...state.users[userIndex], ...state.cvData };
-      state.saveUsers();
+      state.saveUsers(); // saveUsers() already strips passwords
     }
   }
 
@@ -1951,16 +2038,16 @@ AppState.prototype.renderMyApplications = function() {
             <div class="job-main-info">
               <div class="company-avatar">💼</div>
               <div class="job-title-group">
-                <h3>${app.jobTitle}</h3>
-                <div class="job-company-name">${app.company}</div>
+                <h3>${s(app.jobTitle)}</h3>
+                <div class="job-company-name">${s(app.company)}</div>
               </div>
             </div>
-            <span class="meta-badge status-${app.stage}" style="font-weight: 700;">
+            <span class="meta-badge status-${s(app.stage)}" style="font-weight: 700;">
               ${getStageLabel(app.stage)}
             </span>
           </div>
           <div style="display: flex; gap: 1.5rem; font-size: 0.85rem; color: var(--text-muted); flex-wrap: wrap;">
-            <span>📅 ${state.lang === 'ar' ? 'تاريخ التقديم:' : 'Fecha de solicitud:'} ${app.appliedDate}</span>
+            <span>📅 ${state.lang === 'ar' ? 'تاريخ التقديم:' : 'Fecha de solicitud:'} ${s(app.appliedDate)}</span>
             <span>⚖️ ${state.t(app.candidateLegal)}</span>
             <span>📞 ${app.candidatePhone}</span>
           </div>
@@ -2378,10 +2465,15 @@ function showToast(message, type = "info") {
 
   const toast = document.createElement("div");
   toast.className = `toast ${type}`;
-  toast.innerHTML = `
-    <span>${type === 'success' ? '✅' : type === 'warning' ? '⚠️' : type === 'error' ? '❌' : 'ℹ️'}</span>
-    <span>${message}</span>
-  `;
+  
+  const iconSpan = document.createElement("span");
+  iconSpan.textContent = type === 'success' ? '✅' : type === 'warning' ? '⚠️' : type === 'error' ? '❌' : 'ℹ️';
+  
+  const msgSpan = document.createElement("span");
+  msgSpan.textContent = String(message == null ? '' : message);
+
+  toast.appendChild(iconSpan);
+  toast.appendChild(msgSpan);
 
   container.appendChild(toast);
 

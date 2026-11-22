@@ -5,7 +5,12 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "dev": "node server.js"
+    "dev": "node server.js",
+    "build": "echo 'Static web application ready for Vercel'",
+    "check": "node --check app.js && node --check server.js && node --check security.js && node --check supabase-client.js"
+  },
+  "engines": {
+    "node": ">=18.0.0"
   },
   "keywords": [
     "empleo",
